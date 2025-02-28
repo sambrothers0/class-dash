@@ -13,7 +13,7 @@ class Screen {
     Screen(SDL_Renderer* _renderer) : renderer(_renderer) {}
 
     // Draws the screen using the renderer
-    virtual void draw() const = 0;
+    virtual void draw() = 0;
 
     // Pure virtual destructor
     virtual ~Screen() = 0;

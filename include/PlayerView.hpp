@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "ui/screens/Screen.hpp"
-#include "ui/screens/TitleScreen.hpp"
 
 class PlayerView {
     private:
@@ -16,9 +15,7 @@ class PlayerView {
     std::unique_ptr<Screen> screen;
 
     public:
-    PlayerView(SDL_Renderer* _renderer) : renderer(_renderer) {
-        switchToTitleScreen();
-    }
+    PlayerView(SDL_Renderer* _renderer);
 
     void draw();
 
@@ -26,9 +23,10 @@ class PlayerView {
     void handleEvent(SDL_Event& event);
 
     // Switches to the title screen
-    void switchToTitleScreen() {
-        screen = std::make_unique<TitleScreen>(TitleScreen(renderer));
-    }
+    void switchToTitleScreen();
+
+    // Switches to the game screen
+    void switchToGameScreen();
 };
 
 #endif

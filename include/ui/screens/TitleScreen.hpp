@@ -7,7 +7,7 @@ class TitleScreen : public Screen {
     public:
     TitleScreen(SDL_Renderer* _renderer) : Screen(_renderer) {}
 
-    virtual void draw() const;
+    virtual void draw();
 
     ~TitleScreen() {}
 };
