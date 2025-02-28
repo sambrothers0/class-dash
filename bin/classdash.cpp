@@ -27,27 +27,23 @@ int main(int argc, char** argv) {
 
 
     /*** Main Loop ***/
-  bool running = true;
-  SDL_Event e;
+    bool running = true;
+    SDL_Event e;
 
-  while( running )
-  {
-    // Handle events on queue
-    while( SDL_PollEvent( &e ) != 0 )
-    {
-      // User requests quit
-      if( e.type == SDL_QUIT ) running = false;
+    while (running) {
+        // Handle events on queue
+        while (SDL_PollEvent(&e) != 0) {
+            // User requests quit
+            if (e.type == SDL_QUIT) 
+                running = false;
 
-      // User presses a key
-      if( e.type == SDL_KEYDOWN )
-      {
-        if( e.key.keysym.sym == SDLK_q ) running = false;
-
-      }
-
-
+            // User presses a key
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_q) 
+                    running = false;
+            }
+        }
     }
-  }
 
     // SDL_Delay(1000);
 
@@ -57,5 +53,4 @@ int main(int argc, char** argv) {
     SDL_Quit();
 
     return 0;
-
 }
