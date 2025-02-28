@@ -3,15 +3,18 @@
 
 #include "SDL.h"
 
+#include "PlayerView.hpp"
+
 // Main Game class
 class Game {
     private:
     SDL_Renderer* renderer;
-
-    bool isRunning = true;
+    PlayerView playerView;
 
     public:
-    Game(SDL_Renderer* _renderer) : renderer(_renderer) {}
+    Game(SDL_Renderer* _renderer) : renderer(_renderer), playerView(
+        PlayerView(_renderer)
+    ) {}
 
     void run();
 };

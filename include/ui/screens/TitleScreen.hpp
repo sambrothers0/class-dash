@@ -3,7 +3,7 @@
 
 #include "ui/screens/Screen.hpp"
 
-class TitleScreen : Screen {
+class TitleScreen : public Screen {
     public:
     TitleScreen(SDL_Renderer* _renderer) : Screen(_renderer) {}
 

@@ -3,7 +3,7 @@
 
 #include "ui/screens/Screen.hpp"
 
-class LevelSelectScreen : Screen {
+class LevelSelectScreen : public Screen {
     public:
     LevelSelectScreen(SDL_Renderer* _renderer) : Screen(_renderer) {}
 
