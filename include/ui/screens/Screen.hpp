@@ -1,0 +1,22 @@
+#ifndef _SCREEN_H
+#define _SCREEN_H
+
+#include "SDL.h"
+
+// Abstract class
+class Screen {
+    protected:
+    // Reference to the renderer
+    SDL_Renderer* renderer;
+
+    public:
+    Screen(SDL_Renderer* _renderer) : renderer(_renderer) {}
+
+    // Draws the screen using the renderer
+    virtual void draw() const = 0;
+
+    // Pure virtual destructor
+    virtual ~Screen() = 0;
+};
+
+#endif
