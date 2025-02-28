@@ -19,7 +19,7 @@ project(classdash)
 # Setup Environment #
 #####################
 # set to include custom modules
-set(CMAKE_MODULE_PATH $ENV{CMAKE_MODULE_PATH} ${csci437_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH $ENV{CMAKE_MODULE_PATH} ${classdash_SOURCE_DIR}/cmake)
 
 # set build type if specified by environment
 if((NOT CMAKE_BUILD_TYPE) AND (NOT $ENV{CMAKE_BUILD_TYPE} STREQUAL ""))
@@ -30,7 +30,7 @@ endif()
 set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
 
 # Set include directories
-include_directories(${csci437_SOURCE_DIR}/include)
+include_directories(${classdash_SOURCE_DIR}/include)
 
 # Get CPP files
 file(GLOB_RECURSE SRC src/*cpp)
@@ -76,11 +76,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 if(CMAKE_BUILD_TYPE)
   string(TOUPPER "${CMAKE_BUILD_TYPE}" TYPE)
   message("-- Using user specified build type: ${TYPE}")
-elseif(${csci437_SOURCE_DIR} STREQUAL ${csci437_BINARY_DIR})
+elseif(${classdash_SOURCE_DIR} STREQUAL ${classdash_BINARY_DIR})
   set(CMAKE_BUILD_TYPE Debug)
   message("-- In-source building. Build type set to: Debug")
 else()
-  get_filename_component(TYPE ${csci437_BINARY_DIR} NAME)
+  get_filename_component(TYPE ${classdash_BINARY_DIR} NAME)
   string(TOUPPER "${TYPE}" TYPE)
   if(${TYPE} STREQUAL "RELEASE")
     set(CMAKE_BUILD_TYPE Release)
@@ -104,7 +104,7 @@ endif()
 #######################
 # src library (all CPP files in 'src' dir)
 if(NOT SRC STREQUAL "")
-  get_filename_component(LIBNAME ${csci437_SOURCE_DIR} NAME)
+  get_filename_component(LIBNAME ${classdash_SOURCE_DIR} NAME)
   set(LIBNAME "${LIBNAME}_core")
   add_library(${LIBNAME} ${SRC})
 endif()
