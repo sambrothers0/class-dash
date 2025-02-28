@@ -25,7 +25,27 @@ int main(int argc, char** argv) {
     if (renderer == NULL)
         sdl_error("Could not create renderer!");
 
-    SDL_Delay(1000);
+
+    /*** Main Loop ***/
+    bool running = true;
+    SDL_Event e;
+
+    while (running) {
+        // Handle events on queue
+        while (SDL_PollEvent(&e) != 0) {
+            // User requests quit
+            if (e.type == SDL_QUIT) 
+                running = false;
+
+            // User presses a key
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_q) 
+                    running = false;
+            }
+        }
+    }
+
+    // SDL_Delay(1000);
 
     // Cleanup
     SDL_DestroyRenderer(renderer);
@@ -33,5 +53,4 @@ int main(int argc, char** argv) {
     SDL_Quit();
 
     return 0;
-
 }
