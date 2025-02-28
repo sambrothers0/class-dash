@@ -1,3 +1,3 @@
 #include "ui/screens/LevelSelectScreen.hpp"
 
-void LevelSelectScreen::draw() const {}
+void LevelSelectScreen::draw() {}
