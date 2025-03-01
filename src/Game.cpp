@@ -33,6 +33,8 @@ void Game::run() {
         Uint64 difference = ticks2 - ticks;
         ticks = ticks2;
 
+        gameLogic.runTick(difference);
+
         // Delay to avoid lag
         SDL_Delay(1);
     }
