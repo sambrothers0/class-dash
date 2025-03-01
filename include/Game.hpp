@@ -10,13 +10,11 @@
 class Game {
     private:
     SDL_Renderer* renderer;
-    PlayerView playerView;
     GameLogic gameLogic;
+    PlayerView playerView;
 
     public:
-    Game(SDL_Renderer* _renderer) : renderer(_renderer), playerView(
-        PlayerView(_renderer)
-    ), gameLogic(GameLogic()) {}
+    Game(SDL_Renderer* _renderer) : renderer(_renderer), gameLogic(GameLogic()), playerView(_renderer, gameLogic) {}
 
     void run();
 };

@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "GameLogic.hpp"
 #include "ui/screens/Screen.hpp"
 
 class PlayerView {
@@ -15,8 +16,10 @@ class PlayerView {
     // This needs to be set in the constructor
     std::unique_ptr<Screen> screen;
 
+    GameLogic& gameLogic;
+
     public:
-    PlayerView(SDL_Renderer* _renderer);
+    PlayerView(SDL_Renderer* _renderer, GameLogic& _gameLogic);
 
     void draw();
 
