@@ -17,16 +17,19 @@ void Player::shoot() {
 
 void Player::stopMoving() {
     velocity.setX(0);
+    currentDirection = MoveDirection::NONE;
     // velocity = Vector2(0, 0);
 }
 
 void Player::moveLeft() {
     velocity.setX(-250);
+    currentDirection = MoveDirection::LEFT;
     // velocity = Vector2(-250, 0);
 }
 
 void Player::moveRight() {
     velocity.setX(250);
+    currentDirection = MoveDirection::RIGHT;
     // velocity = Vector2(250, 0);
 }
 

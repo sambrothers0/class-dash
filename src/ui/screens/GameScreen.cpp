@@ -2,6 +2,15 @@
 
 #include "SDL2_gfxPrimitives.h"
 
+// Helper functions for if a key is pressed
+bool isMoveLeftPressed(const Uint8* keysPressed) {
+    return keysPressed[SDL_SCANCODE_LEFT] || keysPressed[SDL_SCANCODE_A];
+}
+
+bool isMoveRightPressed(const Uint8* keysPressed) {
+    return keysPressed[SDL_SCANCODE_RIGHT] || keysPressed[SDL_SCANCODE_D];
+}
+
 void GameScreen::draw() {
     // Draw a box for the player
     Player& player = gameLogic.getPlayer();
@@ -15,6 +24,9 @@ void GameScreen::draw() {
 
 void GameScreen::handleEvent(SDL_Event& event) {
     Player& player = gameLogic.getPlayer();
+    MoveDirection direction = player.getCurrentDirection();
+
+    const Uint8* keysPressed = SDL_GetKeyboardState(NULL);
 
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
@@ -36,9 +48,16 @@ void GameScreen::handleEvent(SDL_Event& event) {
         switch (event.key.keysym.sym) {
             case SDLK_LEFT:
             case SDLK_a:
+                if (direction == MoveDirection::LEFT && !isMoveLeftPressed(keysPressed)) {
+                    player.stopMoving();
+                }
+                break;
+
             case SDLK_RIGHT:
             case SDLK_d:
-                player.stopMoving();
+                if (direction == MoveDirection::RIGHT && !isMoveRightPressed(keysPressed)) {
+                    player.stopMoving();
+                }
                 break;
         }
     }
