@@ -7,6 +7,8 @@ class Player : public Character {
     public:
     Player(Vector2 _position) : Character(_position) {}
 
+    virtual void move(double ms);
+
     virtual void shoot();
 
     // Stops the movement of the player
