@@ -3,7 +3,7 @@
 #include "ui/screens/GameScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
 
-PlayerView::PlayerView(SDL_Renderer *_renderer) : renderer(_renderer) {
+PlayerView::PlayerView(SDL_Renderer *_renderer, GameLogic& _gameLogic) : renderer(_renderer), gameLogic(_gameLogic) {
     switchToGameScreen();
 }
 
@@ -18,13 +18,13 @@ void PlayerView::draw() {
 }
 
 void PlayerView::handleEvent(SDL_Event& event) {
-
+    screen->handleEvent(event);
 }
 
 void PlayerView::switchToTitleScreen() {
-    screen = std::make_unique<TitleScreen>(TitleScreen(renderer));
+    screen = std::make_unique<TitleScreen>(TitleScreen(renderer, gameLogic));
 }
 
 void PlayerView::switchToGameScreen() {
-    screen = std::make_unique<GameScreen>(GameScreen(renderer));
+    screen = std::make_unique<GameScreen>(GameScreen(renderer, gameLogic));
 }

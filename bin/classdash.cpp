@@ -1,6 +1,7 @@
 #include <SDL.h>
 
 #include "Game.hpp"
+#include "GameConstants.hpp"
 
 #include <iostream>
 #include <string>
@@ -16,7 +17,7 @@ int main(int argc, char** argv) {
         sdl_error("Failed to initialize SDL!");
 
     // Create window
-    SDL_Window* window = SDL_CreateWindow("Class Dash", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow("Class Dash", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 
     if (window == NULL)
         sdl_error("Could not create window!");

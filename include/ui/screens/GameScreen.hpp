@@ -5,9 +5,11 @@
 
 class GameScreen : public Screen {
     public:
-    GameScreen(SDL_Renderer* _renderer) : Screen(_renderer) {}
+    GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic) : Screen(_renderer, _gameLogic) {}
 
     virtual void draw();
+
+    virtual void handleEvent(SDL_Event&);
 
     ~GameScreen() {}
 };

@@ -3,17 +3,23 @@
 
 #include "SDL.h"
 
+#include "GameLogic.hpp"
+
 // Abstract class
 class Screen {
     protected:
     // Reference to the renderer
     SDL_Renderer* renderer;
+    GameLogic& gameLogic;
 
     public:
-    Screen(SDL_Renderer* _renderer) : renderer(_renderer) {}
+    Screen(SDL_Renderer* _renderer, GameLogic& _gameLogic) : renderer(_renderer), gameLogic(_gameLogic) {}
 
     // Draws the screen using the renderer
     virtual void draw() = 0;
+
+    // Handles events
+    virtual void handleEvent(SDL_Event& event) {}
 
     // Pure virtual destructor
     virtual ~Screen() = 0;
