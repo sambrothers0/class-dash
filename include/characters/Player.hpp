@@ -2,10 +2,19 @@
 #define _PLAYER_H
 
 #include "Character.hpp"
+#include "MoveDirection.hpp"
 
 class Player : public Character {
+    private:
+    // Current direction of movement
+    MoveDirection currentDirection;
+
     public:
     Player(Vector2 _position) : Character(_position) {}
+
+    MoveDirection getCurrentDirection() const {
+        return currentDirection;
+    }
 
     virtual void move(double ms);
 
