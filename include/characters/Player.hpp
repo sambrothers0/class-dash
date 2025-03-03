@@ -15,6 +15,8 @@ class Player : public Character {
     // Move the player in either direction
     void moveLeft();
     void moveRight();
+    void jump();
+    void landed();
 };
 
 #endif
