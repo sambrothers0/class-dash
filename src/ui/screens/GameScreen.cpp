@@ -8,6 +8,9 @@ void GameScreen::draw() {
     Vector2 playerPosition = player.getPosition();
 
     boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
+    
+    boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+
 }
 
 void GameScreen::handleEvent(SDL_Event& event) {
@@ -23,6 +26,10 @@ void GameScreen::handleEvent(SDL_Event& event) {
             case SDLK_RIGHT:
             case SDLK_d:
                 player.moveRight();
+                break;
+            case SDLK_UP:
+            case SDLK_w:
+                player.jump();
                 break;
         }
     } else if (event.type == SDL_KEYUP) {

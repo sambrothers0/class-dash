@@ -6,7 +6,7 @@
 class Character {
     protected:
     Vector2 position, velocity; // Velocity unit is in pixels per second
-
+        
     public:
     Character(Vector2 _position) : position(_position), velocity(Vector2(0, 0)) {}
 
