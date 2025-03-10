@@ -22,11 +22,17 @@ int main(int argc, char** argv) {
     if (window == NULL)
         sdl_error("Could not create window!");
 
+    // Init Bitmap loading
+    if( IMG_Init( IMG_INIT_PNG ) < 0 ) sdl_error("SDL could not initialize bitmap loaders!");
+
     // Create renderer
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     if (renderer == NULL)
         sdl_error("Could not create renderer!");
+
+    
+    SDL_Texture* spriteSheet = LoadTexture("assets/visual/sprite-sheet.png", renderer);
 
     // Set up game object
     Game game(renderer);
