@@ -1,10 +1,11 @@
 #include <SDL.h>
+#include <SDL_image.h>
+#include <iostream>
+#include <string>
 
 #include "Game.hpp"
 #include "GameConstants.hpp"
 
-#include <iostream>
-#include <string>
 
 void sdl_error(const std::string& message) {
     std::cerr << message << ": " << SDL_GetError() << std::endl;
@@ -31,8 +32,13 @@ int main(int argc, char** argv) {
     if (renderer == NULL)
         sdl_error("Could not create renderer!");
 
+    // Load bitmap
+    SDL_Surface* image = IMG_Load("../assets/visual/spritesheet.png");
+    if(image == NULL) sdl_error("Could not image!");
     
-    SDL_Texture* spriteSheet = LoadTexture("assets/visual/sprite-sheet.png", renderer);
+    // convert to texture
+    SDL_Texture* texture = SDL_CreateTextureFromSurface( renderer, image );
+    if(texture == NULL) sdl_error("Could not create texture from surface!");
 
     // Set up game object
     Game game(renderer);
