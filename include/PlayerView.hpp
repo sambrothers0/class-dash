@@ -3,23 +3,30 @@
 
 #include "SDL.h"
 
+#include "ui/screens/Screen.hpp"
+
 #include <memory>
 
-#include "GameLogic.hpp"
-#include "ui/screens/Screen.hpp"
+class Game;
 
 class PlayerView {
     private:
+    Game& game;
+
     SDL_Renderer* renderer;
+    SDL_Window* window;
 
     // Pointer to the current screen, it needs a pointer because Screen is an abstract class
     // This needs to be set in the constructor
     std::unique_ptr<Screen> screen;
 
-    GameLogic& gameLogic;
+    // Set up SDL
+    void setupSDL();
 
     public:
-    PlayerView(SDL_Renderer* _renderer, GameLogic& _gameLogic);
+    PlayerView(Game& _game) : game(_game) {}
+
+    void init();
 
     void draw();
 
@@ -31,6 +38,8 @@ class PlayerView {
 
     // Switches to the game screen
     void switchToGameScreen();
+
+    ~PlayerView();
 };
 
 #endif

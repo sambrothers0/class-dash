@@ -10,10 +10,9 @@ class Screen {
     protected:
     // Reference to the renderer
     SDL_Renderer* renderer;
-    GameLogic& gameLogic;
 
     public:
-    Screen(SDL_Renderer* _renderer, GameLogic& _gameLogic) : renderer(_renderer), gameLogic(_gameLogic) {}
+    Screen(SDL_Renderer* _renderer) : renderer(_renderer) {}
 
     // Draws the screen using the renderer
     virtual void draw() = 0;

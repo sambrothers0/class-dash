@@ -1,4 +1,5 @@
 #include "ui/screens/GameScreen.hpp"
+#include "GameLogic.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 

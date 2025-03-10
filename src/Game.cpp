@@ -4,6 +4,9 @@ void Game::run() {
     /*** Main Loop ***/
     SDL_Event e;
 
+    // Set up objects
+    playerView.init();
+
     bool isRunning = true;
 
     Uint64 ticks = SDL_GetTicks64();
