@@ -2,7 +2,7 @@
 #define _SPRITE_H
 
 #include "SDL.h"
-#include "Vector2.hpp"
+#include "physics/Vector2.hpp"
 
 class Sprite {
 
@@ -10,31 +10,30 @@ class Sprite {
         SDL_Texture* sprite;
         SDL_Rect textureRect;
         SDL_Rect targetRect;
-        Vector2 position;
-        double scale;
+        unsigned int depth;
+        
 
     public:
         Sprite(SDL_Texture* _sprite);
 
         // Position methods set position of the sprite
+        // These methods can be used for setting inital position and for moving positions
         void setPosition(double x, double y);
 
         void setPosition(Vector2 newPosition);
 
-        void movePositon();
 
-        // Sets the dimentions of the sprite
-        void setDimensions(double x, double y);
+        // Sets the dimensions of the sprite
+        void setDimensions(double width, double height);
+
+        // Primarily for setting the textures using a sprite map
+        void setTexture(double x, double y, double width, double height);
 
 
-        // Scale methods scale the width and height of the sprite
-        void setScale(double newScale);
+        // Scale method scales the width and height of the sprite
+        void setScale(double _scale);
 
-        void scale(double _scale);
-
-        void setAngle();
-
-        void rotate();
+        void setDepth(unsigned int newDepth);
 
 
 };
