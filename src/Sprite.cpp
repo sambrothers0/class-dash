@@ -32,11 +32,11 @@ void Sprite::setTexture(double x, double y, double width, double height) {
     textureRect.h = height;
 }
 
-// Scale methods scale the width and height of the sprite
-
+// Scale method scale the width and height of the sprite with the texture
+// keeps the size of the target proportional to the texture
 void Sprite::setScale(double _scale) {
-    targetRect.w *= textureRect.w * _scale;
-    targetRect.h *= textureRect.h * _scale;
+    targetRect.w = textureRect.w * _scale;
+    targetRect.h = textureRect.h * _scale;
 }
 
 // depth tells when a sprite should be drawn in comparison to others
