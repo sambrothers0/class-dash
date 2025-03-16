@@ -34,6 +34,7 @@ include_directories(${classdash_SOURCE_DIR}/include)
 
 # Get CPP files
 file(GLOB_RECURSE SRC src/*cpp)
+list(APPEND SRC src/sdlLogging.cpp)
 
 # Get executable files
 file(GLOB_RECURSE EXECLIST bin/*cpp)
