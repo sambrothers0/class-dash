@@ -5,7 +5,7 @@
 
 class LevelSelectScreen : public Screen {
     public:
-    LevelSelectScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic) : Screen(_renderer, _gameLogic) {}
+    LevelSelectScreen(SDL_Renderer* _renderer) : Screen(_renderer) {}
 
     virtual void draw();
 

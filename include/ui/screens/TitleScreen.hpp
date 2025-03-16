@@ -5,7 +5,7 @@
 
 class TitleScreen : public Screen {
     public:
-    TitleScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic) : Screen(_renderer, _gameLogic) {}
+    TitleScreen(SDL_Renderer* _renderer) : Screen(_renderer) {}
 
     virtual void draw();
 
