@@ -21,6 +21,8 @@ void GameScreen::draw() {
     
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 
+    // Draw the test text
+    testText.draw();
 }
 
 void GameScreen::handleEvent(SDL_Event& event) {

@@ -6,4 +6,7 @@
 // Logs an SDL error
 void sdlError(const std::string& message);
 
+// Logs a TTF error
+void ttfError(const std::string& message);
+
 #endif
