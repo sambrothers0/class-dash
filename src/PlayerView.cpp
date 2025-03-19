@@ -13,6 +13,15 @@ void PlayerView::setupSDL() {
     if (window == NULL)
         sdlError("Could not create window!");
 
+    if (TTF_Init() < 0)
+        ttfError("Unable to initialize TTF!");
+
+    // Load font
+    font = TTF_OpenFont("../assets/fonts/Arial.ttf", 100);
+
+    if (font == NULL)
+        ttfError("Unable to open Arial font!");
+
     // Create renderer
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -50,11 +59,12 @@ void PlayerView::switchToTitleScreen() {
 }
 
 void PlayerView::switchToGameScreen() {
-    screen = std::make_unique<GameScreen>(GameScreen(renderer, game.getGameLogic()));
+    screen = std::make_unique<GameScreen>(GameScreen(renderer, game.getGameLogic(), font));
 }
 
 PlayerView::~PlayerView() {
     // SDL_DestroyTexture(texture);
+    TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 }

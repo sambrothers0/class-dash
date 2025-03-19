@@ -2,6 +2,7 @@
 #define _PLAYER_VIEW_H
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 
 #include "ui/screens/Screen.hpp"
 
@@ -15,6 +16,7 @@ class PlayerView {
 
     SDL_Renderer* renderer;
     SDL_Window* window;
+    TTF_Font* font;
 
     // Pointer to the current screen, it needs a pointer because Screen is an abstract class
     // This needs to be set in the constructor
