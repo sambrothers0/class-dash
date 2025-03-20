@@ -16,6 +16,10 @@ class Level {
     public:
     Level(Vector2 _dimensions) : dimensions(_dimensions) {}
 
+    Vector2 getDimensions() const {
+        return dimensions;
+    }
+
     std::vector<Vector2>& getBlocks() {
         return blocks;
     }

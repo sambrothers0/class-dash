@@ -30,6 +30,9 @@ class GameLogic {
 
     // Runs a game tick lasting this many milliseconds
     void runTick(double ms);
+
+    // Gets the current horizontal offset for the camera for scrolling
+    double getScrollOffset() const;
 };
 
 #endif

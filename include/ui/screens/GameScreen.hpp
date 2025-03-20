@@ -11,6 +11,9 @@ class GameScreen : public Screen {
 
     Text testText;
 
+    // Offset for drawing
+    double scrollOffset;
+
     void drawLevel(std::shared_ptr<Level> level);
 
     public:
