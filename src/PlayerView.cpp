@@ -66,15 +66,15 @@ void PlayerView::handleEvent(SDL_Event& event) {
 }
 
 void PlayerView::switchToTitleScreen() {
-    screen = std::make_unique<TitleScreen>(TitleScreen(renderer));
+    screen = std::make_unique<TitleScreen>(TitleScreen(renderer, font));
 }
 
 void PlayerView::switchToLevelSelectScreen() {
-    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer));
+    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font));
 }
 
 void PlayerView::switchToPauseScreen() {
-    screen = std::make_unique<PauseScreen>(PauseScreen(renderer));
+    screen = std::make_unique<PauseScreen>(PauseScreen(renderer, font));
 }
 
 void PlayerView::switchToGameScreen() {
