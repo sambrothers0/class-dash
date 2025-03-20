@@ -24,7 +24,7 @@ class GameScreen : public Screen {
 
     virtual void draw();
 
-    virtual void handleEvent(SDL_Event&);
+    virtual unsigned int handleEvent(SDL_Event&);
 
     ~GameScreen() {}
 };

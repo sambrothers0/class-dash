@@ -4,6 +4,8 @@
 #include "gameDimensions.hpp"
 #include "sdlLogging.hpp"
 #include "ui/screens/GameScreen.hpp"
+#include "ui/screens/LevelSelectScreen.hpp"
+#include "ui/screens/PauseScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
 
 void PlayerView::setupSDL() {
@@ -37,7 +39,7 @@ void PlayerView::setupSDL() {
 
 void PlayerView::init() {
     setupSDL();
-    switchToGameScreen();
+    switchToTitleScreen();
 }
 
 void PlayerView::draw() {
@@ -51,11 +53,28 @@ void PlayerView::draw() {
 }
 
 void PlayerView::handleEvent(SDL_Event& event) {
-    screen->handleEvent(event);
+    int eventStatus = screen->handleEvent(event);
+    if (eventStatus == 1) {
+        switchToTitleScreen();
+    } else if (eventStatus == 2) {
+        switchToLevelSelectScreen();
+    } else if (eventStatus == 3) {
+        switchToGameScreen();
+    } else if (eventStatus == 4) {
+        switchToPauseScreen();
+    }
 }
 
 void PlayerView::switchToTitleScreen() {
     screen = std::make_unique<TitleScreen>(TitleScreen(renderer));
+}
+
+void PlayerView::switchToLevelSelectScreen() {
+    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer));
+}
+
+void PlayerView::switchToPauseScreen() {
+    screen = std::make_unique<PauseScreen>(PauseScreen(renderer));
 }
 
 void PlayerView::switchToGameScreen() {

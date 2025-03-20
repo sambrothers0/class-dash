@@ -17,8 +17,8 @@ class Screen {
     // Draws the screen using the renderer
     virtual void draw() = 0;
 
-    // Handles events
-    virtual void handleEvent(SDL_Event& event) {}
+    // Handles events, return value indicates if the screen needs to be switched
+    virtual unsigned int handleEvent(SDL_Event& event) { return 0; }
 
     // Pure virtual destructor
     virtual ~Screen() = 0;
