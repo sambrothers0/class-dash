@@ -2,7 +2,6 @@
 #define _GAME_SCREEN_H
 
 #include "ui/screens/Screen.hpp"
-#include "ui/Text.hpp"
 
 class GameScreen : public Screen {
     private:

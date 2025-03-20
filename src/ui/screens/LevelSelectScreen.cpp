@@ -4,8 +4,9 @@
 
 void LevelSelectScreen::draw() {
     // Draw the level select screen
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 0, 0, 255); //placeholder
+    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
     
+    selectText.draw();
 }
 
 unsigned int LevelSelectScreen::handleEvent(SDL_Event& event) {

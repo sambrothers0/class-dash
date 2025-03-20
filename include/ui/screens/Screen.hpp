@@ -4,6 +4,7 @@
 #include "SDL.h"
 
 #include "GameLogic.hpp"
+#include "ui/Text.hpp"
 
 // Abstract class
 class Screen {
