@@ -1,5 +1,6 @@
 #include "ui/screens/GameScreen.hpp"
 #include "GameLogic.hpp"
+#include "levels/Level.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -12,6 +13,12 @@ bool isMoveRightPressed(const Uint8* keysPressed) {
     return keysPressed[SDL_SCANCODE_RIGHT] || keysPressed[SDL_SCANCODE_D];
 }
 
+void GameScreen::drawLevel(std::shared_ptr<Level> level) {
+    for (auto block : level->getBlocks()) {
+        boxRGBA(renderer, block.getX() * 32, block.getY() * 32, (block.getX() + 1) * 32, (block.getY() + 1) * 32, 255, 255, 255, 255);
+    }
+}
+
 void GameScreen::draw() {
     // Draw a box for the player
     Player& player = gameLogic.getPlayer();
@@ -20,6 +27,9 @@ void GameScreen::draw() {
     boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
     
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+
+    // Render the level
+    drawLevel(gameLogic.getLevel());
 
     // Draw the test text
     testText.draw();

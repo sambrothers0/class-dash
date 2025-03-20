@@ -7,6 +7,23 @@ void Game::run() {
     // Set up objects
     playerView.init();
 
+    // Create a test level
+    Level level(Vector2(4096, 768));
+    level.setBlocks({
+        Vector2(0, 4),
+        Vector2(1, 4),
+        Vector2(2, 6),
+        Vector2(2, 5),
+        Vector2(3, 7),
+        Vector2(3, 4),
+        Vector2(20, 3),
+        Vector2(40, 7),
+        Vector2(60, 9),
+        Vector2(65, 1)
+    });
+
+    gameLogic.setLevel(std::make_shared<Level>(level));
+
     bool isRunning = true;
 
     Uint64 ticks = SDL_GetTicks64();
