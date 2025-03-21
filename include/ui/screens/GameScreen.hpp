@@ -10,6 +10,11 @@ class GameScreen : public Screen {
 
     Text testText;
 
+    // Offset for drawing
+    double scrollOffset;
+
+    void drawLevel(std::shared_ptr<Level> level);
+
     public:
     GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) : 
         Screen(_renderer), gameLogic(_gameLogic), font(_font), testText(
