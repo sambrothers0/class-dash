@@ -32,8 +32,8 @@ void Spritesheet::draw(int index, Vector2 position) {
     };
 
     auto drawPosition = SDL_Rect {
-        (int) position.getX(),
-        (int) position.getY(),
+        (int) (position.getX() - spriteSize.getX() / 2),
+        (int) (position.getY() - spriteSize.getY() / 2),
         (int) spriteSize.getX(),
         (int) spriteSize.getY()
     };
