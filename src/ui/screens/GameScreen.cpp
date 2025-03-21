@@ -30,7 +30,10 @@ void GameScreen::draw() {
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
 
-    playerSprite.draw(PlayerTexture::WALK1, playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
+    // Determine which texture index to use
+    PlayerTexture playerTexture = PlayerTexture::WALK1;
+
+    playerSprite.draw(PlayerTexture::WALK1 + player.getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
     
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 

@@ -10,10 +10,13 @@ const int PLAYER_HEIGHT = 64;
 class Player : public Character {
     private:
     // Current direction of movement
-    MoveDirection currentDirection;
+    MoveDirection currentDirection = MoveDirection::NONE;
 
     // Last direction moved in
-    MoveDirection lastDirection;
+    MoveDirection lastDirection = MoveDirection::NONE;
+
+    // Which animation frame to use (track how many ticks the current movement has occurred for)
+    int animationTicks = 0;
 
     public:
     Player(Vector2 _position) : Character(_position) {}
@@ -25,6 +28,8 @@ class Player : public Character {
     MoveDirection getLastDirection() const {
         return lastDirection;
     }
+
+    int getCurrentAnimationOffset() const;
 
     virtual void move(double ms);
 
