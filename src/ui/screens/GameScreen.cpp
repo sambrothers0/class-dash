@@ -1,6 +1,7 @@
 #include "ui/screens/GameScreen.hpp"
 #include "GameLogic.hpp"
 #include "levels/Level.hpp"
+#include "sprites/PlayerTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -29,7 +30,7 @@ void GameScreen::draw() {
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
 
-    playerSprite.draw(4, playerPosition - Vector2(scrollOffset, 0));
+    playerSprite.draw(PlayerTexture::WALK1, playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
     
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 

@@ -1,9 +1,10 @@
 #ifndef _GAME_SCREEN_H
 #define _GAME_SCREEN_H
 
+#include "characters/Player.hpp"
 #include "ui/screens/Screen.hpp"
 
-#include "Spritesheet.hpp"
+#include "sprites/Spritesheet.hpp"
 
 class GameScreen : public Screen {
     private:
@@ -14,7 +15,7 @@ class GameScreen : public Screen {
 
     // Spritesheet for the player
     Spritesheet playerSprite;
-    
+
     // Offset for drawing
     double scrollOffset;
 
@@ -32,7 +33,7 @@ class GameScreen : public Screen {
         ), playerSprite(
             _renderer,
             "../assets/visual/player-spritesheet.png",
-            Vector2(32, 64),
+            Vector2(PLAYER_WIDTH, PLAYER_HEIGHT),
             5,
             2
         ) {}

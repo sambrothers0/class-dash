@@ -26,6 +26,8 @@ class Spritesheet {
     Spritesheet(SDL_Renderer* _renderer, std::string path, Vector2 _spriteSize, int _rows, int _columns);
 
     // Draws the given texture at the given index
+    void draw(int index, Vector2 position, bool flipped);
+
     void draw(int index, Vector2 position);
 
     ~Spritesheet();

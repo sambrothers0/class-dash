@@ -4,16 +4,26 @@
 #include "Character.hpp"
 #include "MoveDirection.hpp"
 
+const int PLAYER_WIDTH = 32;
+const int PLAYER_HEIGHT = 64;
+
 class Player : public Character {
     private:
     // Current direction of movement
     MoveDirection currentDirection;
+
+    // Last direction moved in
+    MoveDirection lastDirection;
 
     public:
     Player(Vector2 _position) : Character(_position) {}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
+    }
+
+    MoveDirection getLastDirection() const {
+        return lastDirection;
     }
 
     virtual void move(double ms);

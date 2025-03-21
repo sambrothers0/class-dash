@@ -4,8 +4,6 @@
 
 const int GROUND_HEIGHT = 600; //This is just the current ground height based on how player position is called in GameLogic
 const float JUMP_HEIGHT = 100.0f; 
-const int HEIGHT = 64;
-const int WIDTH = 32;
 
 void Player::move(double ms) {
     Character::move(ms);
@@ -26,12 +24,14 @@ void Player::stopMoving() {
 void Player::moveLeft() {
     velocity.setX(-250);
     currentDirection = MoveDirection::LEFT;
+    lastDirection = MoveDirection::LEFT;
     // velocity = Vector2(-250, 0);
 }
 
 void Player::moveRight() {
     velocity.setX(250);
     currentDirection = MoveDirection::RIGHT;
+    lastDirection = MoveDirection::RIGHT;
     // velocity = Vector2(250, 0);
 }
 
@@ -42,8 +42,8 @@ void Player::jump() {
 }
 
 void Player::landed() {
-    if (position.getY() >= GROUND_HEIGHT - HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
-        position.setY(GROUND_HEIGHT - HEIGHT / 2);
+    if (position.getY() >= GROUND_HEIGHT - PLAYER_HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
+        position.setY(GROUND_HEIGHT - PLAYER_HEIGHT / 2);
         velocity.setY(0);
     }
 }
