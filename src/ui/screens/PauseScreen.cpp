@@ -10,14 +10,15 @@ void PauseScreen::draw() {
     pauseText.draw();
 }
 
-unsigned int PauseScreen::handleEvent(SDL_Event& event) {
+ScreenType PauseScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                return 3;
+                return ScreenType::GAME;
             default:
-                return 0;
+                return ScreenType::KEEP;
         }
     }
-    return 0;
+
+    return ScreenType::KEEP;
 }

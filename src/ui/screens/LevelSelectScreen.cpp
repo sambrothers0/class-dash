@@ -9,18 +9,18 @@ void LevelSelectScreen::draw() {
     selectText.draw();
 }
 
-unsigned int LevelSelectScreen::handleEvent(SDL_Event& event) {
+ScreenType LevelSelectScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_SPACE:
-                return 3; // Switch to game screen
+                return ScreenType::GAME; // Switch to game screen
             case SDLK_RETURN:
-                return 3; // Switch to game screen
+                return ScreenType::GAME; // Switch to game screen
             case SDLK_ESCAPE:
-                return 1; // Switch to title screen
+                return ScreenType::TITLE; // Switch to title screen
             default:
-                return 0;
+                return ScreenType::KEEP;
         }
     }
-    return 0;
+    return ScreenType::KEEP;
 }

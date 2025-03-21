@@ -5,6 +5,7 @@
 
 #include "GameLogic.hpp"
 #include "ui/Text.hpp"
+#include "ui/screens/ScreenType.hpp"
 
 // Abstract class
 class Screen {
@@ -19,7 +20,7 @@ class Screen {
     virtual void draw() = 0;
 
     // Handles events, return value indicates if the screen needs to be switched
-    virtual unsigned int handleEvent(SDL_Event& event) { return 0; }
+    virtual ScreenType handleEvent(SDL_Event& event) { return ScreenType::KEEP; }
 
     // Pure virtual destructor
     virtual ~Screen() = 0;

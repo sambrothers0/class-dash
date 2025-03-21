@@ -10,16 +10,17 @@ void TitleScreen::draw() {
     playText.draw();
 }
 
-unsigned int TitleScreen::handleEvent(SDL_Event& event) {
+ScreenType TitleScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_SPACE:
-                return 2;
+                return ScreenType::LEVEL_SELECT;
             case SDLK_RETURN:
-                return 2;
+                return ScreenType::LEVEL_SELECT;
             default:
-                return 0;
+                return ScreenType::KEEP;
         }
     }
-    return 0;
+
+    return ScreenType::KEEP;
 }
