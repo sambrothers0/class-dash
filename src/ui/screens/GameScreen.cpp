@@ -14,15 +14,36 @@ bool isMoveRightPressed(const Uint8* keysPressed) {
 
 void GameScreen::draw() {
     // Draw a box for the player
+    // Player& player = gameLogic.getPlayer();
+    // Vector2 playerPosition = player.getPosition();
+
+    // boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
+    
+    // boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+
+    // // Draw the test text
+    // testText.draw();
+
+    
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    // Draw tiles
+    
+    for (const Tile& tile : mapLoader.getTiles()) {
+        std::cout<<"here"<<std::endl;
+        SDL_Rect rect = {tile.x, tile.y, 32, 32}; // Adjust size if needed
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255); // Placeholder color
+        SDL_RenderFillRect(renderer, &rect);
+    }
+
+    // Draw player
     Player& player = gameLogic.getPlayer();
     Vector2 playerPosition = player.getPosition();
+    boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20,
+            playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
 
-    boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
-    
-    boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
-
-    // Draw the test text
-    testText.draw();
+    SDL_RenderPresent(renderer);
 }
 
 unsigned int GameScreen::handleEvent(SDL_Event& event) {

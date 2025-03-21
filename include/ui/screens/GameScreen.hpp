@@ -3,12 +3,14 @@
 
 #include "ui/screens/Screen.hpp"
 #include "ui/Text.hpp"
+#include "MapLoader.hpp"
+#include <iostream>
 
 class GameScreen : public Screen {
     private:
     GameLogic& gameLogic;
     TTF_Font* font;
-
+    MapLoader mapLoader;
     Text testText;
 
     public:
@@ -20,7 +22,13 @@ class GameScreen : public Screen {
             50,
             SDL_Color { 0, 255, 255 },
             "Test"
-        ) {}
+        ) {
+            std::cout<<"testing here"<<std::endl;
+            if (!mapLoader.loadMap("../src/ui/screens/Levels/AttemptMap.tmx")) {
+                std::cerr << "Failed to load map!" << std::endl;
+            }
+            std::cout<<"loaded map"<<std::endl;
+        }
 
     virtual void draw();
 

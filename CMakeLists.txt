@@ -62,6 +62,15 @@ find_package(SDL2_gfx REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 link_libraries(SDL2::Main SDL2::Image SDL2::GFX SDL2::TTF SDL2::Mixer)
 
+
+################
+# Find TinyXML2 #
+################
+find_package(TinyXML2 REQUIRED)
+include_directories(${TinyXML2_INCLUDE_DIRS})
+link_libraries(${TinyXML2_LIBRARIES})
+
+
 ###############
 # C++ Options #
 ###############
@@ -116,8 +125,9 @@ foreach(EXEC ${EXECLIST})
   add_executable(${EXECNAME} ${EXEC})
 
   if(NOT SRC STREQUAL "")
-    target_link_libraries(${EXECNAME} LINK_PUBLIC ${LIBNAME})
+    target_link_libraries(${EXECNAME} LINK_PUBLIC ${LIBNAME} tinyxml2)
   endif()
 
   message("-- Adding executable: ${EXECNAME}")
 endforeach(EXEC)
+
