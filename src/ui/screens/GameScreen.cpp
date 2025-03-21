@@ -3,6 +3,8 @@
 
 #include "SDL2_gfxPrimitives.h"
 
+#include <iostream>
+
 // Helper functions for if a key is pressed
 bool isMoveLeftPressed(const Uint8* keysPressed) {
     return keysPressed[SDL_SCANCODE_LEFT] || keysPressed[SDL_SCANCODE_A];
@@ -17,7 +19,10 @@ void GameScreen::draw() {
     Player& player = gameLogic.getPlayer();
     Vector2 playerPosition = player.getPosition();
 
-    boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
+    // boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
+    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 50); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+
+    playerSprite.draw(4, Vector2(100, 100));
     
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 

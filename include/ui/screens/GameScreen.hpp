@@ -3,12 +3,17 @@
 
 #include "ui/screens/Screen.hpp"
 
+#include "Spritesheet.hpp"
+
 class GameScreen : public Screen {
     private:
     GameLogic& gameLogic;
     TTF_Font* font;
 
     Text testText;
+
+    // Spritesheet for the player
+    Spritesheet playerSprite;
 
     public:
     GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) : 
@@ -19,6 +24,12 @@ class GameScreen : public Screen {
             50,
             SDL_Color { 0, 255, 255 },
             "Test"
+        ), playerSprite(
+            _renderer,
+            "../assets/visual/player-spritesheet.png",
+            Vector2(32, 64),
+            5,
+            2
         ) {}
 
     virtual void draw();
