@@ -16,16 +16,13 @@ SDL_Texture* loadTexture(SDL_Renderer* renderer, std::string path) {
 
 Spritesheet::Spritesheet(SDL_Renderer* _renderer, std::string _path, Vector2 _spriteSize, int _rows, int _columns) : renderer(_renderer), path(_path), spriteSize(_spriteSize), rows(_rows), columns(_columns) {}
 
-void Spritesheet::draw(int index, Vector2 position) const {
-    if (texture == NULL) {
+void Spritesheet::draw(int index, Vector2 position) {
+    if (texture == nullptr) {
         texture = loadTexture(renderer, path);
     }
 
     int row = index / columns;
     int column = index % columns;
-
-    std::cout << row << ", " << column << std::endl;
-    std::cout << spriteSize << std::endl;
 
     auto sourcePosition = SDL_Rect {
         (int) (column * spriteSize.getX()),
@@ -45,6 +42,6 @@ void Spritesheet::draw(int index, Vector2 position) const {
 }
 
 Spritesheet::~Spritesheet() {
-    if (texture != NULL)
+    if (texture != nullptr)
         SDL_DestroyTexture(texture);
 }

@@ -22,7 +22,7 @@ void GameScreen::draw() {
     // boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 50); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 
-    playerSprite.draw(4, Vector2(100, 100));
+    playerSprite.draw(4, playerPosition);
     
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 

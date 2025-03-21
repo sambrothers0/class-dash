@@ -13,7 +13,7 @@ class Spritesheet {
     
     std::string path;
 
-    SDL_Texture* texture;
+    SDL_Texture* texture = nullptr;
 
     // Dimensions of a single sprite
     Vector2 spriteSize;
@@ -26,7 +26,7 @@ class Spritesheet {
     Spritesheet(SDL_Renderer* _renderer, std::string path, Vector2 _spriteSize, int _rows, int _columns);
 
     // Draws the given texture at the given index
-    void draw(int index, Vector2 position) const;
+    void draw(int index, Vector2 position);
 
     ~Spritesheet();
 };
