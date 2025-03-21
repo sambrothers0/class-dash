@@ -25,7 +25,7 @@ void GameScreen::draw() {
     testText.draw();
 }
 
-unsigned int GameScreen::handleEvent(SDL_Event& event) {
+ScreenType GameScreen::handleEvent(SDL_Event& event) {
     Player& player = gameLogic.getPlayer();
     MoveDirection direction = player.getCurrentDirection();
 
@@ -34,7 +34,7 @@ unsigned int GameScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                return 4; // Switch to pause screen
+                return ScreenType::PAUSE; // Switch to pause screen
             case SDLK_LEFT:
             case SDLK_a:
                 player.moveLeft();
@@ -66,5 +66,6 @@ unsigned int GameScreen::handleEvent(SDL_Event& event) {
                 
         }
     }
-    return 0;
+
+    return ScreenType::KEEP;
 }

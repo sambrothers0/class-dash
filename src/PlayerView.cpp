@@ -54,13 +54,13 @@ void PlayerView::draw() {
 
 void PlayerView::handleEvent(SDL_Event& event) {
     int eventStatus = screen->handleEvent(event);
-    if (eventStatus == 1) {
+    if (eventStatus == ScreenType::TITLE) {
         switchToTitleScreen();
-    } else if (eventStatus == 2) {
+    } else if (eventStatus == ScreenType::LEVEL_SELECT) {
         switchToLevelSelectScreen();
-    } else if (eventStatus == 3) {
+    } else if (eventStatus == ScreenType::GAME) {
         switchToGameScreen();
-    } else if (eventStatus == 4) {
+    } else if (eventStatus == ScreenType::PAUSE) {
         switchToPauseScreen();
     }
 }
