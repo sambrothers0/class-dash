@@ -1,5 +1,6 @@
 #include "ui/screens/GameScreen.hpp"
 #include "GameLogic.hpp"
+#include "levels/Level.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -14,23 +15,32 @@ bool isMoveRightPressed(const Uint8* keysPressed) {
     return keysPressed[SDL_SCANCODE_RIGHT] || keysPressed[SDL_SCANCODE_D];
 }
 
+void GameScreen::drawLevel(std::shared_ptr<Level> level) {
+    for (auto block : level->getBlocks()) {
+        boxRGBA(renderer, block.getX() * 32 - scrollOffset, block.getY() * 32, (block.getX() + 1) * 32 - scrollOffset, (block.getY() + 1) * 32, 255, 255, 255, 255);
+    }
+}
+
 void GameScreen::draw() {
     // Draw a box for the player
     Player& player = gameLogic.getPlayer();
     Vector2 playerPosition = player.getPosition();
 
-    // boxRGBA(renderer, playerPosition.getX() - 20, playerPosition.getY() - 20, playerPosition.getX() + 20, playerPosition.getY() + 20, 0, 255, 255, 255);
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 50); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+    // Calculate the scroll offset
+    scrollOffset = gameLogic.getScrollOffset();
 
-    playerSprite.draw(4, playerPosition);
+    playerSprite.draw(4, playerPosition - Vector2(scrollOffset, 0));
     
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+
+    // Render the level
+    drawLevel(gameLogic.getLevel());
 
     // Draw the test text
     testText.draw();
 }
 
-unsigned int GameScreen::handleEvent(SDL_Event& event) {
+ScreenType GameScreen::handleEvent(SDL_Event& event) {
     Player& player = gameLogic.getPlayer();
     MoveDirection direction = player.getCurrentDirection();
 
@@ -39,7 +49,7 @@ unsigned int GameScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                return 4; // Switch to pause screen
+                return ScreenType::PAUSE; // Switch to pause screen
             case SDLK_LEFT:
             case SDLK_a:
                 player.moveLeft();
@@ -71,5 +81,6 @@ unsigned int GameScreen::handleEvent(SDL_Event& event) {
                 
         }
     }
-    return 0;
+
+    return ScreenType::KEEP;
 }

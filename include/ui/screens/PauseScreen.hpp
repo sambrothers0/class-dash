@@ -23,7 +23,7 @@ class PauseScreen : public Screen {
 
     virtual void draw();
 
-    virtual unsigned int handleEvent(SDL_Event& event);
+    virtual ScreenType handleEvent(SDL_Event& event);
 
     ~PauseScreen() {}
 };

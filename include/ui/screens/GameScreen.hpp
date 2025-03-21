@@ -14,6 +14,11 @@ class GameScreen : public Screen {
 
     // Spritesheet for the player
     Spritesheet playerSprite;
+    
+    // Offset for drawing
+    double scrollOffset;
+
+    void drawLevel(std::shared_ptr<Level> level);
 
     public:
     GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) : 
@@ -34,7 +39,7 @@ class GameScreen : public Screen {
 
     virtual void draw();
 
-    virtual unsigned int handleEvent(SDL_Event&);
+    virtual ScreenType handleEvent(SDL_Event&);
 
     ~GameScreen() {}
 };
