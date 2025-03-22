@@ -3,17 +3,23 @@
 
 #include "Character.hpp"
 #include "MoveDirection.hpp"
+#include "Projectile.hpp"
 
 class Player : public Character {
     private:
     // Current direction of movement
     MoveDirection currentDirection;
+    Projectile projectile;
 
     public:
-    Player(Vector2 _position) : Character(_position) {}
+    Player(Vector2 _position) : Character(_position), projectile(_position, currentDirection) {}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
+    }
+
+    Projectile getProjectile() {
+        return projectile;
     }
 
     virtual void move(double ms);

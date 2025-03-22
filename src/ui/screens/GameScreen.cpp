@@ -29,6 +29,12 @@ void GameScreen::draw() {
 
     boxRGBA(renderer, playerPosition.getX() - 20 - scrollOffset, playerPosition.getY() - 20, playerPosition.getX() + 20 - scrollOffset, playerPosition.getY() + 20, 0, 255, 255, 255);
     
+    // if a projectile has been shot then display the projectile
+    if (player.getProjectile().isActive()) {
+        Vector2 projectilePosition = player.getProjectile().getPosition();
+        boxRGBA(renderer, projectilePosition.getX() - 5 - scrollOffset, projectilePosition.getY() - 5, projectilePosition.getX() + 5 - scrollOffset, projectilePosition.getY() + 5, 0, 255, 255, 255);
+    }
+
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 
     // Render the level
@@ -59,6 +65,9 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
             case SDLK_UP:
             case SDLK_w:
                 player.jump();
+                break;
+            case SDLK_SPACE:
+                player.shoot();
                 break;
         }
     } else if (event.type == SDL_KEYUP) {

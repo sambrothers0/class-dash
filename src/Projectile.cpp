@@ -6,6 +6,10 @@ Projectile::Projectile(Vector2 playerPosition, MoveDirection playerDirection)
     position.setY(playerPosition.getY());
 }
 
-void Projectile::move() {
+// move the projectile along the x axis
+void Projectile::move(double ms) {
+    double seconds = ms/1000;
+    double moveOffset = position.getX() + velocity.getX() * seconds;
+    position.setX(moveOffset);
     
 }

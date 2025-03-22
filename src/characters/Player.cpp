@@ -12,7 +12,24 @@ void Player::move(double ms) {
 }
 
 void Player::shoot() {
+    projectile = Projectile(position, currentDirection);
+    projectile.setActive(true);
+
+    if (currentDirection == MoveDirection::LEFT) {
+        projectile.getVelocity().setX(-300);
+    }
+    else if (currentDirection == MoveDirection::RIGHT) {
+        projectile.getVelocity().setX(300);
+    }
     
+    /*
+    for (int i = 0; i != 10; i++) {
+        double previousX = projectile.getPosition().getX();
+        projectile.getPosition().setX(previousX + 20); 
+    }
+
+    projectile.setActive(false);
+    */
 }
 
 void Player::stopMoving() {
