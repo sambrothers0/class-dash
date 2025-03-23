@@ -13,19 +13,26 @@ void Game::run() {
     playerView.init();
 
     // Create a test level
-    Level level(Vector2(4096, 768));
-    level.setBlocks({
-        Vector2(0, 4),
-        Vector2(1, 4),
-        Vector2(2, 6),
-        Vector2(2, 5),
-        Vector2(3, 7),
-        Vector2(3, 4),
-        Vector2(20, 3),
-        Vector2(40, 7),
-        Vector2(60, 9),
-        Vector2(65, 1)
-    });
+    // Level level(Vector2(4096, 768));
+    // level.setBlocks({
+    //     Vector2(0, 4),
+    //     Vector2(1, 4),
+    //     Vector2(2, 6),
+    //     Vector2(2, 5),
+    //     Vector2(3, 7),
+    //     Vector2(3, 4),
+    //     Vector2(20, 3),
+    //     Vector2(40, 7),
+    //     Vector2(60, 9),
+    //     Vector2(65, 1)
+    // });
+
+    Level level(Vector2(2240, 768));
+    if (!level.loadFromTMX("../src/ui/screens/Levels/Level1.tmx")) { //currently hardcoded to the Level1 example
+        std::cerr << "Failed to load level!" << std::endl;
+        return;
+    }
+
 
     gameLogic.setLevel(std::make_shared<Level>(level));
 
