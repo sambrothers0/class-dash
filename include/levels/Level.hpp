@@ -49,6 +49,7 @@ class Level {
         dimensions = Vector2(mapSize.x * tileSize.x, mapSize.y * tileSize.y);
         std::cout<<"mapsize: "<<mapSize<<" tilesize: "<<tileSize<<" dimensions: "<<dimensions.getX()<<"x"<<dimensions.getY()<<std::endl;
         
+        //trying to grab the textures here using the spritesheet class
         
         //get layers, currently only one
         for (const auto& layer : map.getLayers()) {
