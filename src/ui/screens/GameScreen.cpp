@@ -32,7 +32,7 @@ void GameScreen::draw() {
     // if a projectile has been shot then display the projectile
     if (player.getProjectile().isActive()) {
         Vector2 projectilePosition = player.getProjectile().getPosition();
-        boxRGBA(renderer, projectilePosition.getX() - 5 - scrollOffset, projectilePosition.getY() - 5, projectilePosition.getX() + 5 - scrollOffset, projectilePosition.getY() + 5, 0, 255, 255, 255);
+        boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
 
     boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER

@@ -16,12 +16,24 @@ void Player::shoot() {
     projectile.setActive(true);
 
     if (currentDirection == MoveDirection::LEFT) {
-        projectile.getVelocity().setX(-300);
+        projectile.setVelocity(-300, 0);
+
+        //projectile.getPosition().setX(projectile.getStartingPosition().getX() - 20);
     }
     else if (currentDirection == MoveDirection::RIGHT) {
-        projectile.getVelocity().setX(300);
+        projectile.setVelocity(300, 0);
+
+        //projectile.getPosition().setX(projectile.getStartingPosition().getX() + 20);
     }
-    
+    else {
+        if (previousDirection == MoveDirection::RIGHT) {
+            projectile.setVelocity(300, 0);
+        }
+        else if (previousDirection == MoveDirection::LEFT) {
+            projectile.setVelocity(-300, 0);
+        }   
+    }
+
     /*
     for (int i = 0; i != 10; i++) {
         double previousX = projectile.getPosition().getX();
@@ -34,6 +46,9 @@ void Player::shoot() {
 
 void Player::stopMoving() {
     velocity.setX(0);
+
+    previousDirection = currentDirection;
+
     currentDirection = MoveDirection::NONE;
     // velocity = Vector2(0, 0);
 }

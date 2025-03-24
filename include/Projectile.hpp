@@ -7,7 +7,7 @@
 class Projectile {
 
     private:
-        Vector2 position, velocity;
+        Vector2 currentPosition, velocity, startingPosition;
         bool active = false;
 
         // holds the current direction of the projectile, will be assigned players current direction
@@ -16,7 +16,11 @@ class Projectile {
         Projectile(Vector2 playerPosition, MoveDirection playerDirection);
 
         Vector2 getPosition() const {
-            return position;
+            return currentPosition;
+        }
+
+        Vector2 getStartingPosition() const {
+            return startingPosition;
         }
 
         Vector2 getVelocity() const {
@@ -31,6 +35,7 @@ class Projectile {
             return active;
         }
 
+        void setVelocity(double x, double y);
         void move(double ms);
 
 };

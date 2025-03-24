@@ -9,10 +9,13 @@ class Player : public Character {
     private:
     // Current direction of movement
     MoveDirection currentDirection;
-    Projectile projectile;
+    //Previous direction of movement, used for projectiles
+    MoveDirection previousDirection;
 
     public:
-    Player(Vector2 _position) : Character(_position), projectile(_position, currentDirection) {}
+    Player(Vector2 _position) : Character(_position), projectile(_position, currentDirection), previousDirection(MoveDirection::RIGHT) {}
+    
+    Projectile projectile;
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
