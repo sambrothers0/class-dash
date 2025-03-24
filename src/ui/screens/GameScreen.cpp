@@ -30,8 +30,8 @@ void GameScreen::draw() {
     boxRGBA(renderer, playerPosition.getX() - 20 - scrollOffset, playerPosition.getY() - 20, playerPosition.getX() + 20 - scrollOffset, playerPosition.getY() + 20, 0, 255, 255, 255);
     
     // if a projectile has been shot then display the projectile
-    if (player.getProjectile().isActive()) {
-        Vector2 projectilePosition = player.getProjectile().getPosition();
+    if (player.getProjectile()->isActive()) {
+        Vector2 projectilePosition = player.getProjectile()->getPosition();
         boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
 

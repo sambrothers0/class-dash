@@ -5,12 +5,10 @@
 void GameLogic::runTick(double ms) {
     player.move(ms);
     
-    //if (player.getProjectile().isActive()) {
-    if (player.projectile.isActive()) {
-        player.projectile.move(ms);
+    // When projectile is active use move to find its next location
+    if (player.getProjectile()->isActive()) {
+        player.getProjectile()->move(ms);
     }
-        //player.getProjectile().move(ms);
-    //}
 }
 
 double GameLogic::getScrollOffset() const {

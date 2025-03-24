@@ -11,18 +11,17 @@ class Player : public Character {
     MoveDirection currentDirection;
     //Previous direction of movement, used for projectiles
     MoveDirection previousDirection;
+    Projectile projectile;
 
     public:
     Player(Vector2 _position) : Character(_position), projectile(_position, currentDirection), previousDirection(MoveDirection::RIGHT) {}
-    
-    Projectile projectile;
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
     }
 
-    Projectile getProjectile() {
-        return projectile;
+    Projectile* getProjectile() {
+        return &projectile;
     }
 
     virtual void move(double ms);
