@@ -16,10 +16,27 @@ bool isMoveRightPressed(const Uint8* keysPressed) {
     return keysPressed[SDL_SCANCODE_RIGHT] || keysPressed[SDL_SCANCODE_D];
 }
 
+
+
+
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
-    for (auto block : level->getBlocks()) {
-        boxRGBA(renderer, block.getX() * 32 - scrollOffset, block.getY() * 32, (block.getX() + 1) * 32 - scrollOffset, (block.getY() + 1) * 32, 255, 255, 255, 255);
+
+for (const auto& block : level->getBlocks()) {
+    uint32_t tileID = level->getID(block);
+    
+    std::shared_ptr<Spritesheet> spritesheet = level->getSpritesheetForGID(tileID);
+    
+    if (!spritesheet) {
+        std::cerr << "No spritesheet found for tile ID: " << tileID << std::endl;
+        continue; 
     }
+
+
+    Vector2 blockPosition(block.getX() * 32 - scrollOffset, block.getY() * 32);
+    int spriteIndex = tileID - spritesheet->getFirstGID(); 
+
+    spritesheet->draw(spriteIndex, blockPosition);
+}
 }
 
 void GameScreen::draw() {
@@ -35,7 +52,7 @@ void GameScreen::draw() {
     drawLevel(gameLogic.getLevel());
     playerSprite.draw(PlayerTexture::WALK1 + player.getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
     
-    boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+    // boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 
     // Render the level
     

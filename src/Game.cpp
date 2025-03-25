@@ -27,14 +27,14 @@ void Game::run() {
     //     Vector2(65, 1)
     // });
 
-    Level level(Vector2(2240, 768));
-    if (!level.loadFromTMX("../src/ui/screens/Levels/Level1.tmx")) { //currently hardcoded to the Level1 example
+    SDL_Renderer* renderer = playerView.getRenderer();
+   std::shared_ptr<Level> level = std::make_shared<Level>(Vector2(2240, 768), renderer);
+    if (!level->loadFromTMX("../assets/visual/Level2.tmx", renderer)) { 
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
 
-
-    gameLogic.setLevel(std::make_shared<Level>(level));
+    gameLogic.setLevel(level);  
 
     bool isRunning = true;
 
