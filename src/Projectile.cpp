@@ -2,6 +2,7 @@
 
 Projectile::Projectile(Vector2 playerPosition, MoveDirection playerDirection) 
     : currentDirection(playerDirection) {
+    active = true;
     currentPosition.setX(playerPosition.getX());
     currentPosition.setY(playerPosition.getY());
 
