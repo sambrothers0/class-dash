@@ -44,7 +44,20 @@ void Player::move(double ms) {
     }
 }
 
+// Callback for the projectile timer
+Uint32 onProjectileTimer(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+
+    player->setIfProjectileTimerActive(false);
+
+    return 0; // Don't repeat
+}
+
 void Player::shoot() {
+    if (isProjectileTimerActive) {
+        return;
+    }
+
     auto newProjectile = Projectile(position, currentDirection);
 
     if (currentDirection == MoveDirection::LEFT) {
@@ -62,6 +75,9 @@ void Player::shoot() {
         projectiles.push_back(newProjectile);
     }
 
+    // Set up the projectile timer
+    isProjectileTimerActive = true;
+    projectileTimerId = SDL_AddTimer(PROJECTILE_DELAY, onProjectileTimer, this);
 }
 
 void Player::stopMoving() {
