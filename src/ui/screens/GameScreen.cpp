@@ -20,24 +20,25 @@ bool isMoveRightPressed(const Uint8* keysPressed) {
 
 
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
-
-for (const auto& block : level->getBlocks()) {
-    uint32_t tileID = level->getID(block);
     
-    std::shared_ptr<Spritesheet> spritesheet = level->getSpritesheetForGID(tileID);
+    for (const auto& layer : level-> getLayers()) {
+    for (const auto& block : layer->getBlocks()) {
+        uint32_t tileID = layer->getID(block);
+        
+        std::shared_ptr<Spritesheet> spritesheet = level->getSpritesheetForGID(tileID);
+        
+        if (!spritesheet) {
+            std::cerr << "No spritesheet found for tile ID: " << tileID << std::endl;
+            continue; 
+        }
     
-    if (!spritesheet) {
-        std::cerr << "No spritesheet found for tile ID: " << tileID << std::endl;
-        continue; 
+    
+        Vector2 blockPosition(block.getX() * 32 - scrollOffset, block.getY() * 32);
+        int spriteIndex = tileID - spritesheet->getFirstGID(); 
+    
+        spritesheet->draw(spriteIndex, blockPosition);
+    }}
     }
-
-
-    Vector2 blockPosition(block.getX() * 32 - scrollOffset, block.getY() * 32);
-    int spriteIndex = tileID - spritesheet->getFirstGID(); 
-
-    spritesheet->draw(spriteIndex, blockPosition);
-}
-}
 
 void GameScreen::draw() {
     // Draw a box for the player

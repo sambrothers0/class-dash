@@ -12,6 +12,7 @@
 #include "sprites/Spritesheet.hpp"
 #include "SDL.h"
 #include "SDL_image.h"
+#include "Layer.hpp"
 // Class for the current level's data
 class Level {
     private:
@@ -20,9 +21,11 @@ class Level {
     // For now the level is just going to have a few blocks to be drawn (this is temporary)
     // These are relative coordinates multiplied by 32 for drawing, to make it easier to define manually
     std::vector<Vector2> blocks;
-    std::vector<tmx::Tileset> tilesets;
+
     std::vector<std::shared_ptr<Spritesheet>> spritesheets;
     std::vector<uint32_t> ids;
+    std::vector<std::shared_ptr<Layer>> layers;
+    
     
     public:
     Level(Vector2 _dimensions, SDL_Renderer* _renderer) : dimensions(_dimensions), renderer(_renderer){}
@@ -33,6 +36,10 @@ class Level {
 
     std::vector<Vector2>& getBlocks() {
         return blocks;
+    }
+
+    std::vector<std::shared_ptr<Layer>> getLayers() {
+        return layers;
     }
 
     
@@ -89,13 +96,14 @@ class Level {
             spritesheets.emplace_back(spritesheet);
             
             
-            // std::cout<<"tileset name: "<< tileset.getName()<<", first GID: " <<tileset.getFirstGID()<<", last GID: "<<tileset.getLastGID()<<", relative path to png: "<<tileset.getImagePath()<<std::endl;
-            tilesets.emplace_back(tileset);
+            
         }
     
 
         
         for (const auto& layer : map.getLayers()) {
+            blocks.clear();
+            ids.clear();
             if (layer->getType() == tmx::Layer::Type::Tile) {
                 const auto& tileLayer = layer->getLayerAs<tmx::TileLayer>();
                 // std::cout<<"layername: " <<tileLayer.getName()<<std::endl;
@@ -115,6 +123,9 @@ class Level {
                     }
                 }
             }
+            std::shared_ptr<Layer> new_layer = std::make_shared<Layer>(blocks, ids);
+            layers.emplace_back(new_layer);
+            
         }
        
         // std::cout << "Loaded Level: " << mapSize.x << "x" << mapSize.y << " tiles.\n";
@@ -122,6 +133,7 @@ class Level {
         // std::cout<<"# Tilesets "<< tilesets.size()<<std::endl;
         return true;
     }
+    ~Level() {}
 
 };
 
