@@ -1,8 +1,11 @@
 #include "ui/screens/GameScreen.hpp"
 #include "GameLogic.hpp"
 #include "levels/Level.hpp"
+#include "sprites/PlayerTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
+
+#include <iostream>
 
 // Helper functions for if a key is pressed
 bool isMoveLeftPressed(const Uint8* keysPressed) {
@@ -27,11 +30,14 @@ void GameScreen::draw() {
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
 
-    boxRGBA(renderer, playerPosition.getX() - 20 - scrollOffset, playerPosition.getY() - 20, playerPosition.getX() + 20 - scrollOffset, playerPosition.getY() + 20, 0, 255, 255, 255);
+    // Determine which texture index to use
+    PlayerTexture playerTexture = PlayerTexture::WALK1;
+
+    playerSprite.draw(PlayerTexture::WALK1 + player.getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
     
     // if a projectile has been shot then display the projectile
-    if (player.getProjectile()->isActive()) {
-        Vector2 projectilePosition = player.getProjectile()->getPosition();
+    if (player.getProjectile().isActive()) {
+        Vector2 projectilePosition = player.getProjectile().getPosition();
         boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
 

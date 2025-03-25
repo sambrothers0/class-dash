@@ -1,4 +1,4 @@
-#include "Sprite.hpp"
+#include "sprites/Sprite.hpp"
 
 Sprite::Sprite(SDL_Texture* _sprite, SDL_Renderer* _renderer) : sprite(_sprite), renderer(_renderer) {
     targetRect.x = 0;

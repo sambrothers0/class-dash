@@ -1,5 +1,10 @@
 #include "Game.hpp"
 
+#include <algorithm>
+
+const int FPS = 60;
+const int FRAMETIME = 1000 / FPS;
+
 void Game::run() {
     /*** Main Loop ***/
     SDL_Event e;
@@ -55,7 +60,9 @@ void Game::run() {
 
         gameLogic.runTick(difference);
 
-        // Delay to avoid lag
-        SDL_Delay(1);
+        // Set to 60 fps
+        if (difference < FRAMETIME) {
+            SDL_Delay(std::max((Uint64) 1, FRAMETIME - difference));
+        }
     }
 }

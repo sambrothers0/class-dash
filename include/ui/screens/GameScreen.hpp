@@ -1,7 +1,10 @@
 #ifndef _GAME_SCREEN_H
 #define _GAME_SCREEN_H
 
+#include "characters/Player.hpp"
 #include "ui/screens/Screen.hpp"
+
+#include "sprites/Spritesheet.hpp"
 
 class GameScreen : public Screen {
     private:
@@ -9,6 +12,9 @@ class GameScreen : public Screen {
     TTF_Font* font;
 
     Text testText;
+
+    // Spritesheet for the player
+    Spritesheet playerSprite;
 
     // Offset for drawing
     double scrollOffset;
@@ -24,6 +30,12 @@ class GameScreen : public Screen {
             50,
             SDL_Color { 0, 255, 255 },
             "Test"
+        ), playerSprite(
+            _renderer,
+            "../assets/visual/player-spritesheet.png",
+            Vector2(PLAYER_WIDTH, PLAYER_HEIGHT),
+            5,
+            2
         ) {}
 
     virtual void draw();
