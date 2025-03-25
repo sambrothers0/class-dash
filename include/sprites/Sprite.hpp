@@ -2,11 +2,13 @@
 #define _SPRITE_H
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "physics/Vector2.hpp"
 
 class Sprite {
 
     private:
+        SDL_Renderer* renderer;
         SDL_Texture* sprite;
         SDL_Rect textureRect;
         SDL_Rect targetRect;
@@ -14,7 +16,7 @@ class Sprite {
         
 
     public:
-        Sprite(SDL_Texture* _sprite);
+        Sprite(SDL_Texture* _sprite, SDL_Renderer* _renderer);
 
         // Position methods set position of the sprite
         // These methods can be used for setting inital position and for moving positions
@@ -34,6 +36,8 @@ class Sprite {
         void setScale(double _scale);
 
         void setDepth(unsigned int newDepth);
+
+        void draw();
 
 
 };

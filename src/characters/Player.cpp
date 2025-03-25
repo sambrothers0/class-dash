@@ -17,14 +17,31 @@ void Player::move(double ms) {
     }
 
     landed();
+
+    // Move the projectile if needed
+    if (projectile.isActive()) {
+        projectile.move(ms);
+    }
 }
 
 void Player::shoot() {
-    
+    projectile = Projectile(position, currentDirection);
+    projectile.setActive(true);
+
+    if (currentDirection == MoveDirection::LEFT) {
+        projectile.setVelocity(-300, 0);
+    } else if (currentDirection == MoveDirection::RIGHT) {
+        projectile.setVelocity(300, 0);
+    } else if (lastDirection == MoveDirection::LEFT) {
+        projectile.setVelocity(-300, 0);
+    } else {
+        projectile.setVelocity(300, 0); 
+    }
 }
 
 void Player::stopMoving() {
     velocity.setX(0);
+
     currentDirection = MoveDirection::NONE;
     animationTicks = 0;
     // velocity = Vector2(0, 0);
