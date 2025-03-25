@@ -49,7 +49,9 @@ file(GLOB_RECURSE EXECLIST bin/*cpp)
 #  include_directories(${Boost_INCLUDE_DIRS})   #
 #  link_libraries(${Boost_LIBRARIES})           #
 #################################################
-
+#CUSTOM LIBRARY
+find_package(tmxlite REQUIRED)
+include_directories(${tmxlite_INCLUDE_DIRS})
 
 
 #############
@@ -108,6 +110,7 @@ if(NOT SRC STREQUAL "")
   get_filename_component(LIBNAME ${classdash_SOURCE_DIR} NAME)
   set(LIBNAME "${LIBNAME}_core")
   add_library(${LIBNAME} ${SRC})
+  target_link_libraries(${LIBNAME} PRIVATE tmxlite) #linking tmxlite
 endif()
 
 # executables (any CPP file in 'bin' dir)
@@ -116,7 +119,9 @@ foreach(EXEC ${EXECLIST})
   add_executable(${EXECNAME} ${EXEC})
 
   if(NOT SRC STREQUAL "")
-    target_link_libraries(${EXECNAME} LINK_PUBLIC ${LIBNAME})
+    target_link_libraries(${EXECNAME} LINK_PUBLIC ${LIBNAME} tmxlite)
+  else()
+    target_link_libraries(${EXECNAME} tmxlite)
   endif()
 
   message("-- Adding executable: ${EXECNAME}")

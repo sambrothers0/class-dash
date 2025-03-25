@@ -47,6 +47,12 @@ class PlayerView {
     // Switches to the game screen
     void switchToGameScreen();
 
+    // Pass Renderer
+    SDL_Renderer* getRenderer() {
+        return renderer;
+    }
+
+
     ~PlayerView();
 };
 

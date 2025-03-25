@@ -15,6 +15,7 @@ class GameScreen : public Screen {
 
     // Spritesheet for the player
     Spritesheet playerSprite;
+    // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
     double scrollOffset;
@@ -41,7 +42,9 @@ class GameScreen : public Screen {
     virtual void draw();
 
     virtual ScreenType handleEvent(SDL_Event&);
-
+    void updateLevelTextures(std::shared_ptr<Level> level);
+    
+    
     ~GameScreen() {}
 };
 

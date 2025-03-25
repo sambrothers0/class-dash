@@ -40,6 +40,11 @@ class Vector2 {
     
     Vector2 normal() const;
 
+    bool operator==(const Vector2& other) const {
+        return x == other.x && y == other.y;
+    }
+
+
     friend std::ostream& operator<<(std::ostream& os, const Vector2& vector);
 };
 
