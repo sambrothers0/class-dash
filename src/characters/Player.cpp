@@ -1,6 +1,7 @@
 #include "characters/Player.hpp"
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 const int GROUND_HEIGHT = 600; //This is just the current ground height based on how player position is called in GameLogic
 const float JUMP_HEIGHT = 100.0f; 
@@ -18,25 +19,49 @@ void Player::move(double ms) {
 
     landed();
 
-    // Move the projectile if needed
-    if (projectile.isActive()) {
-        projectile.move(ms);
+    // Move the projectiles, while marking any which should be deleted
+    std::vector<size_t> toDelete;
+
+    for (size_t idx = 0; idx < projectiles.size(); idx++) {
+        auto& proj = projectiles[idx];
+
+        if (proj.isActive()) {
+            proj.move(ms);
+        } else {
+            toDelete.push_back(idx);
+        }
+    }
+
+    // Delete the corresponding indexes
+    if (toDelete.size() > 0) {
+        // This is needed to keep the indexes accurate
+        int deleted = 0;
+
+        for (auto idx : toDelete) {
+            projectiles.erase(projectiles.begin() + idx - deleted);
+            deleted++;
+        }
     }
 }
 
 void Player::shoot() {
-    projectile = Projectile(position, currentDirection);
-    projectile.setActive(true);
+    auto newProjectile = Projectile(position, currentDirection);
 
     if (currentDirection == MoveDirection::LEFT) {
-        projectile.setVelocity(-300, 0);
+        newProjectile.setVelocity(-300, 0);
     } else if (currentDirection == MoveDirection::RIGHT) {
-        projectile.setVelocity(300, 0);
+        newProjectile.setVelocity(300, 0);
     } else if (lastDirection == MoveDirection::LEFT) {
-        projectile.setVelocity(-300, 0);
+        newProjectile.setVelocity(-300, 0);
     } else {
-        projectile.setVelocity(300, 0); 
+        newProjectile.setVelocity(300, 0); 
     }
+
+    // Add to the list of projectiles if there aren't already too many
+    if (projectiles.size() < MAX_PROJECTILES) {
+        projectiles.push_back(newProjectile);
+    }
+
 }
 
 void Player::stopMoving() {

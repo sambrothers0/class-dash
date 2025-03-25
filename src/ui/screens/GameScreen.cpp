@@ -35,9 +35,9 @@ void GameScreen::draw() {
 
     playerSprite.draw(PlayerTexture::WALK1 + player.getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
     
-    // if a projectile has been shot then display the projectile
-    if (player.getProjectile().isActive()) {
-        Vector2 projectilePosition = player.getProjectile().getPosition();
+    // Display the projectiles that have been shot
+    for (auto proj : player.getProjectiles()) {
+        Vector2 projectilePosition = proj.getPosition();
         boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
 

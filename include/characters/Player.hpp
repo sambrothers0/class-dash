@@ -5,8 +5,13 @@
 #include "MoveDirection.hpp"
 #include "Projectile.hpp"
 
+#include <deque>
+
 const int PLAYER_WIDTH = 32;
 const int PLAYER_HEIGHT = 64;
+
+// Number of projectiles that can be active at once
+const int MAX_PROJECTILES = 5;
 
 class Player : public Character {
     private:
@@ -16,20 +21,21 @@ class Player : public Character {
     // Last direction moved in
     MoveDirection lastDirection = MoveDirection::RIGHT;
     
-    Projectile projectile;
+    // List of available projectiles
+    std::deque<Projectile> projectiles;
 
     // Which animation frame to use (track how many ticks the current movement has occurred for)
     int animationTicks = 0;
 
     public:
-    Player(Vector2 _position) : Character(_position), projectile(_position, currentDirection) {}
+    Player(Vector2 _position) : Character(_position) {}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
     }
 
-    Projectile& getProjectile() {
-        return projectile;
+    std::deque<Projectile>& getProjectiles() {
+        return projectiles;
     }
 
     MoveDirection getLastDirection() const {
