@@ -20,26 +20,26 @@ bool isMoveRightPressed(const Uint8* keysPressed) {
 
 
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
-    
-    for (const auto& layer : level-> getLayers()) {
-    for (const auto& block : layer->getBlocks()) {
-        uint32_t tileID = layer->getID(block);
-        
-        std::shared_ptr<Spritesheet> spritesheet = level->getSpritesheetForGID(tileID);
-        
-        if (!spritesheet) {
-            std::cerr << "No spritesheet found for tile ID: " << tileID << std::endl;
-            continue; 
-        }
+    for (const auto& layer : level->getLayers()) {
+        for (const auto& block : layer->getBlocks()) {
+            uint32_t tileID = layer->getID(block);
+            
+            std::shared_ptr<Spritesheet> spritesheet = level->getSpritesheetForGID(tileID);
+            
+            if (!spritesheet) {
+                std::cerr << "No spritesheet found for tile ID: " << tileID << std::endl;
+                continue; 
+            }
 
-        auto drawOffset = 16;
-    
-        Vector2 blockPosition(block.getX() * 32 - scrollOffset + drawOffset, block.getY() * 32 + drawOffset);
-        int spriteIndex = tileID - spritesheet->getFirstGID(); 
-    
-        spritesheet->draw(spriteIndex, blockPosition);
-    }}
+            auto drawOffset = 16;
+        
+            Vector2 blockPosition(block.getX() * 32 - scrollOffset + drawOffset, block.getY() * 32 + drawOffset);
+            int spriteIndex = tileID - spritesheet->getFirstGID(); 
+        
+            spritesheet->draw(spriteIndex, blockPosition);
+        }
     }
+}
 
 void GameScreen::draw() {
     // Draw a box for the player
@@ -51,7 +51,10 @@ void GameScreen::draw() {
 
     // Determine which texture index to use
     PlayerTexture playerTexture = PlayerTexture::WALK1;
-    drawLevel(gameLogic.getLevel());
+    auto level = gameLogic.getLevel();
+
+    drawLevel(level);
+
     playerSprite.draw(PlayerTexture::WALK1 + player.getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
     
     // Display the projectiles that have been shot

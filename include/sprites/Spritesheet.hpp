@@ -15,6 +15,9 @@ class Spritesheet {
 
     SDL_Texture* texture = nullptr;
 
+    // Has the texture been loaded
+    bool hasLoadedTexture = false;
+
     // Dimensions of a single sprite
     Vector2 spriteSize;
 
@@ -23,6 +26,8 @@ class Spritesheet {
     // Dimensions of the spritesheet
     int rows;
     int columns;
+
+    void loadTexture();
 
     public:
     Spritesheet(SDL_Renderer* _renderer, std::string path, Vector2 _spriteSize, int _rows, int _columns);

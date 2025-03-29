@@ -82,8 +82,7 @@ void PlayerView::switchToGameScreen() {
 }
 
 PlayerView::~PlayerView() {
-    // SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
-    SDL_DestroyRenderer(renderer);
+    // SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 }

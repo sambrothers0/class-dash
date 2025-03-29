@@ -3,22 +3,24 @@
 #include "sdlLogging.hpp"
 
 #include <iostream>
+#include <cassert>
 
-// Helper function to load a texture
-SDL_Texture* loadTexture(SDL_Renderer* renderer, std::string path) {
-    SDL_Texture* texture = IMG_LoadTexture(renderer, path.c_str());
+// This causes the segfault but idk why, it shouldn't even be called
+void Spritesheet::loadTexture() {
+    texture = IMG_LoadTexture(renderer, path.c_str());
 
-    if (texture == NULL)
+    if (texture == NULL) {
         sdlError("Could not load texture!");
-
-    return texture;
+    } else {
+        hasLoadedTexture = true;
+    }
 }
 
 Spritesheet::Spritesheet(SDL_Renderer* _renderer, std::string _path, Vector2 _spriteSize, int _rows, int _columns) : renderer(_renderer), path(_path), spriteSize(_spriteSize), rows(_rows), columns(_columns) {}
 
 void Spritesheet::draw(int index, Vector2 position, bool flipped) {
-    if (texture == nullptr) {
-        texture = loadTexture(renderer, path);
+    if (!hasLoadedTexture) {
+        loadTexture();
     }
 
     int row = index / columns;
