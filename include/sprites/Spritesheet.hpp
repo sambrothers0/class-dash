@@ -31,15 +31,12 @@ class Spritesheet {
         firstGID=first;
         lastGID=last;
     }
+    
     uint32_t getFirstGID(){
         return firstGID;
     }
 
-    bool containsID(uint32_t index) {
-        if(index>=firstGID && index<=lastGID){
-            return true;
-        } return false;
-    }
+    bool containsID(uint32_t index) const;
 
     // Draws the given texture at the given index
     void draw(int index, Vector2 position, bool flipped);

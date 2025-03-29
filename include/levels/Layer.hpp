@@ -4,6 +4,7 @@
 #include "physics/Vector2.hpp"
 #include <vector>
 #include <iostream>
+#include "SDL.h"
 
 class Layer {
     private:
@@ -13,22 +14,12 @@ class Layer {
     public:
     Layer(std::vector<Vector2> _blocks, std::vector<uint32_t> _ids) : blocks(_blocks), ids(_ids) {}
 
-    std::vector<Vector2>& getBlocks() {
+    const std::vector<Vector2>& getBlocks() const {
         return blocks;
     }
+
     // gets global ID for a given block
-    uint32_t getID(const Vector2& block) const { 
-        for (size_t i = 0; i < blocks.size(); ++i) {
-            if (blocks[i] == block) { 
-                return ids[i];         
-            }
-        }
-        return 0;  
-    }
-
-
+    uint32_t getID(const Vector2& block) const;
 };
-
-
 
 #endif

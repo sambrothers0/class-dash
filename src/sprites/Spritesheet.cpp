@@ -45,6 +45,12 @@ void Spritesheet::draw(int index, Vector2 position) {
     draw(index, position, false);
 }
 
+bool Spritesheet::containsID(uint32_t index) const {
+    if(index>=firstGID && index<=lastGID){
+        return true;
+    } return false;
+}
+
 Spritesheet::~Spritesheet() {
     if (texture != nullptr)
         SDL_DestroyTexture(texture);
