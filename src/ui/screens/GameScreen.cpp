@@ -31,9 +31,10 @@ void GameScreen::drawLevel(std::shared_ptr<Level> level) {
             std::cerr << "No spritesheet found for tile ID: " << tileID << std::endl;
             continue; 
         }
+
+        auto drawOffset = 16;
     
-    
-        Vector2 blockPosition(block.getX() * 32 - scrollOffset, block.getY() * 32);
+        Vector2 blockPosition(block.getX() * 32 - scrollOffset + drawOffset, block.getY() * 32 + drawOffset);
         int spriteIndex = tileID - spritesheet->getFirstGID(); 
     
         spritesheet->draw(spriteIndex, blockPosition);
@@ -59,7 +60,7 @@ void GameScreen::draw() {
         boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
 
-    boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
+    // boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
 
     // Render the level
     
