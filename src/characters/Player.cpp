@@ -121,6 +121,10 @@ void Player::moveRight() {
 void Player::jump() {
     if (velocity.getY() == 0) {
         velocity.setY(-500);
+        position -= Vector2(0, 1); // Update position to avoid an immediate collision with the ground
+        bufferedJump = false;
+    } else {
+        bufferedJump = true;
     }
 }
 
@@ -141,6 +145,11 @@ void Player::handleCollisions() {
             position.setY(bottomY * 32 - hitbox.getSize().getY() / 2);    
 
             velocity.setY(0);
+
+            // Attempt a buffered jump
+            if (bufferedJump) {
+                jump();
+            }
         }
     }
 }

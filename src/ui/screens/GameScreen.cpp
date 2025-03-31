@@ -16,6 +16,10 @@ bool isMoveRightPressed(const Uint8* keysPressed) {
     return keysPressed[SDL_SCANCODE_RIGHT] || keysPressed[SDL_SCANCODE_D];
 }
 
+bool isJumpPressed(const Uint8* keysPressed) {
+    return keysPressed[SDL_SCANCODE_UP] || keysPressed[SDL_SCANCODE_W];
+}
+
 
 
 
@@ -97,6 +101,7 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
                 break;
             case SDLK_UP:
             case SDLK_w:
+                std::cout << "jump pressed" << std::endl;
                 player->jump();
                 break;
             case SDLK_SPACE:
@@ -128,6 +133,14 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
             
             case SDLK_h:
                 hitboxKeyActive = false;
+                break;
+
+            case SDLK_UP:
+            case SDLK_w:
+                // Disable jump buffer
+                if (!isJumpPressed(keysPressed)) {
+                    player->setBufferedJump(false);
+                }
                 break;
         }
     }

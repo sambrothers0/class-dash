@@ -45,6 +45,9 @@ class Player : public Character {
     // Player hitbox dimensions
     BoundingBox hitbox = BoundingBox(Vector2(-6, -24), Vector2(18, 56));
 
+    // Jump buffering mechanic lets you hold down the jump key to jump as soon as you land
+    bool bufferedJump = false;
+
     public:
     Player(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {}
 
@@ -80,6 +83,10 @@ class Player : public Character {
     // Sets if the projectile timer is active
     void setIfProjectileTimerActive(bool active) {
         isProjectileTimerActive = active;
+    }
+
+    void setBufferedJump(bool jump) {
+        bufferedJump = jump;
     }
 };
 
