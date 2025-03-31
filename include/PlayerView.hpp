@@ -35,6 +35,9 @@ class PlayerView {
     // Handles an SDL event
     void handleEvent(SDL_Event& event);
 
+    // Handles extra SDL events that aren't specifically covered by SDL_Event, such as ensuring that a key is still held down
+    void handleExtraEvents();
+
     // Switches to the title screen
     void switchToTitleScreen();
 

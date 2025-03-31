@@ -45,6 +45,9 @@ void Game::run() {
             playerView.handleEvent(e);
         }
 
+        // Player view handles extra events
+        playerView.handleExtraEvents();
+
         // Draw the player view
         playerView.draw();
 

@@ -40,6 +40,8 @@ class GameScreen : public Screen {
 
     virtual void draw();
 
+    virtual void handleExtraEvents();
+
     virtual ScreenType handleEvent(SDL_Event&);
     void updateLevelTextures(std::shared_ptr<Level> level);
     

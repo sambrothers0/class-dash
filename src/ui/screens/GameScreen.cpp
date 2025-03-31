@@ -101,7 +101,6 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
                 break;
             case SDLK_UP:
             case SDLK_w:
-                std::cout << "jump pressed" << std::endl;
                 player->jump();
                 break;
             case SDLK_SPACE:
@@ -146,4 +145,14 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
     }
 
     return ScreenType::KEEP;
+}
+
+void GameScreen::handleExtraEvents() {
+    // Jump buffering handle needs to happen outside of HandleEvent because that can't tell if a key is still held down
+    const Uint8* keysPressed = SDL_GetKeyboardState(NULL);
+    auto player = gameLogic.getPlayer();
+
+    if (isJumpPressed(keysPressed)) {
+        player->jump();
+    }
 }
