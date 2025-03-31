@@ -15,6 +15,9 @@ class Spritesheet {
 
     SDL_Texture* texture = nullptr;
 
+    // Has the texture been loaded
+    bool hasLoadedTexture = false;
+
     // Dimensions of a single sprite
     Vector2 spriteSize;
 
@@ -24,6 +27,8 @@ class Spritesheet {
     int rows;
     int columns;
 
+    void loadTexture();
+
     public:
     Spritesheet(SDL_Renderer* _renderer, std::string path, Vector2 _spriteSize, int _rows, int _columns);
 
@@ -31,15 +36,12 @@ class Spritesheet {
         firstGID=first;
         lastGID=last;
     }
+    
     uint32_t getFirstGID(){
         return firstGID;
     }
 
-    bool containsID(uint32_t index) {
-        if(index>=firstGID && index<=lastGID){
-            return true;
-        } return false;
-    }
+    bool containsID(uint32_t index) const;
 
     // Draws the given texture at the given index
     void draw(int index, Vector2 position, bool flipped);

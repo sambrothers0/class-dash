@@ -15,7 +15,7 @@ const int PLAYER_HEIGHT = 64;
 const int MAX_PROJECTILES = 5;
 
 // Delay for shooting projectiles in ms
-const int PROJECTILE_DELAY = 500;
+const int PROJECTILE_DELAY = 250;
 
 class Player : public Character {
     private:
@@ -42,12 +42,12 @@ class Player : public Character {
         return currentDirection;
     }
 
-    std::deque<Projectile>& getProjectiles() {
-        return projectiles;
-    }
-
     MoveDirection getLastDirection() const {
         return lastDirection;
+    }
+
+    const std::deque<Projectile>& getProjectiles() const {
+        return projectiles;
     }
 
     int getCurrentAnimationOffset() const;
