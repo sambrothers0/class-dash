@@ -29,12 +29,6 @@ void PlayerView::setupSDL() {
 
     if (renderer == NULL)
         sdlError("Could not create renderer!");
-
-    // // convert to texture (commented out until we optimize the size)
-    // SDL_Texture* texture = IMG_LoadTexture(renderer, "../assets/visual/spritesheet.png");
-
-    // if (texture == NULL)
-    //     sdl_error("Could not create texture from surface!");
 }
 
 void PlayerView::init() {
@@ -84,6 +78,8 @@ void PlayerView::switchToGameScreen() {
 PlayerView::~PlayerView() {
     // SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
-    // SDL_DestroyRenderer(renderer); (this line segfaults)
+
+    // SDL_DestroyRenderer(renderer); // (this line segfaults)
+    // renderer = nullptr;
     SDL_DestroyWindow(window);
 }
