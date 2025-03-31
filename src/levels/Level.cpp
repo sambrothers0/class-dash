@@ -38,6 +38,7 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
     //trying to grab the textures here using the Tileset.hpp from the tmxlite library
     for (const auto& tileset : map.getTilesets()) {
         std::string texturePath =  tileset.getImagePath();  
+        std::cout << texturePath << std::endl;
         
         int tileWidth = tileset.getTileSize().x;
         int tileHeight = tileset.getTileSize().y;

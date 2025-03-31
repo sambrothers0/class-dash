@@ -15,7 +15,7 @@ void Game::run() {
     // Load the level
     SDL_Renderer* renderer = playerView.getRenderer();
     std::shared_ptr<Level> level = std::make_shared<Level>(Vector2(2240, 768), renderer);
-    if (!level->loadFromTMX("../assets/visual/Level3.tmx", renderer)) { 
+    if (!level->loadFromTMX("../assets/visual/Level2.tmx", renderer)) { 
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
