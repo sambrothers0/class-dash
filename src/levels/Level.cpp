@@ -48,6 +48,13 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
         spritesheet->setGID(tileset.getFirstGID(),tileset.getLastGID());
         
         spritesheets.emplace_back(spritesheet);
+
+        // Set up indexes of specific objects
+        if (tileset.getName() == "objects") {
+            auto first = tileset.getFirstGID();
+
+            hitboxIDs.emplace(first); // Collision tile
+        }
     }
     
     for (const auto& layer : map.getLayers()) {

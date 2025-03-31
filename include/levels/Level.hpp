@@ -3,6 +3,7 @@
 
 #include "physics/Vector2.hpp"
 #include <vector>
+#include <set>
 #include <iostream>
 #include <sstream>
 #include <tmxlite/Map.hpp>
@@ -25,6 +26,9 @@ class Level {
     std::vector<std::shared_ptr<Spritesheet>> spritesheets;
     std::vector<uint32_t> ids;
     std::vector<std::shared_ptr<Layer>> layers;
+
+    // List of GIDs of hitboxes
+    std::set<uint32_t> hitboxIDs;
     
     
     public:
@@ -38,16 +42,20 @@ class Level {
         return blocks;
     }
 
-    std::vector<std::shared_ptr<Layer>> getLayers() {
+    std::vector<std::shared_ptr<Layer>>& getLayers() {
         return layers;
     }
-
     
     // gets global ID for a given block
     uint32_t getID(const Vector2& block) const;
 
     void setBlocks(std::vector<Vector2> _blocks) {
         blocks = _blocks;
+    }
+
+    // Does the list of hitbox IDs contain the given gid?
+    bool isHitboxGID(uint32_t gid) const {
+        return hitboxIDs.find(gid) != hitboxIDs.end();
     }
 
     // gets the correct spritesheet given a specific global ID
