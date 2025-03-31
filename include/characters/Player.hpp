@@ -3,8 +3,10 @@
 
 #include "SDL.h"
 #include "Character.hpp"
+#include "GameLogic.hpp"
 #include "MoveDirection.hpp"
 #include "Projectile.hpp"
+#include "physics/BoundingBox.hpp"
 
 #include <deque>
 
@@ -17,8 +19,13 @@ const int MAX_PROJECTILES = 5;
 // Delay for shooting projectiles in ms
 const int PROJECTILE_DELAY = 250;
 
+class GameLogic;
+
 class Player : public Character {
     private:
+    // Reference to the game logic
+    GameLogic& gameLogic;
+
     // Current direction of movement
     MoveDirection currentDirection = MoveDirection::NONE;
 
@@ -35,8 +42,11 @@ class Player : public Character {
     // Which animation frame to use (track how many ticks the current movement has occurred for)
     int animationTicks = 0;
 
+    // Player hitbox dimensions
+    BoundingBox hitbox = BoundingBox(Vector2(-6, -24), Vector2(18, 56));
+
     public:
-    Player(Vector2 _position) : Character(_position) {}
+    Player(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
@@ -51,6 +61,8 @@ class Player : public Character {
     }
 
     int getCurrentAnimationOffset() const;
+
+    BoundingBox getHitbox() const;
 
     virtual void move(double ms);
 

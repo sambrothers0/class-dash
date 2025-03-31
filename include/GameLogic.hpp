@@ -1,22 +1,23 @@
 #ifndef _GAME_LOGIC_H
 #define _GAME_LOGIC_H
 
-#include "characters/Player.hpp"
 #include "levels/Level.hpp"
 
 #include <memory>
 
+class Player;
+
 class GameLogic {
     private:
-    Player player;
+    std::shared_ptr<Player> player;
 
     // Current level
     std::shared_ptr<Level> level;
 
     public:
-    GameLogic() : player(Vector2(500, 500)) {}
+    GameLogic();
 
-    Player& getPlayer() {
+    std::shared_ptr<Player> getPlayer() {
         return player;
     }
 

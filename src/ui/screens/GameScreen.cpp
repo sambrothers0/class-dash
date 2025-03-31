@@ -41,10 +41,14 @@ void GameScreen::drawLevel(std::shared_ptr<Level> level) {
     }
 }
 
+void GameScreen::drawCollisionHitbox(const Vector2& position, const BoundingBox& hitbox) const {
+    boxRGBA(renderer, position.getX() - scrollOffset + hitbox.getLeftX(), position.getY() + hitbox.getTopY(), position.getX() - scrollOffset + hitbox.getRightX(), position.getY() + hitbox.getBottomY(), 0, 255, 0, 100);
+}
+
 void GameScreen::draw() {
     // Draw a box for the player
-    Player& player = gameLogic.getPlayer();
-    Vector2 playerPosition = player.getPosition();
+    auto player = gameLogic.getPlayer();
+    Vector2 playerPosition = player->getPosition();
 
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
@@ -55,10 +59,14 @@ void GameScreen::draw() {
 
     drawLevel(level);
 
-    playerSprite.draw(PlayerTexture::WALK1 + player.getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player.getLastDirection() == MoveDirection::LEFT);
-    
+    playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT);
+
+    // Draw the player hitbox
+    // auto playerHitbox = player->getHitboxSize();
+    drawCollisionHitbox(playerPosition, player->getHitbox());
+
     // Display the projectiles that have been shot
-    for (auto proj : player.getProjectiles()) {
+    for (auto proj : player->getProjectiles()) {
         Vector2 projectilePosition = proj.getPosition();
         boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
@@ -73,8 +81,8 @@ void GameScreen::draw() {
 }
 
 ScreenType GameScreen::handleEvent(SDL_Event& event) {
-    Player& player = gameLogic.getPlayer();
-    MoveDirection direction = player.getCurrentDirection();
+    auto player = gameLogic.getPlayer();
+    MoveDirection direction = player->getCurrentDirection();
 
     const Uint8* keysPressed = SDL_GetKeyboardState(NULL);
 
@@ -84,18 +92,18 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
                 return ScreenType::PAUSE; // Switch to pause screen
             case SDLK_LEFT:
             case SDLK_a:
-                player.moveLeft();
+                player->moveLeft();
                 break;
             case SDLK_RIGHT:
             case SDLK_d:
-                player.moveRight();
+                player->moveRight();
                 break;
             case SDLK_UP:
             case SDLK_w:
-                player.jump();
+                player->jump();
                 break;
             case SDLK_SPACE:
-                player.shoot();
+                player->shoot();
                 break;
         }
     } else if (event.type == SDL_KEYUP) {
@@ -103,14 +111,14 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
             case SDLK_LEFT:
             case SDLK_a:
                 if (direction == MoveDirection::LEFT && !isMoveLeftPressed(keysPressed)) {
-                    player.stopMoving();
+                    player->stopMoving();
                 }
                 break;
 
             case SDLK_RIGHT:
             case SDLK_d:
                 if (direction == MoveDirection::RIGHT && !isMoveRightPressed(keysPressed)) {
-                    player.stopMoving();
+                    player->stopMoving();
                 }
                 break;
                 

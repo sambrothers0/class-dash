@@ -44,6 +44,20 @@ void Player::move(double ms) {
     }
 }
 
+BoundingBox Player::getHitbox() const {
+    // The hitbox is different if the player is flipped
+    if (lastDirection == MoveDirection::RIGHT) {
+        return hitbox;
+    } else {
+        auto oldOffset = hitbox.getOffset();
+
+        return BoundingBox(
+            Vector2(-12, oldOffset.getY()), // -12 is a magic number here, but it is the correct offset for flipping the player sprite
+            hitbox.getSize()
+        );
+    }
+}
+
 // Callback for the projectile timer
 Uint32 onProjectileTimer(Uint32 interval, void *param) {
     auto* player = reinterpret_cast<Player*>(param);
@@ -109,9 +123,13 @@ void Player::jump() {
 }
 
 void Player::landed() {
-    if (position.getY() >= GROUND_HEIGHT - PLAYER_HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
-        position.setY(GROUND_HEIGHT - PLAYER_HEIGHT / 2);
-        velocity.setY(0);
-    }
+    auto level = gameLogic.getLevel();
+
+    // if (position.getY() >= GROUND_HEIGHT - PLAYER_HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
+    //     position.setY(GROUND_HEIGHT - PLAYER_HEIGHT / 2);
+    //     velocity.setY(0);
+    // }
+
+    velocity.setY(0);
 }
 
