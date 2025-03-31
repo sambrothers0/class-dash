@@ -24,6 +24,10 @@ class BoundingBox {
     double getBottomY() const;
     double getLeftX() const;
     double getRightX() const;
+
+    BoundingBox operator+(Vector2 const& vec) const {
+        return BoundingBox(offset + vec, size);
+    }
 };
 
 #endif

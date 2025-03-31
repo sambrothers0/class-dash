@@ -67,7 +67,6 @@ void GameScreen::draw() {
     playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT);
 
     // Draw the player hitbox
-    // auto playerHitbox = player->getHitboxSize();
     if (showHitboxes)
         drawCollisionHitbox(playerPosition, player->getHitbox());
 
@@ -76,14 +75,6 @@ void GameScreen::draw() {
         Vector2 projectilePosition = proj.getPosition();
         boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
-
-    // boxRGBA(renderer, 0, 600, 1024, 768, 0, 255, 25, 255); //HARD CODED GAME DIMENSIONS AND GROUND HEIGHT FIX LATER
-
-    // Render the level
-    
-
-    // Draw the test text
-    testText.draw();
 }
 
 ScreenType GameScreen::handleEvent(SDL_Event& event) {

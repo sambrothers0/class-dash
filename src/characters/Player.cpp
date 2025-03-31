@@ -3,6 +3,8 @@
 #include <cmath>
 #include <vector>
 
+#include <cmath>
+
 const int GROUND_HEIGHT = 608; //This is just the current ground height based on how player position is called in GameLogic
 const float JUMP_HEIGHT = 100.0f; 
 
@@ -17,7 +19,7 @@ void Player::move(double ms) {
         animationTicks++;
     }
 
-    landed();
+    handleCollisions();
 
     // Move the projectiles, while marking any which should be deleted
     std::vector<size_t> toDelete;
@@ -122,14 +124,23 @@ void Player::jump() {
     }
 }
 
-void Player::landed() {
+void Player::handleCollisions() {
+    auto hitbox = getHitbox() + position;
     auto level = gameLogic.getLevel();
 
-    // if (position.getY() >= GROUND_HEIGHT - PLAYER_HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
-    //     position.setY(GROUND_HEIGHT - PLAYER_HEIGHT / 2);
-    //     velocity.setY(0);
-    // }
+    // Check the tiles in the level
+    auto topY = floor(hitbox.getTopY() / 32);
+    auto bottomY = floor(hitbox.getBottomY() / 32);
+    auto leftX = floor(hitbox.getLeftX() / 32);
+    auto rightX = floor(hitbox.getRightX() / 32);
 
-    velocity.setY(0);
+    // Check bottom tiles first
+    for (auto x = leftX; x <= rightX; x++) {
+        if (level->colliderTileAt(Vector2(x, bottomY))) {
+            // Push the player back out
+            position.setY(bottomY * 32 - hitbox.getSize().getY() / 2);    
+
+            velocity.setY(0);
+        }
+    }
 }
-

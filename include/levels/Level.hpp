@@ -58,6 +58,9 @@ class Level {
         return hitboxIDs.find(gid) != hitboxIDs.end();
     }
 
+    // Returns if there is a tile at the given position with a collider
+    bool colliderTileAt(const Vector2& position) const;
+
     // gets the correct spritesheet given a specific global ID
     std::shared_ptr<Spritesheet> getSpritesheetForGID(uint32_t gid);
 

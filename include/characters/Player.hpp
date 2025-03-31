@@ -75,7 +75,7 @@ class Player : public Character {
     void moveLeft();
     void moveRight();
     void jump();
-    void landed();
+    void handleCollisions();
 
     // Sets if the projectile timer is active
     void setIfProjectileTimerActive(bool active) {

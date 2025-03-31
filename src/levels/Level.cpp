@@ -89,3 +89,13 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
     // std::cout<<"# Tilesets "<< tilesets.size()<<std::endl;
     return true;
 }
+
+bool Level::colliderTileAt(const Vector2& position) const {
+    for (const auto layer : layers) {
+        if (isHitboxGID(layer->getID(position))) {
+            return true;
+        }
+    }
+
+    return false;
+}
