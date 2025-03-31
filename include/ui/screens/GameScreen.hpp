@@ -22,6 +22,10 @@ class GameScreen : public Screen {
     // Offset for drawing
     double scrollOffset;
 
+    // Display hitboxes?
+    bool showHitboxes = false;
+    bool hitboxKeyActive = false;
+
     void drawLevel(std::shared_ptr<Level> level);
 
     void drawCollisionHitbox(const Vector2& position, const BoundingBox& hitbox) const;

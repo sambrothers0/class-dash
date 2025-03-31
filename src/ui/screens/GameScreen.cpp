@@ -63,7 +63,8 @@ void GameScreen::draw() {
 
     // Draw the player hitbox
     // auto playerHitbox = player->getHitboxSize();
-    drawCollisionHitbox(playerPosition, player->getHitbox());
+    if (showHitboxes)
+        drawCollisionHitbox(playerPosition, player->getHitbox());
 
     // Display the projectiles that have been shot
     for (auto proj : player->getProjectiles()) {
@@ -105,6 +106,13 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
             case SDLK_SPACE:
                 player->shoot();
                 break;
+            case SDLK_h:
+                // Toggle should only happen if h is not active
+                if (!hitboxKeyActive) {
+                    showHitboxes = !showHitboxes;
+                    hitboxKeyActive = true;
+                }
+                break;
         }
     } else if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
@@ -121,7 +129,10 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
                     player->stopMoving();
                 }
                 break;
-                
+            
+            case SDLK_h:
+                hitboxKeyActive = false;
+                break;
         }
     }
 
