@@ -1,5 +1,7 @@
 #include "physics/BoundingBox.hpp"
 
+#include <cmath>
+
 double BoundingBox::getTopY() const {
     return offset.getY();
 }

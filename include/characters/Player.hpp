@@ -67,6 +67,9 @@ class Player : public Character {
 
     BoundingBox getHitbox() const;
 
+    // Gets the center of the hitbox
+    Vector2 getHitboxCenter() const;
+
     virtual void move(double ms);
 
     virtual void shoot();

@@ -128,9 +128,16 @@ void Player::jump() {
     }
 }
 
+Vector2 Player::getHitboxCenter() const {
+    return position + hitbox.getOffset() + hitbox.getSize() / 2.0;
+}
+
 void Player::handleCollisions() {
     auto hitbox = getHitbox() + position;
     auto level = gameLogic.getLevel();
+
+    auto hitboxWidth = hitbox.getSize().getX();
+    auto hitboxHeight = hitbox.getSize().getY();
 
     // Check the tiles in the level
     auto topY = floor(hitbox.getTopY() / 32);
@@ -139,10 +146,18 @@ void Player::handleCollisions() {
     auto rightX = floor(hitbox.getRightX() / 32);
 
     // Check bottom tiles first
+    // To collide with the floor
+    // The player's bottom y coordinate must be greater than the floor tile's top y coordinate
     for (auto x = leftX; x <= rightX; x++) {
         if (level->colliderTileAt(Vector2(x, bottomY))) {
+            auto center = getHitboxCenter();
+            auto playerY = center.getY();
+            auto playerBottomY = playerY + hitboxHeight / 2;
+
+            std::cout << position << ", " << playerBottomY << ", " << bottomY * 32 << std::endl;
+
             // Push the player back out
-            position.setY(bottomY * 32 - hitbox.getSize().getY() / 2);    
+            position.setY(bottomY * 32 - hitboxHeight / 2);    
 
             velocity.setY(0);
 
@@ -150,6 +165,48 @@ void Player::handleCollisions() {
             if (bufferedJump) {
                 jump();
             }
+
+            break;
         }
     }
+
+    // // Check ceiling tiles
+    // for (auto x = leftX; x <= rightX; x++) {
+    //     if (level->colliderTileAt(Vector2(x, topY))) {
+    //         // Push the player back out
+    //         position.setY((topY + 1) * 32 + hitboxHeight / 2);    
+
+    //         velocity.setY(0.1); // Can't be 0, otherwise player can float on the ceiling
+
+    //         break;
+    //     }
+    // }
+
+    // Check right tiles
+
+    // for (auto y = topY; y <= bottomY; y++) {
+    //     // Get updated player position
+    //     auto center = getHitboxCenter();
+    //     auto playerX = center.getX();
+    //     auto playerY = center.getY();
+
+    //     // This needs a more complex collision detector, we need to check if the box overlaps
+    //     // First check is if the new y position is past the bottom bar
+    //     // y here is the top-left position of the tile we are colliding with
+    //     if (level->colliderTileAt(Vector2(rightX, y)) && playerY + hitboxHeight / 2 > y * 32 && playerY - hitboxHeight / 2 < y * 32) {
+    //         std::cout << "Right collision" << std::endl;
+            
+    //         // Calculate the amount that gets collided
+
+    //         // std::cout << topY << ", " << bottomY << std::endl;
+    //         // std::cout << position << std::endl;
+    //         // std::cout << "right collision at " << Vector2(rightX + 1, y) * 32 << " with offset " << hitbox.getOffset() << " and size " << hitbox.getSize() << std::endl;
+    //         // Push the player back out
+    //         position.setX(rightX * 32 - hitbox.getSize().getX() / 2 - 1);   
+
+    //         velocity.setX(0);
+
+    //         break;
+    //     }
+    // }
 }
