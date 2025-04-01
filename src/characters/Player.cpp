@@ -145,19 +145,20 @@ void Player::handleCollisions() {
     auto leftX = floor(hitbox.getLeftX() / 32);
     auto rightX = floor(hitbox.getRightX() / 32);
 
-    // Check bottom tiles first
-    // To collide with the floor
-    // The player's bottom y coordinate must be greater than the floor tile's top y coordinate
+    // Push the player out of a wall
+    if (velocity.getX() > 0) {
+        for (auto y = topY; y <= bottomY; y++) {
+            if (level->colliderTileAt(Vector2(rightX, y))) {
+                // std::cout << "possible right collision" << std::endl;
+            }
+        }
+    }
+
+    // Check bottom tiles
     for (auto x = leftX; x <= rightX; x++) {
         if (level->colliderTileAt(Vector2(x, bottomY))) {
-            auto center = getHitboxCenter();
-            auto playerY = center.getY();
-            auto playerBottomY = playerY + hitboxHeight / 2;
-
-            std::cout << position << ", " << playerBottomY << ", " << bottomY * 32 << std::endl;
-
             // Push the player back out
-            position.setY(bottomY * 32 - hitboxHeight / 2);    
+            position.setY(bottomY * 32 - PLAYER_HEIGHT / 2);    
 
             velocity.setY(0);
 
@@ -169,6 +170,43 @@ void Player::handleCollisions() {
             break;
         }
     }
+
+    // Check ceiling tiles
+    for (auto x = leftX; x <= rightX; x++) {
+        if (level->colliderTileAt(Vector2(x, topY))) {
+            // Push the player back out
+            position.setY((topY + 1) * 32 + PLAYER_HEIGHT / 2);    
+
+            velocity.setY(0.1); // Can't be 0, otherwise player can float on the ceiling
+
+            break;
+        }
+    }
+
+    // // Check bottom tiles first
+    // // To collide with the floor
+    // // The player's bottom y coordinate must be greater than the floor tile's top y coordinate
+    // for (auto x = leftX; x <= rightX; x++) {
+    //     if (level->colliderTileAt(Vector2(x, bottomY))) {
+    //         auto center = getHitboxCenter();
+    //         auto playerY = center.getY();
+    //         auto playerBottomY = playerY + hitboxHeight / 2;
+
+    //         std::cout << position << ", " << playerBottomY << ", " << bottomY * 32 << std::endl;
+
+    //         // Push the player back out
+    //         position.setY(bottomY * 32 - hitboxHeight / 2);    
+
+    //         velocity.setY(0);
+
+    //         // Attempt a buffered jump
+    //         if (bufferedJump) {
+    //             jump();
+    //         }
+
+    //         break;
+    //     }
+    // }
 
     // // Check ceiling tiles
     // for (auto x = leftX; x <= rightX; x++) {
