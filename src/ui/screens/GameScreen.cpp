@@ -69,6 +69,7 @@ void GameScreen::draw() {
     
 
     // Draw the test text
+    testText.setText(gameLogic.timer.getTime());
     testText.draw();
 }
 

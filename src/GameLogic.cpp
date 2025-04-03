@@ -4,6 +4,7 @@
 
 void GameLogic::runTick(double ms) {
     player.move(ms);
+    timer.updateTime();
 }
 
 double GameLogic::getScrollOffset() const {

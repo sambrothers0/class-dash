@@ -3,18 +3,22 @@
 
 #include "characters/Player.hpp"
 #include "levels/Level.hpp"
+#include "TimeKeeper.hpp"
 
 #include <memory>
 
 class GameLogic {
     private:
     Player player;
+    //TimeKeeper timer;
 
     // Current level
     std::shared_ptr<Level> level;
 
     public:
-    GameLogic() : player(Vector2(500, 500)) {}
+    TimeKeeper timer;
+    GameLogic() : player(Vector2(500, 500)), timer() {}
+    
 
     Player& getPlayer() {
         return player;
