@@ -12,16 +12,6 @@ void Game::run() {
     // Set up objects
     playerView.init();
 
-    // Load the level
-    SDL_Renderer* renderer = playerView.getRenderer();
-    std::shared_ptr<Level> level = std::make_shared<Level>(Vector2(2240, 768), renderer);
-    if (!level->loadFromTMX("../assets/visual/Level3.tmx", renderer)) { 
-        std::cerr << "Failed to load level!" << std::endl;
-        return;
-    }
-
-    gameLogic.setLevel(level);  
-
     bool isRunning = true;
 
     Uint64 ticks = SDL_GetTicks64();
@@ -30,7 +20,7 @@ void Game::run() {
         // Handle events on queue
         while (SDL_PollEvent(&e) != 0) {
             // User requests quit
-            if (e.type == SDL_QUIT) { 
+            if (e.type == SDL_QUIT) {
                 isRunning = false;
             }
 

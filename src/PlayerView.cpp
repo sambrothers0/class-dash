@@ -68,10 +68,22 @@ void PlayerView::switchToLevelSelectScreen() {
 }
 
 void PlayerView::switchToPauseScreen() {
+    auto& gameLogic = game.getGameLogic();
+    gameLogic.pause();
     screen = std::make_unique<PauseScreen>(PauseScreen(renderer, font));
 }
 
 void PlayerView::switchToGameScreen() {
+    auto& gameLogic = game.getGameLogic();
+
+    // Tell the game logic to update the level
+    if (gameLogic.isNoLevelActive()) {
+        game.getGameLogic().activate(renderer);
+    } else {
+        // If there is a level active, then resume the level
+        gameLogic.resume();
+    }
+
     screen = std::make_unique<GameScreen>(GameScreen(renderer, game.getGameLogic(), font));
 }
 
