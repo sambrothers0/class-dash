@@ -19,7 +19,7 @@ void PlayerView::setupSDL() {
         ttfError("Unable to initialize TTF!");
 
     // Load font
-    font = TTF_OpenFont("../assets/fonts/Arial.ttf", 100);
+    font = TTF_OpenFont("../assets/fonts/PressStart2P-Regular.ttf", 100);
 
     if (font == NULL)
         ttfError("Unable to open Arial font!");

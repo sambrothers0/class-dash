@@ -4,10 +4,19 @@
 #include <iostream>
 
 void TitleScreen::draw() {
-    // Draw the title screen
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
+    // Draw the background
+    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); // background white
 
-    playText.draw();
+    // Draw the title text
+    titleText.draw();
+
+    // Draw the first button (Start Button)
+    drawButton(renderer, 512 - 170, 384 + 65, 350, 100, {147, 115, 64, 255});
+    startText.draw();
+
+    // Draw the second button (How to Play Button)
+    drawButton(renderer, 512 - 220, 384 + 175, 450, 75, {147, 115, 64, 255});
+    howToPlayText.draw();
 }
 
 ScreenType TitleScreen::handleEvent(SDL_Event& event) {
