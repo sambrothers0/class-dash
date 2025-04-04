@@ -29,12 +29,6 @@ void PlayerView::setupSDL() {
 
     if (renderer == NULL)
         sdlError("Could not create renderer!");
-
-    // // convert to texture (commented out until we optimize the size)
-    // SDL_Texture* texture = IMG_LoadTexture(renderer, "../assets/visual/spritesheet.png");
-
-    // if (texture == NULL)
-    //     sdl_error("Could not create texture from surface!");
 }
 
 void PlayerView::init() {
@@ -74,16 +68,30 @@ void PlayerView::switchToLevelSelectScreen() {
 }
 
 void PlayerView::switchToPauseScreen() {
+    auto& gameLogic = game.getGameLogic();
+    gameLogic.pause();
     screen = std::make_unique<PauseScreen>(PauseScreen(renderer, font));
 }
 
 void PlayerView::switchToGameScreen() {
+    auto& gameLogic = game.getGameLogic();
+
+    // Tell the game logic to update the level
+    if (gameLogic.isNoLevelActive()) {
+        game.getGameLogic().activate(renderer);
+    } else {
+        // If there is a level active, then resume the level
+        gameLogic.resume();
+    }
+
     screen = std::make_unique<GameScreen>(GameScreen(renderer, game.getGameLogic(), font));
 }
 
 PlayerView::~PlayerView() {
     // SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
-    // SDL_DestroyRenderer(renderer); (this line segfaults)
+
+    // SDL_DestroyRenderer(renderer); // (this line segfaults)
+    // renderer = nullptr;
     SDL_DestroyWindow(window);
 }

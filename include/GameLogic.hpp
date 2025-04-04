@@ -3,25 +3,36 @@
 
 #include "characters/Player.hpp"
 #include "levels/Level.hpp"
+#include "GameState.hpp"
 
 #include <memory>
 
 class GameLogic {
     private:
-    Player player;
+    std::shared_ptr<Player> player;
 
     // Current level
     std::shared_ptr<Level> level;
 
-    public:
-    GameLogic() : player(Vector2(500, 500)) {}
+    GameState state = GameState::INACTIVE;
 
-    Player& getPlayer() {
+    public:
+    GameLogic(){}
+
+    std::shared_ptr<Player> getPlayer() {
         return player;
     }
 
     std::shared_ptr<Level> getLevel() {
         return level;
+    }
+
+    bool isNoLevelActive() const {
+        return state == GameState::INACTIVE;
+    }
+
+    bool isLevelActive() const {
+        return state == GameState::ACTIVE;
     }
 
     void setLevel(std::shared_ptr<Level> _level) {
@@ -33,6 +44,15 @@ class GameLogic {
 
     // Gets the current horizontal offset for the camera for scrolling
     double getScrollOffset() const;
+
+    // Sets up the game to be active
+    void activate(SDL_Renderer* renderer);
+
+    // Pauses the game
+    void pause();
+
+    // Resumes the game
+    void resume();
 };
 
 #endif
