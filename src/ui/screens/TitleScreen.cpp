@@ -1,22 +1,43 @@
 #include "ui/screens/TitleScreen.hpp"
 
-#include "SDL2_gfxPrimitives.h"
+#include <SDL_image.h>
 #include <iostream>
 
 void TitleScreen::draw() {
     // Draw the background
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); // background white
+    drawBackground(renderer, background);
 
     // Draw the title text
     titleText.draw();
 
     // Draw the first button (Start Button)
-    drawButton(renderer, 512 - 170, 384 + 65, 350, 100, {147, 115, 64, 255});
+    drawButton(renderer, 512 - 170, 384 + 150, 350, 100, {147, 115, 64, 255});
     startText.draw();
 
     // Draw the second button (How to Play Button)
-    drawButton(renderer, 512 - 220, 384 + 175, 450, 75, {147, 115, 64, 255});
+    drawButton(renderer, 512 - 220, 384 + 275, 450, 75, {147, 115, 64, 255});
     howToPlayText.draw();
+
+}
+
+void TitleScreen::drawBackground(SDL_Renderer* renderer, SDL_Texture* texture) {
+    if (!background) {
+        // only load the image if it hasn't been loaded yet
+        SDL_Surface* surface = IMG_Load("../assets/visual/title-screen-bg.png");
+        if (!surface) {
+            std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+        }
+    
+        background = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
+    
+        if (!background) {
+            std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        }
+    }
+    // Render to the screen
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+
 }
 
 ScreenType TitleScreen::handleEvent(SDL_Event& event) {
@@ -32,4 +53,9 @@ ScreenType TitleScreen::handleEvent(SDL_Event& event) {
     }
 
     return ScreenType::KEEP;
+}
+
+TitleScreen::~TitleScreen() {
+    // Clean up the texture
+    SDL_DestroyTexture(background); 
 }

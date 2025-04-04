@@ -18,6 +18,11 @@ void PlayerView::setupSDL() {
     if (TTF_Init() < 0)
         ttfError("Unable to initialize TTF!");
 
+    // Initialize SDL_image
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        sdlError("Unable to initialize SDL_image!");
+    }
+
     // Load font
     font = TTF_OpenFont("../assets/fonts/PressStart2P-Regular.ttf", 100);
 
@@ -84,6 +89,8 @@ void PlayerView::switchToGameScreen() {
 PlayerView::~PlayerView() {
     // SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
+    TTF_Quit();
+    IMG_Quit();
     // SDL_DestroyRenderer(renderer); (this line segfaults)
     SDL_DestroyWindow(window);
 }
