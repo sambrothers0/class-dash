@@ -29,6 +29,10 @@ class GameLogic {
         return level;
     }
 
+    std::shared_ptr<TimeKeeper> getTimer() {
+        return timer;
+    }
+
     bool isNoLevelActive() const {
         return state == GameState::INACTIVE;
     }

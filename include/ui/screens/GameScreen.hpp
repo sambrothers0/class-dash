@@ -31,7 +31,7 @@ class GameScreen : public Screen {
             50,
             SDL_Color { 0, 255, 255 },
             //"Test"
-            gameLogic.timer.getTime()
+            gameLogic.getTimer()->getTime()
         ), playerSprite(
             _renderer,
             "../assets/visual/player-spritesheet.png",

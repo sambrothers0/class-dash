@@ -65,7 +65,9 @@ void GameScreen::draw() {
         Vector2 projectilePosition = proj.getPosition();
         boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
     }
-    timeText.setText(gameLogic.timer.getTime());
+    
+    // Display the Time on the screen
+    timeText.setText(gameLogic.getTimer()->getTime());
     timeText.draw();
 }
 
