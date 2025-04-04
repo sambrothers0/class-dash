@@ -8,7 +8,7 @@
 class TimeKeeper {
 
     private:
-        int minutes, seconds, startTime;
+        int minutes, seconds, startTime, endTime;
         Uint64 timeElapsed;
 
     public:
