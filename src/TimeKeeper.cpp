@@ -19,11 +19,21 @@ void TimeKeeper::updateTime() {
     std::cout << minutes << ":" << seconds << std::endl;
 }
 
-void TimeKeeper::resetTimer() {
+void TimeKeeper::resetTime() {
     startTime = SDL_GetTicks64();
 } 
 
 std::string TimeKeeper::getTime() {
-    
-    return std::to_string(minutes) + ":" + std::to_string(seconds);
+    if ((minutes < 10) & (seconds < 10)) {
+        return '0' + std::to_string(minutes) + ":" + "0" + std::to_string(seconds);
+    }
+    else if ((minutes < 10) & (seconds >= 10)) {
+        return '0' + std::to_string(minutes) + ":" + std::to_string(seconds);
+    }
+    else if ((minutes >= 10) & (seconds < 10)) {
+        return std::to_string(minutes) + ":" + "0" +std::to_string(seconds);
+    }
+    else {
+        return std::to_string(minutes) + ":" + std::to_string(seconds);
+    }
 }
