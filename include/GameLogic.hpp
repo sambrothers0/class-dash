@@ -35,6 +35,10 @@ class GameLogic {
         return state == GameState::ACTIVE;
     }
 
+    bool isLevelPaused() const {
+        return state == GameState::PAUSED;
+    }
+
     void setLevel(std::shared_ptr<Level> _level) {
         level = _level;
     }
@@ -53,6 +57,9 @@ class GameLogic {
 
     // Resumes the game
     void resume();
+
+    // Quits out of a level
+    void quitLevel();
 };
 
 #endif

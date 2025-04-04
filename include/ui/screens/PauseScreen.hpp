@@ -2,7 +2,7 @@
 #define _PAUSE_SCREEN_H
 
 #include "ui/screens/Screen.hpp"
-    
+
 class PauseScreen : public Screen {
     private:
 
@@ -18,7 +18,7 @@ class PauseScreen : public Screen {
             Vector2(512, 650),
             35,
             SDL_Color { 0, 0, 0 },
-            "Paused, Press Esc to Resume, Q to Quit"
+            "Paused, Press Enter to Resume, Esc to Quit"
         )  {}
 
     virtual void draw();
