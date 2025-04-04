@@ -68,9 +68,9 @@ void GameScreen::draw() {
     // Render the level
     
 
-    // Draw the test text
-    testText.setText(gameLogic.timer.getTime());
-    testText.draw();
+    // Draw the time text
+    timeText.setText(gameLogic.timer.getTime());
+    timeText.draw();
 }
 
 ScreenType GameScreen::handleEvent(SDL_Event& event) {

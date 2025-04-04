@@ -11,7 +11,7 @@ class GameScreen : public Screen {
     GameLogic& gameLogic;
     TTF_Font* font;
 
-    Text testText;
+    Text timeText;
 
     // Spritesheet for the player
     Spritesheet playerSprite;
@@ -24,7 +24,7 @@ class GameScreen : public Screen {
 
     public:
     GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) : 
-        Screen(_renderer), gameLogic(_gameLogic), font(_font), testText(
+        Screen(_renderer), gameLogic(_gameLogic), font(_font), timeText(
             _renderer,
             _font,
             Vector2(100, 100),
