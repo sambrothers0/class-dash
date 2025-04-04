@@ -47,6 +47,8 @@ class PlayerView {
     // Switches to the game screen
     void switchToGameScreen();
 
+    void switchToPauseConfirmQuitScreen();
+
     // Pass Renderer
     SDL_Renderer* getRenderer() {
         return renderer;

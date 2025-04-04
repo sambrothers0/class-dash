@@ -5,6 +5,7 @@
 #include "sdlLogging.hpp"
 #include "ui/screens/GameScreen.hpp"
 #include "ui/screens/LevelSelectScreen.hpp"
+#include "ui/screens/PauseConfirmQuitScreen.hpp"
 #include "ui/screens/PauseScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
 
@@ -56,6 +57,8 @@ void PlayerView::handleEvent(SDL_Event& event) {
         switchToGameScreen();
     } else if (eventStatus == ScreenType::PAUSE) {
         switchToPauseScreen();
+    } else if (eventStatus == ScreenType::PAUSE_CONFIRM_QUIT) {
+        switchToPauseConfirmQuitScreen();
     }
 }
 
@@ -92,6 +95,10 @@ void PlayerView::switchToGameScreen() {
     }
 
     screen = std::make_unique<GameScreen>(GameScreen(renderer, game.getGameLogic(), font));
+}
+
+void PlayerView::switchToPauseConfirmQuitScreen() {
+    screen = std::make_unique<PauseConfirmQuitScreen>(PauseConfirmQuitScreen(renderer, font));
 }
 
 PlayerView::~PlayerView() {
