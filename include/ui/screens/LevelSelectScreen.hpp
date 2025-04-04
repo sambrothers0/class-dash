@@ -8,7 +8,7 @@ class LevelSelectScreen : public Screen {
 
     TTF_Font* font;
 
-    Text selectText, monday, tuesday, wednesday, thursday, friday;
+    Text selectText, monday, tuesday, wednesday, thursday, friday, back;
 
     unsigned int levelsCompleted = 0;
 
@@ -20,7 +20,9 @@ class LevelSelectScreen : public Screen {
         tuesday(_renderer, _font, Vector2(512, 300), 40, {0, 0, 0, 255}, "Tuesday"),
         wednesday(_renderer, _font, Vector2(512, 400), 40, {0, 0, 0, 255}, "Wednesday"),
         thursday(_renderer, _font, Vector2(512, 500), 40, {0, 0, 0, 255}, "Thursday"),
-        friday(_renderer, _font, Vector2(512, 600), 40, {0, 0, 0, 255}, "Friday") 
+        friday(_renderer, _font, Vector2(512, 600), 40, {0, 0, 0, 255}, "Friday"),
+        back(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, "Back (Esc)") 
+
     {}
 
     virtual void draw();

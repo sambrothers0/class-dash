@@ -9,10 +9,10 @@ void PauseScreen::draw() {
 
     pause.draw();
 
-    drawButton(renderer, 512 - 200, 260, 400, 75, {147, 115, 64, 255});
+    drawButton(renderer, 512 - 350, 260, 700, 75, {147, 115, 64, 255});
     resume.draw();
 
-    drawButton(renderer, 512 - 200, 360, 400, 75, {147, 115, 64, 255});
+    drawButton(renderer, 512 - 350, 360, 700, 75, {147, 115, 64, 255});
     quit.draw();
 }
 

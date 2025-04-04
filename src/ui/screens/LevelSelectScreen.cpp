@@ -22,6 +22,9 @@ void LevelSelectScreen::draw() {
 
     drawButton(renderer, 512 - 200, 560, 400, 75, {147, 115, 64, 255});
     friday.draw();
+
+    drawButton(renderer, 512 - 250, 665, 500, 60, {147, 115, 64, 255});
+    back.draw();
 }
 
 ScreenType LevelSelectScreen::handleEvent(SDL_Event& event) {
