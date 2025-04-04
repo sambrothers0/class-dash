@@ -5,6 +5,7 @@
 #include "sdlLogging.hpp"
 #include "ui/screens/GameScreen.hpp"
 #include "ui/screens/LevelSelectScreen.hpp"
+#include "ui/screens/PauseConfirmQuitScreen.hpp"
 #include "ui/screens/PauseScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
 
@@ -34,12 +35,6 @@ void PlayerView::setupSDL() {
 
     if (renderer == NULL)
         sdlError("Could not create renderer!");
-
-    // // convert to texture (commented out until we optimize the size)
-    // SDL_Texture* texture = IMG_LoadTexture(renderer, "../assets/visual/spritesheet.png");
-
-    // if (texture == NULL)
-    //     sdl_error("Could not create texture from surface!");
 }
 
 void PlayerView::init() {
@@ -67,6 +62,8 @@ void PlayerView::handleEvent(SDL_Event& event) {
         switchToGameScreen();
     } else if (eventStatus == ScreenType::PAUSE) {
         switchToPauseScreen();
+    } else if (eventStatus == ScreenType::PAUSE_CONFIRM_QUIT) {
+        switchToPauseConfirmQuitScreen();
     }
 }
 
@@ -75,15 +72,38 @@ void PlayerView::switchToTitleScreen() {
 }
 
 void PlayerView::switchToLevelSelectScreen() {
+    // Reset level if quitting out
+    auto& gameLogic = game.getGameLogic();
+
+    if (gameLogic.isLevelPaused()) {
+        gameLogic.quitLevel();
+    }
+
     screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font));
 }
 
 void PlayerView::switchToPauseScreen() {
+    auto& gameLogic = game.getGameLogic();
+    gameLogic.pause();
     screen = std::make_unique<PauseScreen>(PauseScreen(renderer, font));
 }
 
 void PlayerView::switchToGameScreen() {
+    auto& gameLogic = game.getGameLogic();
+
+    // Tell the game logic to update the level
+    if (gameLogic.isNoLevelActive()) {
+        game.getGameLogic().activate(renderer);
+    } else {
+        // If there is a level active, then resume the level
+        gameLogic.resume();
+    }
+
     screen = std::make_unique<GameScreen>(GameScreen(renderer, game.getGameLogic(), font));
+}
+
+void PlayerView::switchToPauseConfirmQuitScreen() {
+    screen = std::make_unique<PauseConfirmQuitScreen>(PauseConfirmQuitScreen(renderer, font));
 }
 
 PlayerView::~PlayerView() {
@@ -91,6 +111,8 @@ PlayerView::~PlayerView() {
     TTF_CloseFont(font);
     TTF_Quit();
     IMG_Quit();
-    // SDL_DestroyRenderer(renderer); (this line segfaults)
+
+    // SDL_DestroyRenderer(renderer); // (this line segfaults)
+    // renderer = nullptr;
     SDL_DestroyWindow(window);
 }

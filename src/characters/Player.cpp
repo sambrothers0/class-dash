@@ -4,7 +4,7 @@
 #include <vector>
 
 const int GROUND_HEIGHT = 608; //This is just the current ground height based on how player position is called in GameLogic
-const float JUMP_HEIGHT = 100.0f; 
+const float JUMP_HEIGHT = 100.0f;
 
 int Player::getCurrentAnimationOffset() const {
     return (animationTicks % 40) / 10;
@@ -67,7 +67,7 @@ void Player::shoot() {
     } else if (lastDirection == MoveDirection::LEFT) {
         newProjectile.setVelocity(-300, 0);
     } else {
-        newProjectile.setVelocity(300, 0); 
+        newProjectile.setVelocity(300, 0);
     }
 
     // Add to the list of projectiles if there aren't already too many

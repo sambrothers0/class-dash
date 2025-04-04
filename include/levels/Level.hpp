@@ -25,8 +25,8 @@ class Level {
     std::vector<std::shared_ptr<Spritesheet>> spritesheets;
     std::vector<uint32_t> ids;
     std::vector<std::shared_ptr<Layer>> layers;
-    
-    
+
+
     public:
     Level(Vector2 _dimensions, SDL_Renderer* _renderer) : dimensions(_dimensions), renderer(_renderer) {}
 
@@ -42,7 +42,7 @@ class Level {
         return layers;
     }
 
-    
+
     // gets global ID for a given block
     uint32_t getID(const Vector2& block) const;
 

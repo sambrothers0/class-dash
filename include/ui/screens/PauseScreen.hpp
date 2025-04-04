@@ -2,7 +2,7 @@
 #define _PAUSE_SCREEN_H
 
 #include "ui/screens/Screen.hpp"
-    
+
 class PauseScreen : public Screen {
     private:
 
@@ -12,11 +12,11 @@ class PauseScreen : public Screen {
 
     public:
     PauseScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
-        Screen(_renderer), font(_font), 
-            pause(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Game Paused"),
-            resume(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Resume"),
-            quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit")
-            {}
+    Screen(_renderer), font(_font), 
+        pause(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Game Paused"),
+        resume(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Resume (Enter)"),
+        quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit (Esc)")
+    {}
 
     virtual void draw();
 

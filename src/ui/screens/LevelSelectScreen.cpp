@@ -5,7 +5,7 @@
 void LevelSelectScreen::draw() {
     // Draw the level select screen
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
-    
+
     selectText.draw();
 
     drawButton(renderer, 512 - 200, 160, 400, 75, {147, 115, 64, 255});
