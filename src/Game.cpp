@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include <iostream>
+
 const int FPS = 60;
 const int FRAMETIME = 1000 / FPS;
 
@@ -44,7 +46,7 @@ void Game::run() {
         ticks = ticks2;
 
         gameLogic.runTick(difference);
-
+        
         // Set to 60 fps
         if (difference < FRAMETIME) {
             SDL_Delay(std::max((Uint64) 1, FRAMETIME - difference));

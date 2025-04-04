@@ -11,6 +11,8 @@ class GameScreen : public Screen {
     GameLogic& gameLogic;
     TTF_Font* font;
 
+    Text testText;
+
     // Spritesheet for the player
     Spritesheet playerSprite;
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
@@ -21,8 +23,16 @@ class GameScreen : public Screen {
     void drawLevel(std::shared_ptr<Level> level);
 
     public:
-    GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) :
-        Screen(_renderer), gameLogic(_gameLogic), font(_font), playerSprite(
+    GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) : 
+        Screen(_renderer), gameLogic(_gameLogic), font(_font), testText(
+            _renderer,
+            _font,
+            Vector2(100, 100),
+            50,
+            SDL_Color { 0, 255, 255 },
+            //"Test"
+            gameLogic.timer.getTime()
+        ), playerSprite(
             _renderer,
             "../assets/visual/player-spritesheet.png",
             Vector2(PLAYER_WIDTH, PLAYER_HEIGHT),

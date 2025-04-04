@@ -7,6 +7,7 @@
 void GameLogic::runTick(double ms) {
     if (isLevelActive()) {
         player->move(ms);
+        timer.updateTime();
     }
 }
 

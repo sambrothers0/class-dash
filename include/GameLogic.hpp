@@ -4,12 +4,14 @@
 #include "characters/Player.hpp"
 #include "levels/Level.hpp"
 #include "GameState.hpp"
+#include "TimeKeeper.hpp"
 
 #include <memory>
 
 class GameLogic {
     private:
     std::shared_ptr<Player> player;
+    std::shared_ptr<TimeKeeper> timer;
 
     // Current level
     std::shared_ptr<Level> level;
