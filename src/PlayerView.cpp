@@ -64,6 +64,13 @@ void PlayerView::switchToTitleScreen() {
 }
 
 void PlayerView::switchToLevelSelectScreen() {
+    // Reset level if quitting out
+    auto& gameLogic = game.getGameLogic();
+
+    if (gameLogic.isLevelPaused()) {
+        gameLogic.quitLevel();
+    }
+
     screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font));
 }
 

@@ -13,8 +13,10 @@ void PauseScreen::draw() {
 ScreenType PauseScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
-            case SDLK_ESCAPE:
+            case SDLK_RETURN:
                 return ScreenType::GAME;
+            case SDLK_ESCAPE:
+                return ScreenType::LEVEL_SELECT;
             default:
                 return ScreenType::KEEP;
         }
