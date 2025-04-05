@@ -21,8 +21,8 @@ void TitleScreen::draw() {
 }
 
 void TitleScreen::drawBackground(SDL_Renderer* renderer, SDL_Texture* texture) {
+    // only load the image if it hasn't been loaded yet
     if (!background) {
-        // only load the image if it hasn't been loaded yet
         SDL_Surface* surface = IMG_Load("../assets/visual/title-screen-bg.png");
         if (!surface) {
             std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
@@ -47,6 +47,8 @@ ScreenType TitleScreen::handleEvent(SDL_Event& event) {
                 return ScreenType::LEVEL_SELECT;
             case SDLK_RETURN:
                 return ScreenType::LEVEL_SELECT;
+            case SDLK_p:
+                return ScreenType::HOW_TO_PLAY;
             default:
                 return ScreenType::KEEP;
         }

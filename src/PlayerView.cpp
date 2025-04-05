@@ -8,6 +8,7 @@
 #include "ui/screens/PauseConfirmQuitScreen.hpp"
 #include "ui/screens/PauseScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
+#include "ui/screens/HowToPlayScreen.hpp"
 
 void PlayerView::setupSDL() {
     // Create window
@@ -56,6 +57,8 @@ void PlayerView::handleEvent(SDL_Event& event) {
     int eventStatus = screen->handleEvent(event);
     if (eventStatus == ScreenType::TITLE) {
         switchToTitleScreen();
+    } else if (eventStatus == ScreenType::HOW_TO_PLAY) {
+        switchToHowToPlayScreen();
     } else if (eventStatus == ScreenType::LEVEL_SELECT) {
         switchToLevelSelectScreen();
     } else if (eventStatus == ScreenType::GAME) {
@@ -69,6 +72,10 @@ void PlayerView::handleEvent(SDL_Event& event) {
 
 void PlayerView::switchToTitleScreen() {
     screen = std::make_unique<TitleScreen>(TitleScreen(renderer, font));
+}
+
+void PlayerView::switchToHowToPlayScreen() {
+    screen = std::make_unique<HowToPlayScreen>(HowToPlayScreen(renderer, font));
 }
 
 void PlayerView::switchToLevelSelectScreen() {
