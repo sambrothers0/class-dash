@@ -8,18 +8,15 @@ class PauseScreen : public Screen {
 
     TTF_Font* font;
 
-    Text pauseText;
+    Text pause, resume, quit;
 
     public:
     PauseScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
-        Screen(_renderer), font(_font), pauseText(
-            _renderer,
-            _font,
-            Vector2(512, 650),
-            35,
-            SDL_Color { 0, 0, 0 },
-            "Paused, Press Enter to Resume, Esc to Quit"
-        )  {}
+    Screen(_renderer), font(_font), 
+        pause(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Game Paused"),
+        resume(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Resume (Enter)"),
+        quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit (Esc)")
+    {}
 
     virtual void draw();
 

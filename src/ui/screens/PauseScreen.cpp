@@ -7,7 +7,13 @@ void PauseScreen::draw() {
     // Draw the title screen
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
-    pauseText.draw();
+    pause.draw();
+
+    drawButton(renderer, 512 - 350, 260, 700, 75, {147, 115, 64, 255});
+    resume.draw();
+
+    drawButton(renderer, 512 - 350, 360, 700, 75, {147, 115, 64, 255});
+    quit.draw();
 }
 
 ScreenType PauseScreen::handleEvent(SDL_Event& event) {
