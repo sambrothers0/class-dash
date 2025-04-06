@@ -9,7 +9,21 @@ void GameLogic::init() {
     // Load the levels.txt file, creating it if it does not exist
     std::fstream file;
 
-    // file.open("levels.txt", std::fstream::in);
+    file.open("levels.txt", std::fstream::in);
+
+    std::string fileText;
+
+    file >> fileText;
+    file.close();
+
+    // Try to convert from string
+    try {
+        int value = std::stoi(fileText);
+
+        levelsCompleted = mathutils::clamp(value, 0, 5);
+    } catch (std::invalid_argument) {
+        levelsCompleted = 0;
+    }
 }
 
 void GameLogic::runTick(double ms) {
@@ -48,4 +62,18 @@ void GameLogic::resume() {
 
 void GameLogic::quitLevel() {
     state = GameState::INACTIVE;
+}
+
+void GameLogic::setLevelsCompleted(int levels) {
+    levelsCompleted = levels;
+    saveLevelsCompleted();
+}
+
+void GameLogic::saveLevelsCompleted() const {
+    std::fstream file;
+
+    file.open("levels.txt", std::fstream::out);
+
+    file << std::to_string(levelsCompleted);
+    file.close();
 }
