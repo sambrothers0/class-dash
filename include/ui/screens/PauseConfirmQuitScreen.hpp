@@ -9,18 +9,17 @@ class PauseConfirmQuitScreen : public Screen {
 
     TTF_Font* font;
 
-    Text confirmText;
+    int cursorPosition = 0;
+
+    Text confirmText, yes, no;
 
     public:
     PauseConfirmQuitScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
-        Screen(_renderer), font(_font), confirmText(
-            _renderer,
-            _font,
-            Vector2(512, 650),
-            35,
-            SDL_Color { 0, 0, 0 },
-            "Do you really want to quit? Press Enter to confirm, Esc to cancel"
-        )  {}
+        Screen(_renderer), font(_font), 
+            confirmText(_renderer, _font, Vector2(512, 100), 30, { 0, 0, 0, 255 }, "Do you really want to quit?"),
+            yes(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Yes"),
+            no(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "No")
+        {}
 
     virtual void draw();
 

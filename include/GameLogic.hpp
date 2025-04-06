@@ -14,17 +14,23 @@ class GameLogic {
     // Current level
     std::shared_ptr<Level> level;
 
+    int levelsUnlocked = 0;
+
     GameState state = GameState::INACTIVE;
 
     public:
     GameLogic(){}
 
-    std::shared_ptr<Player> getPlayer() {
+    std::shared_ptr<Player> getPlayer(){
         return player;
     }
 
     std::shared_ptr<Level> getLevel() {
         return level;
+    }
+
+    int getLevelsUnlocked() const {
+        return levelsUnlocked;
     }
 
     bool isNoLevelActive() const {
