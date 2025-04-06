@@ -9,6 +9,8 @@ class TitleScreen : public Screen {
 
     TTF_Font* font;
 
+    int cursorPosition = 0;
+
     Text titleText, startText, howToPlayText;
 
     SDL_Texture* background = nullptr;

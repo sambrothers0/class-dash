@@ -39,6 +39,9 @@ class PlayerView {
     // Switches to the title screen
     void switchToTitleScreen();
 
+    // Switches to the how to play screen
+    void switchToHowToPlayScreen();
+
     // Switches to the level select screen
     void switchToLevelSelectScreen();
 
