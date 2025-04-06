@@ -2,7 +2,15 @@
 
 #include "mathutils.hpp"
 
+#include <fstream>
 #include <memory>
+
+void GameLogic::init() {
+    // Load the levels.txt file, creating it if it does not exist
+    std::fstream file;
+
+    // file.open("levels.txt", std::fstream::in);
+}
 
 void GameLogic::runTick(double ms) {
     if (isLevelActive()) {

@@ -49,6 +49,9 @@ class GameLogic {
         level = _level;
     }
 
+    // Setup function
+    void init();
+
     // Runs a game tick lasting this many milliseconds
     void runTick(double ms);
 

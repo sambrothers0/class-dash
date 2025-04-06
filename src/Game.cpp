@@ -10,6 +10,7 @@ void Game::run() {
     SDL_Event e;
 
     // Set up objects
+    gameLogic.init();
     playerView.init();
 
     bool isRunning = true;
