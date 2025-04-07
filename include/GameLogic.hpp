@@ -30,7 +30,7 @@ class GameLogic {
     std::shared_ptr<TimeKeeper> getTimer() {
         return timer;
     }
-    
+   
     std::shared_ptr<Level> getLevel() {
         return level;
     }

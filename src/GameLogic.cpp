@@ -5,15 +5,10 @@
 #include <memory>
 
 void GameLogic::runTick(double ms) {
-<<<<<<< HEAD
     if (isLevelActive()) {
         player->move(ms);
         timer->updateTime();
     }
-=======
-    player.move(ms);
-    timer.updateTime();
->>>>>>> 464b0e7cb9301f2e8ad5aaef6c639c3a65f18177
 }
 
 double GameLogic::getScrollOffset() const {
@@ -25,6 +20,7 @@ double GameLogic::getScrollOffset() const {
 
 void GameLogic::activate(SDL_Renderer* renderer) {
     level = std::make_shared<Level>(Vector2(2240, 768), renderer);
+    timer = std::make_shared<TimeKeeper>();
     if (!level->loadFromTMX("../assets/visual/Level2.tmx", renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
