@@ -1,13 +1,12 @@
-#include "ui/screens/PauseScreen.hpp"
+#include "ui/screens/PauseConfirmQuitScreen.hpp"
 
 #include "SDL2_gfxPrimitives.h"
-// #include <iostream>
 
-void PauseScreen::draw() {
+void PauseConfirmQuitScreen::draw() {
     // Draw the title screen
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
-    pause.draw();
+    confirmText.draw();
 
     SDL_Color buttonColor;
     SDL_Color defaultColor = {147, 115, 64, 255}; // Default color for buttons
@@ -19,7 +18,7 @@ void PauseScreen::draw() {
         buttonColor = defaultColor;
     }
     drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
-    resume.draw();
+    yes.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
@@ -27,10 +26,10 @@ void PauseScreen::draw() {
         buttonColor = defaultColor;
     }
     drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
-    quit.draw();
+    no.draw();
 }
 
-ScreenType PauseScreen::handleEvent(SDL_Event& event) {
+ScreenType PauseConfirmQuitScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
@@ -41,16 +40,17 @@ ScreenType PauseScreen::handleEvent(SDL_Event& event) {
                 break;
             case SDLK_RETURN:
                 if (cursorPosition == 0) {
-                    return ScreenType::GAME; // Resume the game
+                    return ScreenType::LEVEL_SELECT; // Resume the game
                 } else if (cursorPosition == 1) {
-                    return ScreenType::PAUSE_CONFIRM_QUIT; // Quit to level select
+                    return ScreenType::GAME; // Quit to level select
                 }
             case SDLK_ESCAPE:
-                return ScreenType::PAUSE_CONFIRM_QUIT;
+                return ScreenType::LEVEL_SELECT;
             default:
                 return ScreenType::KEEP;
         }
     }
+    
 
     return ScreenType::KEEP;
 }

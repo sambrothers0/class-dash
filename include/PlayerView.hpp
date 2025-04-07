@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include "SDL_ttf.h"
+#include "SDL_image.h"
 
 #include "ui/screens/Screen.hpp"
 
@@ -38,6 +39,9 @@ class PlayerView {
     // Switches to the title screen
     void switchToTitleScreen();
 
+    // Switches to the how to play screen
+    void switchToHowToPlayScreen();
+
     // Switches to the level select screen
     void switchToLevelSelectScreen();
 
@@ -46,6 +50,8 @@ class PlayerView {
 
     // Switches to the game screen
     void switchToGameScreen();
+
+    void switchToPauseConfirmQuitScreen();
 
     // Pass Renderer
     SDL_Renderer* getRenderer() {

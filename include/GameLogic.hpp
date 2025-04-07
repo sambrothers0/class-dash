@@ -16,21 +16,27 @@ class GameLogic {
     // Current level
     std::shared_ptr<Level> level;
 
+    int levelsUnlocked = 0;
+
     GameState state = GameState::INACTIVE;
 
     public:
     GameLogic(){}
 
-    std::shared_ptr<Player> getPlayer() {
+    std::shared_ptr<Player> getPlayer(){
         return player;
-    }
-
-    std::shared_ptr<Level> getLevel() {
-        return level;
     }
 
     std::shared_ptr<TimeKeeper> getTimer() {
         return timer;
+    }
+    
+    std::shared_ptr<Level> getLevel() {
+        return level;
+    }
+
+    int getLevelsUnlocked() const {
+        return levelsUnlocked;
     }
 
     bool isNoLevelActive() const {
@@ -39,6 +45,10 @@ class GameLogic {
 
     bool isLevelActive() const {
         return state == GameState::ACTIVE;
+    }
+
+    bool isLevelPaused() const {
+        return state == GameState::PAUSED;
     }
 
     void setLevel(std::shared_ptr<Level> _level) {
@@ -59,6 +69,9 @@ class GameLogic {
 
     // Resumes the game
     void resume();
+
+    // Quits out of a level
+    void quitLevel();
 };
 
 #endif

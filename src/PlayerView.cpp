@@ -5,8 +5,10 @@
 #include "sdlLogging.hpp"
 #include "ui/screens/GameScreen.hpp"
 #include "ui/screens/LevelSelectScreen.hpp"
+#include "ui/screens/PauseConfirmQuitScreen.hpp"
 #include "ui/screens/PauseScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
+#include "ui/screens/HowToPlayScreen.hpp"
 
 void PlayerView::setupSDL() {
     // Create window
@@ -17,6 +19,11 @@ void PlayerView::setupSDL() {
 
     if (TTF_Init() < 0)
         ttfError("Unable to initialize TTF!");
+
+    // Initialize SDL_image
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        sdlError("Unable to initialize SDL_image!");
+    }
 
     // Load font
     font = TTF_OpenFont("../assets/fonts/PressStart2P-Regular.ttf", 100);
@@ -50,12 +57,16 @@ void PlayerView::handleEvent(SDL_Event& event) {
     int eventStatus = screen->handleEvent(event);
     if (eventStatus == ScreenType::TITLE) {
         switchToTitleScreen();
+    } else if (eventStatus == ScreenType::HOW_TO_PLAY) {
+        switchToHowToPlayScreen();
     } else if (eventStatus == ScreenType::LEVEL_SELECT) {
         switchToLevelSelectScreen();
     } else if (eventStatus == ScreenType::GAME) {
         switchToGameScreen();
     } else if (eventStatus == ScreenType::PAUSE) {
         switchToPauseScreen();
+    } else if (eventStatus == ScreenType::PAUSE_CONFIRM_QUIT) {
+        switchToPauseConfirmQuitScreen();
     }
 }
 
@@ -63,7 +74,18 @@ void PlayerView::switchToTitleScreen() {
     screen = std::make_unique<TitleScreen>(TitleScreen(renderer, font));
 }
 
+void PlayerView::switchToHowToPlayScreen() {
+    screen = std::make_unique<HowToPlayScreen>(HowToPlayScreen(renderer, font));
+}
+
 void PlayerView::switchToLevelSelectScreen() {
+    // Reset level if quitting out
+    auto& gameLogic = game.getGameLogic();
+
+    if (gameLogic.isLevelPaused()) {
+        gameLogic.quitLevel();
+    }
+
     screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font));
 }
 
@@ -87,9 +109,15 @@ void PlayerView::switchToGameScreen() {
     screen = std::make_unique<GameScreen>(GameScreen(renderer, game.getGameLogic(), font));
 }
 
+void PlayerView::switchToPauseConfirmQuitScreen() {
+    screen = std::make_unique<PauseConfirmQuitScreen>(PauseConfirmQuitScreen(renderer, font));
+}
+
 PlayerView::~PlayerView() {
     // SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
+    TTF_Quit();
+    IMG_Quit();
 
     // SDL_DestroyRenderer(renderer); // (this line segfaults)
     // renderer = nullptr;

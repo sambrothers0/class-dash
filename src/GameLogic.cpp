@@ -38,3 +38,7 @@ void GameLogic::pause() {
 void GameLogic::resume() {
     state = GameState::ACTIVE;
 }
+
+void GameLogic::quitLevel() {
+    state = GameState::INACTIVE;
+}

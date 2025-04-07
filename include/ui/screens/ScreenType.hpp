@@ -4,9 +4,11 @@
 enum ScreenType {
     KEEP, // Represents not changing the screen type
     TITLE,
+    HOW_TO_PLAY,
     LEVEL_SELECT,
     GAME,
-    PAUSE
+    PAUSE,
+    PAUSE_CONFIRM_QUIT
 };
 
 #endif
