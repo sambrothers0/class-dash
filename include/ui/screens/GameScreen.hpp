@@ -12,6 +12,7 @@ class GameScreen : public Screen {
     TTF_Font* font;
 
     Text timeText;
+    Text timeText;
 
     // Spritesheet for the player
     Spritesheet playerSprite;

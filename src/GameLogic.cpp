@@ -5,10 +5,15 @@
 #include <memory>
 
 void GameLogic::runTick(double ms) {
+<<<<<<< HEAD
     if (isLevelActive()) {
         player->move(ms);
         timer->updateTime();
     }
+=======
+    player.move(ms);
+    timer.updateTime();
+>>>>>>> 464b0e7cb9301f2e8ad5aaef6c639c3a65f18177
 }
 
 double GameLogic::getScrollOffset() const {
