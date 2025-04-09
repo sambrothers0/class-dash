@@ -3,6 +3,7 @@
 
 #include "levels/Level.hpp"
 #include "GameState.hpp"
+#include "TimeKeeper.hpp"
 
 #include <memory>
 
@@ -11,6 +12,7 @@ class Player;
 class GameLogic {
     private:
     std::shared_ptr<Player> player;
+    std::shared_ptr<TimeKeeper> timer;
 
     // Current level
     std::shared_ptr<Level> level;
@@ -26,6 +28,10 @@ class GameLogic {
         return player;
     }
 
+    std::shared_ptr<TimeKeeper> getTimer() {
+        return timer;
+    }
+   
     std::shared_ptr<Level> getLevel() {
         return level;
     }

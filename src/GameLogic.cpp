@@ -5,6 +5,8 @@
 
 #include <fstream>
 #include <memory>
+#include <thread>
+#include <chrono>
 
 void GameLogic::init() {
     // Load the levels.txt file, creating it if it does not exist
@@ -42,7 +44,11 @@ double GameLogic::getScrollOffset() const {
 
 void GameLogic::activate(SDL_Renderer* renderer) {
     level = std::make_shared<Level>(Vector2(2240, 768), renderer);
-    if (!level->loadFromTMX("../assets/visual/Level3.tmx", renderer)) {
+    timer = std::make_shared<TimeKeeper>();
+    std::thread time(&TimeKeeper::beginTimer, timer);
+    time.detach();
+
+    if (!level->loadFromTMX("../assets/visual/Level2.tmx", renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
@@ -55,10 +61,13 @@ void GameLogic::activate(SDL_Renderer* renderer) {
 void GameLogic::pause() {
     player->stopMoving();
     state = GameState::PAUSED;
+    timer->pauseTimer();
 }
 
 void GameLogic::resume() {
     state = GameState::ACTIVE;
+    std::thread time(&TimeKeeper::beginTimer, timer);
+    time.detach();
 }
 
 void GameLogic::quitLevel() {
