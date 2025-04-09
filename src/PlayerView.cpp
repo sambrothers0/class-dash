@@ -70,6 +70,10 @@ void PlayerView::handleEvent(SDL_Event& event) {
     }
 }
 
+void PlayerView::handleExtraEvents() {
+    screen->handleExtraEvents();
+}
+
 void PlayerView::switchToTitleScreen() {
     screen = std::make_unique<TitleScreen>(TitleScreen(renderer, font));
 }
@@ -86,7 +90,7 @@ void PlayerView::switchToLevelSelectScreen() {
         gameLogic.quitLevel();
     }
 
-    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font));
+    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font, gameLogic.getLevelsCompleted()));
 }
 
 void PlayerView::switchToPauseScreen() {

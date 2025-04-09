@@ -12,5 +12,9 @@ int main() {
     std::cout << vec << std::endl;
     std::cout << vec.normal() << std::endl;
 
+    double d = 3.5;
+
+    std::cout << (d / 2) << std::endl;
+
     return 0;
 }

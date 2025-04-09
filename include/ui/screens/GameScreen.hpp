@@ -6,6 +6,8 @@
 
 #include "sprites/Spritesheet.hpp"
 
+#include "physics/BoundingBox.hpp"
+
 class GameScreen : public Screen {
     private:
     GameLogic& gameLogic;
@@ -18,7 +20,13 @@ class GameScreen : public Screen {
     // Offset for drawing
     double scrollOffset;
 
+    // Display hitboxes?
+    bool showHitboxes = false;
+    bool hitboxKeyActive = false;
+
     void drawLevel(std::shared_ptr<Level> level);
+
+    void drawCollisionHitbox(const Vector2& position, const BoundingBox& hitbox) const;
 
     public:
     GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) :
@@ -31,6 +39,8 @@ class GameScreen : public Screen {
         ) {}
 
     virtual void draw();
+
+    virtual void handleExtraEvents();
 
     virtual ScreenType handleEvent(SDL_Event&);
     void updateLevelTextures(std::shared_ptr<Level> level);

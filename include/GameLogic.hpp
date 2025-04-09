@@ -1,11 +1,12 @@
 #ifndef _GAME_LOGIC_H
 #define _GAME_LOGIC_H
 
-#include "characters/Player.hpp"
 #include "levels/Level.hpp"
 #include "GameState.hpp"
 
 #include <memory>
+
+class Player;
 
 class GameLogic {
     private:
@@ -14,7 +15,7 @@ class GameLogic {
     // Current level
     std::shared_ptr<Level> level;
 
-    int levelsUnlocked = 0;
+    int levelsCompleted = 1; // Number of levels the player has beaten, make sure to set with setLevelsCompleted to update the save file
 
     GameState state = GameState::INACTIVE;
 
@@ -29,8 +30,8 @@ class GameLogic {
         return level;
     }
 
-    int getLevelsUnlocked() const {
-        return levelsUnlocked;
+    int getLevelsCompleted() const {
+        return levelsCompleted;
     }
 
     bool isNoLevelActive() const {
@@ -49,6 +50,9 @@ class GameLogic {
         level = _level;
     }
 
+    // Setup function
+    void init();
+
     // Runs a game tick lasting this many milliseconds
     void runTick(double ms);
 
@@ -66,6 +70,12 @@ class GameLogic {
 
     // Quits out of a level
     void quitLevel();
+
+    // Sets the number of levels completed
+    void setLevelsCompleted(int levels);
+
+    // Saves the current number of levels completed to the file
+    void saveLevelsCompleted() const;
 };
 
 #endif

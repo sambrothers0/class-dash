@@ -10,7 +10,18 @@ void Game::run() {
     SDL_Event e;
 
     // Set up objects
+    gameLogic.init();
     playerView.init();
+
+    // Load the level
+    SDL_Renderer* renderer = playerView.getRenderer();
+    std::shared_ptr<Level> level = std::make_shared<Level>(Vector2(2240, 768), renderer);
+    if (!level->loadFromTMX("../assets/visual/ColliderTest.tmx", renderer)) {
+        std::cerr << "Failed to load level!" << std::endl;
+        return;
+    }
+
+    gameLogic.setLevel(level);
 
     bool isRunning = true;
 
@@ -34,6 +45,9 @@ void Game::run() {
             // Player view handles extra events
             playerView.handleEvent(e);
         }
+
+        // Player view handles extra events
+        playerView.handleExtraEvents();
 
         // Draw the player view
         playerView.draw();
