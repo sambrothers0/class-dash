@@ -3,11 +3,12 @@
 #include "mathutils.hpp"
 
 #include <memory>
+#include <thread>
+#include <chrono>
 
 void GameLogic::runTick(double ms) {
     if (isLevelActive()) {
         player->move(ms);
-        timer->updateTime();
     }
 }
 
@@ -21,6 +22,9 @@ double GameLogic::getScrollOffset() const {
 void GameLogic::activate(SDL_Renderer* renderer) {
     level = std::make_shared<Level>(Vector2(2240, 768), renderer);
     timer = std::make_shared<TimeKeeper>();
+    std::thread time(&TimeKeeper::beginTimer, timer);
+    time.detach();
+
     if (!level->loadFromTMX("../assets/visual/Level2.tmx", renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
