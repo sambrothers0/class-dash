@@ -42,12 +42,12 @@ double GameLogic::getScrollOffset() const {
 
 void GameLogic::activate(SDL_Renderer* renderer) {
     level = std::make_shared<Level>(Vector2(2240, 768), renderer);
-    if (!level->loadFromTMX("../assets/visual/Level2.tmx", renderer)) {
+    if (!level->loadFromTMX("../assets/visual/Level3.tmx", renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
 
-    player = std::make_shared<Player>(Vector2(500, 500));
+    player = std::make_shared<Player>(Player(*this, Vector2(500, 500)));
 
     state = GameState::ACTIVE;
 }
