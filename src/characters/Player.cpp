@@ -135,7 +135,7 @@ Vector2 Player::getHitboxCenter() const {
 
 
 void Player::handleCollisions() {
-    // std::cout<<"POSITION: "<<position.getX()<<" "<<position.getY()<<"\n\n"<<std::endl;
+    std::cout<<"POSITION: "<<position.getX()<<" "<<position.getY()<<"\n\n"<<std::endl;
     if (position.getY() >= 800 - PLAYER_HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
         std::cout<<"position at fall: x "<< position.getX()<<" y "<<position.getY()<<std::endl;
         position.setY(300 - PLAYER_HEIGHT / 2);
@@ -256,29 +256,29 @@ void Player::handleCollisions() {
 
     // Check right tiles
 
-    for (auto y = topY; y <= bottomY; y++) {
-        // Get updated player position
-        auto center = getHitboxCenter();
-        auto playerX = center.getX();
-        auto playerY = center.getY();
+    // for (auto y = topY; y <= bottomY; y++) {
+    //     // Get updated player position
+    //     auto center = getHitboxCenter();
+    //     auto playerX = center.getX();
+    //     auto playerY = center.getY();
 
-        // This needs a more complex collision detector, we need to check if the box overlaps
-        // First check is if the new y position is past the bottom bar
-        // y here is the top-left position of the tile we are colliding with
-        if (level->colliderTileAt(Vector2(rightX, y)) && playerY + hitboxHeight / 2 > y * 32 && playerY - hitboxHeight / 2 < y * 32) {
-            std::cout << "Right collision" << std::endl;
+    //     // This needs a more complex collision detector, we need to check if the box overlaps
+    //     // First check is if the new y position is past the bottom bar
+    //     // y here is the top-left position of the tile we are colliding with
+    //     if (level->colliderTileAt(Vector2(rightX, y)) && playerY + hitboxHeight / 2 > y * 32 && playerY - hitboxHeight / 2 < y * 32) {
+    //         std::cout << "Right collision" << std::endl;
             
-            // Calculate the amount that gets collided
+    //         // Calculate the amount that gets collided
 
-            // std::cout << topY << ", " << bottomY << std::endl;
-            // std::cout << position << std::endl;
-            // std::cout << "right collision at " << Vector2(rightX + 1, y) * 32 << " with offset " << hitbox.getOffset() << " and size " << hitbox.getSize() << std::endl;
-            // Push the player back out
-            position.setX(rightX * 32 - hitbox.getSize().getX() / 2 - 1);   
+    //         // std::cout << topY << ", " << bottomY << std::endl;
+    //         // std::cout << position << std::endl;
+    //         // std::cout << "right collision at " << Vector2(rightX + 1, y) * 32 << " with offset " << hitbox.getOffset() << " and size " << hitbox.getSize() << std::endl;
+    //         // Push the player back out
+    //         position.setX(rightX * 32 - hitbox.getSize().getX() / 2 - 1);   
 
-            velocity.setX(0);
+    //         velocity.setX(0);
 
-            break;
-        }
-    }
+    //         break;
+    //     }
+    // }
 }

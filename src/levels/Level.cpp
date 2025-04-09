@@ -57,12 +57,12 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
             // Get the global tile ID by adding first GID
             unsigned int globalID = tileset.getFirstGID() + tile.ID;
             
-            // Check if this tile has object layers (collision data)
+            // Check if this tile has any collision objects
             for (const auto& object : tile.objectGroup.getObjects()) {
                 // for (const auto& object : objectGroup.objects) {
                     CollisionObject collObj;
                     
-                    // Convert to SDL_Rect for collision checking
+                    //Setup a locally based CollisionObject for a specific tile type
                     collObj.bounds.x = static_cast<int>(object.getAABB().left);
                     collObj.bounds.y = static_cast<int>(object.getAABB().top);
                     collObj.bounds.w = static_cast<int>(object.getAABB().width);
@@ -70,7 +70,7 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                     collObj.type = object.getClass();
                     collObj.name = object.getName();
                     
-                    // Add to our tile's collision objects
+                    // Add a locally based CollisionObject for a specific gid
                     tileCollisions[globalID].push_back(collObj);
     
                 // }
