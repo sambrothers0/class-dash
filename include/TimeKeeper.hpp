@@ -9,7 +9,7 @@ class TimeKeeper {
 
     private:
         int minutes, seconds, startTime, endTime;
-        Uint64 timeElapsed;
+        Uint64 timeElapsed, lastTime;
 
     public:
         TimeKeeper(); // initialize the time 
