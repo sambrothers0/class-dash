@@ -123,6 +123,7 @@ void Player::jump() {
         velocity.setY(-500);
         position -= Vector2(0, 1); // Update position to avoid an immediate collision with the ground
         bufferedJump = false;
+        onGround= false;
     } else {
         bufferedJump = true;
     }
@@ -135,6 +136,7 @@ Vector2 Player::getHitboxCenter() const {
 
 
 void Player::handleCollisions() {
+    std::cout<<"ground?: "<<onGround<<std::endl;
     std::cout<<"POSITION: "<<position.getX()<<" "<<position.getY()<<"\n\n"<<std::endl;
     if (position.getY() >= 800 - PLAYER_HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
         std::cout<<"position at fall: x "<< position.getX()<<" y "<<position.getY()<<std::endl;
@@ -158,8 +160,12 @@ void Player::handleCollisions() {
     
     // Push the player out of a wall
     if (velocity.getX() > 0) {
-        for (auto y = topY; y <= bottomY; y++) {
-            if (level->colliderTileAt(Vector2(rightX, y))) {
+        for (auto y = topY; y <= bottomY-1; y++) {
+            auto collideWorld = level -> getWorldCollisionObject(Vector2(rightX, y));
+            if (collideWorld) {
+                position.setX(collideWorld->bounds.x - hitboxWidth-1);
+                velocity.setX(0);
+                
                 std::cout << "possible right collision" << std::endl;
             }
         }
@@ -181,7 +187,7 @@ void Player::handleCollisions() {
 
 
                 velocity.setY(0);
-
+                onGround=true;
                 // Attempt a buffered jump
                 if (bufferedJump) {
                     jump();

@@ -48,7 +48,8 @@ class Player : public Character {
 
     // Jump buffering mechanic lets you hold down the jump key to jump as soon as you land
     bool bufferedJump = false;
- 
+    
+    bool onGround=false;
 
     public:
     Player(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {}
