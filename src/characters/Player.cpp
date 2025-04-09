@@ -159,19 +159,30 @@ void Player::handleCollisions() {
     // std::cout<<"topY: "<<topY<<" bottomY: "<<bottomY<<" leftX: "<<leftX<<" rightX: "<<rightX<<std::endl;
     
     // Push the player out of a wall
-    if (velocity.getX() > 0) {
+    // if (velocity.getX() > 0) {
         for (auto y = topY; y <= bottomY-1; y++) {
+            if (getCurrentDirection()==MoveDirection::RIGHT){
             auto collideWorld = level -> getWorldCollisionObject(Vector2(rightX, y));
             if (collideWorld) {
+                std::cout<<"Right Collision Detected"<<std::endl;
                 std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x<<"player width" <<hitboxWidth<<" rightX *32 "<<rightX*32<<std::endl;
                 // position.setX(collideWorld->bounds.x - hitboxWidth);
                 position.setX((rightX*32)-(PLAYER_WIDTH/2));
                 velocity.setX(0);
                 
-                std::cout << "possible right collision" << std::endl;
-            }
+            }}
+            else if (getCurrentDirection()==MoveDirection::LEFT){
+            auto collideWorld = level -> getWorldCollisionObject(Vector2(leftX, y));
+            if (collideWorld ){
+                std::cout<<"Left Collision Detected"<<std::endl;
+                std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x+collideWorld->bounds.h<<"player width" <<hitboxWidth<<" leftX*32 "<<leftX*32<<std::endl;
+                position.setX((leftX*32)+collideWorld->bounds.w+(PLAYER_WIDTH/2)-2);
+                // position.setX(collideWorld->bounds.x+collideWorld->bounds.w+(PLAYER_WIDTH/2)+1);
+                velocity.setX(0);
+                
+            }}
         }
-    }
+    // }
 
     // Check bottom tiles
     for (auto x = leftX; x <= rightX; x++) {
@@ -202,7 +213,7 @@ void Player::handleCollisions() {
     // Check ceiling tiles
     for (auto x = leftX; x <= rightX; x++) {
             auto collideWorld = level -> getWorldCollisionObject(Vector2(x, topY));
-            if(collideWorld){
+            if(collideWorld&& velocity.getY() < 0){
                 auto collideLocal = level-> getLocalCollisionObject(Vector2(x,topY));
                 std::cout<<"CW x: "<<collideWorld->bounds.x<<" y: "<<collideWorld->bounds.y<<" w: "<<collideWorld->bounds.w<<" h: "<<collideWorld->bounds.h<<std::endl;
                 std::cout<<"CL x: "<<collideLocal->bounds.x<<" y: "<<collideLocal->bounds.y<<" w: "<<collideLocal->bounds.w<<" h: "<<collideLocal->bounds.h<<std::endl;
