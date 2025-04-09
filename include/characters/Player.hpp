@@ -7,6 +7,7 @@
 #include "MoveDirection.hpp"
 #include "Projectile.hpp"
 #include "physics/BoundingBox.hpp"
+#include "physics/Vector2.hpp"
 
 #include <deque>
 
@@ -43,10 +44,11 @@ class Player : public Character {
     int animationTicks = 0;
 
     // Player hitbox dimensions
-    BoundingBox hitbox = BoundingBox(Vector2(-6, -24), Vector2(18, 56));
+    BoundingBox hitbox = BoundingBox(Vector2(-5, -24), Vector2(19, 56));
 
     // Jump buffering mechanic lets you hold down the jump key to jump as soon as you land
     bool bufferedJump = false;
+ 
 
     public:
     Player(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {}

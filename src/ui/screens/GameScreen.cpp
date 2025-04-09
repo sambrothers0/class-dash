@@ -26,7 +26,11 @@ bool isJumpPressed(const Uint8* keysPressed) {
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
     for (const auto& layer : level->getLayers()) {
         for (const auto& block : layer->getBlocks()) {
+            
             uint32_t tileID = layer->getID(block);
+            auto t = layer->hasFlipFlag(block);
+            if(t){std::cout<<"got tile "<<tileID<<"flip flag? "<<t<<std::endl;}
+            
 
             // Quit out if hitboxes are not being shown and the given tile is a hitbox tile
             if (!showHitboxes && level->isHitboxGID(tileID)) {
