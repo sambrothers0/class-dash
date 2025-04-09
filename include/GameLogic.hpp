@@ -1,11 +1,12 @@
 #ifndef _GAME_LOGIC_H
 #define _GAME_LOGIC_H
 
-#include "characters/Player.hpp"
 #include "levels/Level.hpp"
 #include "GameState.hpp"
 
 #include <memory>
+
+class Player;
 
 class GameLogic {
     private:

@@ -1,4 +1,5 @@
 #include "GameLogic.hpp"
+#include "characters/Player.hpp"
 
 #include "mathutils.hpp"
 

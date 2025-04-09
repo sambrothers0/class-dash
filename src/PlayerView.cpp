@@ -70,6 +70,10 @@ void PlayerView::handleEvent(SDL_Event& event) {
     }
 }
 
+void PlayerView::handleExtraEvents() {
+    screen->handleExtraEvents();
+}
+
 void PlayerView::switchToTitleScreen() {
     screen = std::make_unique<TitleScreen>(TitleScreen(renderer, font));
 }

@@ -3,6 +3,7 @@
 
 #include "physics/Vector2.hpp"
 #include <vector>
+#include <set>
 #include <iostream>
 #include <sstream>
 #include <tmxlite/Map.hpp>
@@ -10,9 +11,23 @@
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/Tileset.hpp>
 #include "sprites/Spritesheet.hpp"
+#include "physics/BoundingBox.hpp"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Layer.hpp"
+#include <tuple>
+
+
+// Structure to represent a tsx object
+struct CollisionObject {
+    SDL_Rect bounds;
+    std::string type;
+    std::string name;
+};
+
+
+
+
 // Class for the current level's data
 class Level {
     private:
@@ -26,10 +41,17 @@ class Level {
     std::vector<uint32_t> ids;
     std::vector<std::shared_ptr<Layer>> layers;
 
+    // List of GIDs of hitboxes
+    std::set<uint32_t> hitboxIDs;
+
+    // Store all collision objects in the world with globally based coordinates
+    std::vector<CollisionObject> collisionObjects;
+
+    // Store tile IDs with their respective collision object with local coordinates (ie: since the bounds for a grass block are the full sqaure, x:0, y:0, w:32, h:32)
+    std::unordered_map<uint32_t, std::vector<CollisionObject>> tileCollisions;
 
     public:
     Level(Vector2 _dimensions, SDL_Renderer* _renderer) : dimensions(_dimensions), renderer(_renderer) {}
-
     Vector2 getDimensions() const {
         return dimensions;
     }
@@ -38,17 +60,40 @@ class Level {
         return blocks;
     }
 
-    std::vector<std::shared_ptr<Layer>> getLayers() {
-        return layers;
+    std::unordered_map<unsigned int, std::vector<CollisionObject>> getTileCollisions() {
+        return tileCollisions;
     }
 
+    std::vector<std::shared_ptr<Layer>>& getLayers() {
+        return layers;
+    }
 
     // gets global ID for a given block
     uint32_t getID(const Vector2& block) const;
 
+    // returns the CollisionObject with Local Bounds
+    const CollisionObject* getLocalCollisionObject(const Vector2& position) const;
+
+    // returns the ColliisonObject with World Bounds
+    const CollisionObject* getWorldCollisionObject(const Vector2& position) const;
+
     void setBlocks(std::vector<Vector2> _blocks) {
         blocks = _blocks;
     }
+
+    // Does the list of hitbox IDs contain the given gid?
+    bool isHitboxGID(uint32_t gid) const {
+        return hitboxIDs.find(gid) != hitboxIDs.end();
+    }
+
+    // Does the tile ID has collisions associated with it?
+    bool isCollisionGID(uint32_t gid) const {
+        return tileCollisions.find(gid) !=tileCollisions.end();
+    }
+
+    // bool collidedWith(const Vector2& position) const;
+    // Returns if there is a tile at the given position with a collider
+    bool colliderTileAt(const Vector2& position) const;
 
     // gets the correct spritesheet given a specific global ID
     std::shared_ptr<Spritesheet> getSpritesheetForGID(uint32_t gid);
