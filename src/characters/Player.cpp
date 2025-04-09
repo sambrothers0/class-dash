@@ -77,12 +77,16 @@ void Player::shoot() {
     auto newProjectile = Projectile(position, currentDirection);
 
     if (currentDirection == MoveDirection::LEFT) {
+        newProjectile.setStartingPosition(currentDirection);
         newProjectile.setVelocity(-300, 0);
     } else if (currentDirection == MoveDirection::RIGHT) {
+        newProjectile.setStartingPosition(currentDirection);
         newProjectile.setVelocity(300, 0);
     } else if (lastDirection == MoveDirection::LEFT) {
+        newProjectile.setStartingPosition(lastDirection);
         newProjectile.setVelocity(-300, 0);
     } else {
+        newProjectile.setStartingPosition(MoveDirection::RIGHT);
         newProjectile.setVelocity(300, 0);
     }
 

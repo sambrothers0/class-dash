@@ -9,12 +9,14 @@ class TimeKeeper {
 
     private:
         int minutes, seconds, startTime, endTime;
-        Uint64 timeElapsed;
+        Uint64 timeElapsed, lastTime;
+        bool timeRunning;
 
     public:
         TimeKeeper(); // initialize the time 
-        void resetTime(); // set reset timer by setting the startime to the current time
-        void updateTime(); // updates the time in the gameloop
+        void pauseTimer() {timeRunning = false;}
+        void resetTimer(); // set reset timer by setting the startime to the current time
+        void beginTimer(); // updates the time in the gameloop
 
         std::string getTime();
     
