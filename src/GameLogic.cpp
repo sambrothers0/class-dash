@@ -38,10 +38,13 @@ void GameLogic::activate(SDL_Renderer* renderer) {
 void GameLogic::pause() {
     player->stopMoving();
     state = GameState::PAUSED;
+    timer->pauseTimer();
 }
 
 void GameLogic::resume() {
     state = GameState::ACTIVE;
+    std::thread time(&TimeKeeper::beginTimer, timer);
+    time.detach();
 }
 
 void GameLogic::quitLevel() {

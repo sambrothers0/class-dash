@@ -51,7 +51,7 @@ void TimeKeeper::beginTimer() {
     */
 }
 
-void TimeKeeper::resetTime() {
+void TimeKeeper::resetTimer() {
     endTime = timeElapsed;
     /*
     endTime = SDL_GetTicks64();

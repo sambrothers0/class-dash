@@ -14,8 +14,8 @@ class TimeKeeper {
 
     public:
         TimeKeeper(); // initialize the time 
-        void pauseTime() {timeRunning = false;}
-        void resetTime(); // set reset timer by setting the startime to the current time
+        void pauseTimer() {timeRunning = false;}
+        void resetTimer(); // set reset timer by setting the startime to the current time
         void beginTimer(); // updates the time in the gameloop
 
         std::string getTime();
