@@ -163,7 +163,9 @@ void Player::handleCollisions() {
         for (auto y = topY; y <= bottomY-1; y++) {
             auto collideWorld = level -> getWorldCollisionObject(Vector2(rightX, y));
             if (collideWorld) {
-                position.setX(collideWorld->bounds.x - hitboxWidth-1);
+                std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x<<"player width" <<hitboxWidth<<" rightX *32 "<<rightX*32<<std::endl;
+                // position.setX(collideWorld->bounds.x - hitboxWidth);
+                position.setX((rightX*32)-(PLAYER_WIDTH/2));
                 velocity.setX(0);
                 
                 std::cout << "possible right collision" << std::endl;
