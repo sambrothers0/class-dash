@@ -10,3 +10,21 @@ uint32_t Layer::getID(const Vector2& block) const {
     }
     return 0;  
 }
+
+bool Layer::hasFlipFlag(const Vector2& block) const {
+    uint32_t gid = getID(block);
+    for (auto tile : layerTiles) {
+        std::cout<<tile.ID<<"here"<<std::endl;
+        if (tile.flipFlags !=0){
+            std::cout<<"Flipped"<<std::endl;
+        }
+    }
+
+    const uint32_t H_FLIP = 0x80000000;
+    const uint32_t V_FLIP = 0x40000000;
+    const uint32_t D_FLIP = 0x20000000;
+
+
+
+    return (gid & (H_FLIP | V_FLIP | D_FLIP)) != 0;
+}
