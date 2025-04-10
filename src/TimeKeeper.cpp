@@ -6,15 +6,13 @@
 
 TimeKeeper::TimeKeeper() {
     SDL_Init(SDL_INIT_TIMER);
-    //startTime = 0;
-    startTime = 180;
+
+    startTime = 30;
     endTime = 0;
     minutes = 0;
     seconds = 0;
     timeRunning = false;
-    //timeElapsed = SDL_GetTicks64();
     timeElapsed = startTime;
-    uint64_t lastTime = 0;
 }
 
 void TimeKeeper::beginTimer() {
