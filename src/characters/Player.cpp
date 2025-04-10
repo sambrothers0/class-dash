@@ -175,14 +175,18 @@ void Player::handleCollisions() {
                 velocity.setX(0);
 
             }}
-            else if (getCurrentDirection()==MoveDirection::LEFT){
-            auto collideWorld = level -> getWorldCollisionObject(Vector2(leftX, y));
-            if (collideWorld ){
-                std::cout<<"Left Collision Detected"<<std::endl;
-                std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x+collideWorld->bounds.h<<"player width" <<hitboxWidth<<" leftX*32 "<<leftX*32<<std::endl;
-                position.setX((leftX*32)+collideWorld->bounds.w+(PLAYER_WIDTH/2)-2);
-                // position.setX(collideWorld->bounds.x+collideWorld->bounds.w+(PLAYER_WIDTH/2)+1);
-                velocity.setX(0);
+            else if (getCurrentDirection()==MoveDirection::LEFT){ // stops player from going off the left edge of the map
+                if(position.getX()<=(0+(PLAYER_WIDTH/2))) {
+                    velocity.setX(0); 
+                    position.setX(0+(PLAYER_WIDTH/2));
+                } 
+                auto collideWorld = level -> getWorldCollisionObject(Vector2(leftX, y));
+                if (collideWorld ){
+                    std::cout<<"Left Collision Detected"<<std::endl;
+                    std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x+collideWorld->bounds.h<<"player width" <<hitboxWidth<<" leftX*32 "<<leftX*32<<std::endl;
+                    position.setX((leftX*32)+collideWorld->bounds.w+(PLAYER_WIDTH/2)-2);
+                    // position.setX(collideWorld->bounds.x+collideWorld->bounds.w+(PLAYER_WIDTH/2)+1);
+                    velocity.setX(0);
 
             }}
         }
