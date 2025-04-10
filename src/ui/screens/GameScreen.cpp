@@ -1,5 +1,6 @@
 #include "ui/screens/GameScreen.hpp"
 #include "GameLogic.hpp"
+#include "gameDimensions.hpp"
 #include "levels/Level.hpp"
 #include "sprites/PlayerTexture.hpp"
 
@@ -46,9 +47,9 @@ void GameScreen::drawLevel(std::shared_ptr<Level> level) {
                 continue;
             }
 
-            auto drawOffset = 16;
+            auto drawOffset = TILE_SIZE / 2;
 
-            Vector2 blockPosition(block.getX() * 32 - scrollOffset + drawOffset, block.getY() * 32 + drawOffset);
+            Vector2 blockPosition(block.getX() * TILE_SIZE - scrollOffset + drawOffset, block.getY() * TILE_SIZE + drawOffset);
             int spriteIndex = tileID - spritesheet->getFirstGID();
 
             spritesheet->draw(spriteIndex, blockPosition, flip);
@@ -170,5 +171,13 @@ void GameScreen::handleExtraEvents() {
 
     if (isJumpPressed(keysPressed)) {
         player->jump();
+    }
+
+    if (isMoveLeftPressed(keysPressed)) {
+        player->moveLeft();
+    }
+
+    if (isMoveRightPressed(keysPressed)) {
+        player->moveRight();
     }
 }

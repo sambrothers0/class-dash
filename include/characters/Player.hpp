@@ -44,15 +44,26 @@ class Player : public Character {
     int animationTicks = 0;
 
     // Player hitbox dimensions
-    BoundingBox hitbox = BoundingBox(Vector2(-5, -24), Vector2(19, 56));
+    BoundingBox hitbox = BoundingBox(Vector2(-5, -24), Vector2(20, 56));
 
     // Jump buffering mechanic lets you hold down the jump key to jump as soon as you land
     bool bufferedJump = false;
     
     bool onGround=false;
+    bool falling=true;
+    double fallHeight;
+
+    bool isJumping=false;
+
+    // Handles any floor collisions
+    void handleFloorCollisions();
+    void handleCeilingCollisions();
+
+    void handleRightCollisions();
+    void handleLeftCollisions();
 
     public:
-    Player(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {}
+    Player(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
