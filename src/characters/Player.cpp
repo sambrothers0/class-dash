@@ -261,10 +261,12 @@ void Player::handleCeilingCollisions() {
     auto leftX = hitbox.getLeftX();
     auto rightX = hitbox.getRightX();
 
-    for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
+    // The idea is to factor in if the player is moving in a direction
+    for (auto x = (currentDirection == MoveDirection::LEFT ? leftX + 4 : leftX); x <= (currentDirection == MoveDirection::RIGHT ? rightX - 8 : rightX); x += TILE_SIZE / 2) {
         auto collideWorld = level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(topY / TILE_SIZE)));
 
         if (collideWorld) {
+            std::cout << "ceiling collision" << std::endl;
             // position.setX(collideWorld->bounds.x - hitboxWidth);
             position.setY(collideWorld->bounds.y + collideWorld->bounds.h + PLAYER_HEIGHT / 2 + 1);
             velocity.setY(0.1);
@@ -338,14 +340,14 @@ void Player::handleCollisions() {
      * If the player is jumping, only check vertically once they reach the peak of their jump
      */
 
+     handleFloorCollisions();
+
+     if (velocity.getY() < 0)
+        handleCeilingCollisions();
+
      if (velocity.getX() > 0) {
         handleRightCollisions();
      } else if (velocity.getX() < 0) {
         handleLeftCollisions();
      }
-
-     handleFloorCollisions();
-
-     if (velocity.getY() < 0)
-        handleCeilingCollisions();
 }
