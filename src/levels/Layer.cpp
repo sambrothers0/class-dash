@@ -4,7 +4,7 @@
 // gets global ID for a given block
 uint32_t Layer::getID(const Vector2& block) const { 
     for (size_t i = 0; i < blocks.size(); ++i) {
-        if (blocks[i] == block) { 
+        if (std::get<0>(blocks[i]) == block) { 
             return ids[i];         
         }
     }

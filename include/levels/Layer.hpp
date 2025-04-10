@@ -7,10 +7,11 @@
 #include "SDL.h"
 #include <tmxlite/Layer.hpp>
 #include <tmxlite/TileLayer.hpp>
+#include <tuple>
 
 class Layer {
     private:
-    std::vector<Vector2> blocks;
+    std::vector<std::tuple<Vector2, int>> blocks;
     std::vector<uint32_t> ids;
     std::vector<tmx::TileLayer::Tile> layerTiles;
     std::string name;
@@ -18,9 +19,9 @@ class Layer {
 
 
     public:
-    Layer(std::vector<Vector2> _blocks, std::vector<uint32_t> _ids, std::string _name) : blocks(_blocks), ids(_ids), name(_name){}
+    Layer(std::vector<std::tuple<Vector2, int>> _blocks, std::vector<uint32_t> _ids, std::string _name) : blocks(_blocks), ids(_ids), name(_name){}
 
-    const std::vector<Vector2>& getBlocks() const {
+    const std::vector<std::tuple<Vector2, int>>& getBlocks() const {
         return blocks;
     }
 
