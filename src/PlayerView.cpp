@@ -9,6 +9,7 @@
 #include "ui/screens/PauseScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
 #include "ui/screens/HowToPlayScreen.hpp"
+#include "ui/screens/LevelLoseScreen.hpp"
 
 void PlayerView::setupSDL() {
     // Create window
@@ -54,7 +55,7 @@ void PlayerView::draw() {
 }
 
 void PlayerView::handleEvent(SDL_Event& event) {
-    int eventStatus = screen->handleEvent(event);
+    auto eventStatus = screen->handleEvent(event);
     if (eventStatus == ScreenType::TITLE) {
         switchToTitleScreen();
     } else if (eventStatus == ScreenType::HOW_TO_PLAY) {
@@ -71,7 +72,9 @@ void PlayerView::handleEvent(SDL_Event& event) {
 }
 
 void PlayerView::handleExtraEvents() {
-    screen->handleExtraEvents();
+    if (screen->handleExtraEvents() == ScreenType::LEVEL_LOSE) {
+        switchToLevelLoseScreen();
+    }
 }
 
 void PlayerView::switchToTitleScreen() {
@@ -115,6 +118,12 @@ void PlayerView::switchToGameScreen() {
 
 void PlayerView::switchToPauseConfirmQuitScreen() {
     screen = std::make_unique<PauseConfirmQuitScreen>(PauseConfirmQuitScreen(renderer, font));
+}
+
+void PlayerView::switchToLevelLoseScreen() {
+    auto& gameLogic = game.getGameLogic();
+    gameLogic.quitLevel();
+    screen = std::make_unique<LevelLoseScreen>(LevelLoseScreen(renderer, font));
 }
 
 PlayerView::~PlayerView() {
