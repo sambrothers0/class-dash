@@ -35,7 +35,7 @@ class Level {
     SDL_Renderer* renderer;
     // For now the level is just going to have a few blocks to be drawn (this is temporary)
     // These are relative coordinates multiplied by 32 for drawing, to make it easier to define manually
-    std::vector<Vector2> blocks;
+    std::vector<std::tuple<Vector2,int>> blocks; // int will be 1 if there is a flip flag for the tile
 
     std::vector<std::shared_ptr<Spritesheet>> spritesheets;
     std::vector<uint32_t> ids;
@@ -56,7 +56,8 @@ class Level {
         return dimensions;
     }
 
-    std::vector<Vector2>& getBlocks() {
+
+    std::vector<std::tuple<Vector2,int>>& getBlocks() {
         return blocks;
     }
 
@@ -77,7 +78,9 @@ class Level {
     // returns the ColliisonObject with World Bounds
     const CollisionObject* getWorldCollisionObject(const Vector2& position) const;
 
-    void setBlocks(std::vector<Vector2> _blocks) {
+  
+
+    void setBlocks(std::vector<std::tuple<Vector2, int>> _blocks) {
         blocks = _blocks;
     }
 
