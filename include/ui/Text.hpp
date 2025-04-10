@@ -34,6 +34,7 @@ class Text {
     void draw();
 
     void setText(const std::string& _text);
+    std::string getText() const { return text; }
 
     ~Text();
 };

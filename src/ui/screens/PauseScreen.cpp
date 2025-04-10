@@ -15,16 +15,20 @@ void PauseScreen::draw() {
 
     if (cursorPosition == 0) {
         buttonColor = highlightedColor;
+        resume.setText(">Resume<");
     } else {
         buttonColor = defaultColor;
+        resume.setText("Resume");
     }
     drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
     resume.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
+        quit.setText(">Quit<");
     } else {
         buttonColor = defaultColor;
+        quit.setText("Quit");
     }
     drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
     quit.draw();
