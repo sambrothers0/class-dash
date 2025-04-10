@@ -24,7 +24,7 @@ class Screen {
     virtual void draw() = 0;
 
     // Handles extra SDL events that aren't specifically covered by SDL_Event, such as ensuring that a key is still held down
-    virtual void handleExtraEvents() {}
+    virtual ScreenType handleExtraEvents() { return ScreenType::KEEP; }
 
     // Handles events, return value indicates if the screen needs to be switched
     virtual ScreenType handleEvent(SDL_Event& event) { return ScreenType::KEEP; }

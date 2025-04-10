@@ -164,7 +164,13 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
     return ScreenType::KEEP;
 }
 
-void GameScreen::handleExtraEvents() {
+ScreenType GameScreen::handleExtraEvents() {
+    // lose checking needs to happen outside handleEvent because 
+    // we need to lose the level even if the player is not pressing any keys
+    if (gameLogic.getTimer()->isTimeUp()) {
+        return ScreenType::LEVEL_LOSE; // Switch to level lose screen
+    }
+
     // Jump buffering handle needs to happen outside of HandleEvent because that can't tell if a key is still held down
     const Uint8* keysPressed = SDL_GetKeyboardState(NULL);
     auto player = gameLogic.getPlayer();
@@ -180,4 +186,6 @@ void GameScreen::handleExtraEvents() {
     if (isMoveRightPressed(keysPressed)) {
         player->moveRight();
     }
+    
+    return ScreenType::KEEP;
 }

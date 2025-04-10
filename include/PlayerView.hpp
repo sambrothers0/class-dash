@@ -54,7 +54,11 @@ class PlayerView {
     // Switches to the game screen
     void switchToGameScreen();
 
+    // Switches to the pause confirm quit screen
     void switchToPauseConfirmQuitScreen();
+    
+    // Switches to the level lose screen
+    void switchToLevelLoseScreen();
 
     // Pass Renderer
     SDL_Renderer* getRenderer() {

@@ -11,12 +11,12 @@ class PauseConfirmQuitScreen : public Screen {
 
     int cursorPosition = 0;
 
-    Text confirmText, yes, no;
+    Text confirm, yes, no;
 
     public:
     PauseConfirmQuitScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
         Screen(_renderer), font(_font), 
-            confirmText(_renderer, _font, Vector2(512, 100), 30, { 0, 0, 0, 255 }, "Do you really want to quit?"),
+            confirm(_renderer, _font, Vector2(512, 100), 30, { 0, 0, 0, 255 }, "Do you really want to quit?"),
             yes(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Yes"),
             no(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "No")
         {}

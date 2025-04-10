@@ -5,6 +5,7 @@
 void HowToPlayScreen::draw() {
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
+    howToPlay.draw();
     playerControlsTitle.draw();
     playerControlsText1.draw();
     playerControlsText2.draw();
