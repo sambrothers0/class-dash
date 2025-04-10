@@ -23,7 +23,7 @@ void Player::move(double ms) {
         velocity.setY(velocity.getY() + GRAVITY * seconds);
 
         // Once the jump has reached its maximum height, start falling
-        if (isJumping && velocity.getY() <= 0) {
+        if (isJumping && velocity.getY() > 0) {
             falling = true;
         }
     }
@@ -140,6 +140,7 @@ void Player::moveRight() {
 
 void Player::jump() {
     if (velocity.getY() == 0) {
+        std::cout << "jump" << std::endl;
         velocity.setY(-500);
         position -= Vector2(0, 1); // Update position to avoid an immediate collision with the ground
         bufferedJump = false;
