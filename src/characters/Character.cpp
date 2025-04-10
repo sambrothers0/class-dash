@@ -1,6 +1,5 @@
 #include "characters/Character.hpp"
-
-const float GRAVITY = 980.0f; 
+#include "physics/physicsConstants.hpp"
 
 void Character::move(double ms) {
     double seconds = ms / 1000;

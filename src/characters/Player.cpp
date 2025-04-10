@@ -1,4 +1,5 @@
 #include "characters/Player.hpp"
+#include "physics/physicsConstants.hpp"
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -12,9 +13,18 @@ int Player::getCurrentAnimationOffset() const {
     return (animationTicks % 40) / 10;
 }
 
-void Player::move(double ms) {
-    Character::move(ms);
+void Player::move(double ms) {    
+    // Basic character movement
+    double seconds = ms / 1000;
 
+    // Only apply vertical acceleration if the player is not on the ground
+    if (!onGround) {
+        velocity.setY(velocity.getY() + GRAVITY * seconds);
+    }
+
+    position += velocity * seconds;
+
+    // Deal with more advanced functionality
     if (currentDirection != MoveDirection::NONE) {
         animationTicks++;
     }
@@ -193,6 +203,8 @@ void Player::handleCollisions() {
     // }
 
     // Check bottom tiles
+    bool foundGround = false;
+
     for (auto x = leftX; x <= rightX; x++) {
         // if (level->colliderTileAt(Vector2(x, bottomY))) {
             auto collideWorld = level -> getWorldCollisionObject(Vector2(x, bottomY));
@@ -204,7 +216,8 @@ void Player::handleCollisions() {
             // Push the player back out
 
 
-                position.setY((bottomY * 32 - PLAYER_HEIGHT / 2)+ (collideLocal->bounds.y));
+                if (!onGround)
+                    position.setY((bottomY * 32 - PLAYER_HEIGHT / 2)+ (collideLocal->bounds.y));
 
 
                 velocity.setY(0);
@@ -212,10 +225,16 @@ void Player::handleCollisions() {
                 // Attempt a buffered jump
                 if (bufferedJump) {
                     jump();
+                } else {
+                    foundGround = true;
                 }
 
                 break;
             }
+    }
+
+    if (!foundGround) {
+        onGround = false;
     }
 
     // Check ceiling tiles
