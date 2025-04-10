@@ -13,8 +13,6 @@ class HowToPlayScreen : public Screen {
         objectiveText4, objectiveText5, objectiveText6, objectiveText7, objectiveText8, 
         objectiveText9, objectiveText10, back;
 
-    unsigned int levelsCompleted = 0;
-
     public:
     HowToPlayScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
         Screen(_renderer), font(_font), 

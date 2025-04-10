@@ -8,7 +8,7 @@ void TitleScreen::draw() {
     drawBackground(renderer, background);
 
     // Draw the title text
-    titleText.draw();
+    title.draw();
 
     SDL_Color buttonColor;
     SDL_Color defaultColor = {147, 115, 64, 255}; // Default color for buttons
@@ -22,7 +22,7 @@ void TitleScreen::draw() {
         buttonColor = defaultColor;
     }
     drawButton(renderer, 512 - 170, 384 + 150, 350, 100, buttonColor);
-    startText.draw();
+    start.draw();
 
     // Draw the second button (How to Play Button)
     if (cursorPosition == 1) {
@@ -31,7 +31,7 @@ void TitleScreen::draw() {
         buttonColor = defaultColor;
     }
     drawButton(renderer, 512 - 220, 384 + 275, 450, 75, buttonColor);
-    howToPlayText.draw();
+    howToPlay.draw();
 
 }
 

@@ -5,7 +5,7 @@ Projectile::Projectile(Vector2 playerPosition, MoveDirection playerDirection)
     active = true;
     currentPosition.setX(playerPosition.getX());
     currentPosition.setY(playerPosition.getY());
-
+    
     startingPosition.setX(playerPosition.getX());
     startingPosition.setY(playerPosition.getY());
 }
@@ -38,6 +38,19 @@ void Projectile::move(double ms) {
    if (std::abs(currentPosition.getX() - startingPosition.getX()) > 500) {
         setActive(false);
    }
+}
+
+void Projectile::setStartingPosition(MoveDirection direction) {
+    double offset = 20;
+
+    if (direction == MoveDirection::LEFT) {
+        startingPosition.setX(startingPosition.getX() - offset);
+        currentPosition.setX(startingPosition.getX());
+    }
+    else if (direction == MoveDirection::RIGHT) {
+        startingPosition.setX(startingPosition.getX() + offset);
+        currentPosition.setX(startingPosition.getX());
+    }
 }
 
 void Projectile::setVelocity(double x, double y) {

@@ -1,5 +1,7 @@
 #include "mathutils.hpp"
 
+#include <cmath>
+
 namespace mathutils {
     bool isBetween(double num, double low, double high) {
         return num >= low && num <= high;
@@ -13,5 +15,9 @@ namespace mathutils {
         } else {
             return num;
         }
+    }
+    
+    double floorInterval(double num, double interval) {
+        return floor(num / interval) * interval;
     }
 }

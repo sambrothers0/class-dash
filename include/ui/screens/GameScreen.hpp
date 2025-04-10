@@ -6,10 +6,14 @@
 
 #include "sprites/Spritesheet.hpp"
 
+#include "physics/BoundingBox.hpp"
+
 class GameScreen : public Screen {
     private:
     GameLogic& gameLogic;
     TTF_Font* font;
+
+    Text timeText;
 
     // Spritesheet for the player
     Spritesheet playerSprite;
@@ -18,11 +22,25 @@ class GameScreen : public Screen {
     // Offset for drawing
     double scrollOffset;
 
+    // Display hitboxes?
+    bool showHitboxes = false;
+    bool hitboxKeyActive = false;
+
     void drawLevel(std::shared_ptr<Level> level);
 
+    void drawCollisionHitbox(const Vector2& position, const BoundingBox& hitbox) const;
+
     public:
-    GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) :
-        Screen(_renderer), gameLogic(_gameLogic), font(_font), playerSprite(
+    GameScreen(SDL_Renderer* _renderer, GameLogic& _gameLogic, TTF_Font* _font) : 
+        Screen(_renderer), gameLogic(_gameLogic), font(_font), timeText(
+            _renderer,
+            _font,
+            Vector2(150, 100),
+            50,
+            SDL_Color { 0, 255, 255 },
+            //"Test"
+            gameLogic.getTimer()->getTime()
+        ), playerSprite(
             _renderer,
             "../assets/visual/player-spritesheet.png",
             Vector2(PLAYER_WIDTH, PLAYER_HEIGHT),
@@ -31,6 +49,8 @@ class GameScreen : public Screen {
         ) {}
 
     virtual void draw();
+
+    virtual void handleExtraEvents();
 
     virtual ScreenType handleEvent(SDL_Event&);
     void updateLevelTextures(std::shared_ptr<Level> level);
