@@ -8,7 +8,8 @@ enum ScreenType {
     LEVEL_SELECT,
     GAME,
     PAUSE,
-    PAUSE_CONFIRM_QUIT
+    PAUSE_CONFIRM_QUIT,
+    LEVEL_LOSE,
 };
 
 #endif
