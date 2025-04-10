@@ -20,28 +20,36 @@ void LevelSelectScreen::draw() {
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
     levelSelect.draw();
+
+    //initialize this to something arbitrary so we dont have to call a constructor
+    Text currentText = levelTexts[0];
     SDL_Color buttonColor;
     SDL_Color defaultColor = {147, 115, 64, 255}; // Default color for buttons
     SDL_Color lockedColor = {111, 94, 68, 255}; // Locked color for buttons
     SDL_Color highlightedColor = {207, 171, 112, 255}; // Highlighted color for buttons
 
-    for (int levelIdx = 0; levelIdx < 5; levelIdx++) {
-        if (levelsUnlocked <= levelIdx) {
+    for (int i = 0; i < 5; i++) {
+        currentText = levelTexts[i];
+        if (levelsUnlocked <= i) {
             buttonColor = lockedColor;
-        } else if (cursorPosition == levelIdx) {
+        } else if (cursorPosition == i) {
             buttonColor = highlightedColor;
+            currentText.setText(">" + levelTexts[i].getText() + "<");
         } else {
             buttonColor = defaultColor;
+            currentText.setText(levelTexts[i].getText());
         }
 
-        drawButton(renderer, 512 - 200, 160 + levelIdx * 100, 400, 75, buttonColor);
-        levelTexts[levelIdx].draw();
+        drawButton(renderer, 512 - 225, 160 + i * 100, 450, 75, buttonColor);
+        currentText.draw();
     }
 
     if (cursorPosition == levelsUnlocked) {
         buttonColor = highlightedColor;
+        back.setText(">Back<");
     } else {
         buttonColor = defaultColor;
+        back.setText("Back");
     }
 
     drawButton(renderer, 512 - 150, 665, 300, 60, buttonColor);

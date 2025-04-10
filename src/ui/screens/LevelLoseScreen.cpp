@@ -15,16 +15,20 @@ void LevelLoseScreen::draw() {
 
     if (cursorPosition == 0) {
         buttonColor = highlightedColor;
+        restart.setText(">Restart<");
     } else {
         buttonColor = defaultColor;
+        restart.setText("Restart");
     }
     drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
     restart.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
+        quit.setText(">Quit<");
     } else {
         buttonColor = defaultColor;
+        quit.setText("Quit");
     }
     drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
     quit.draw();

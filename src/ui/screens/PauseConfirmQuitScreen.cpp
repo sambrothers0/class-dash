@@ -14,16 +14,20 @@ void PauseConfirmQuitScreen::draw() {
 
     if (cursorPosition == 0) {
         buttonColor = highlightedColor;
+        yes.setText(">Yes<");
     } else {
         buttonColor = defaultColor;
+        yes.setText("Yes");
     }
     drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
     yes.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
+        no.setText(">No<");
     } else {
         buttonColor = defaultColor;
+        no.setText("No");
     }
     drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
     no.draw();
