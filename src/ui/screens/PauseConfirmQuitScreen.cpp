@@ -6,7 +6,7 @@ void PauseConfirmQuitScreen::draw() {
     // Draw the title screen
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
-    confirmText.draw();
+    confirm.draw();
 
     SDL_Color buttonColor;
     SDL_Color defaultColor = {147, 115, 64, 255}; // Default color for buttons
