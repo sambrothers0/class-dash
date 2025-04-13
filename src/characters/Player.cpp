@@ -214,8 +214,6 @@ void Player::handleFloorCollisions() {
             fallHeight = bottomY;
         }
      } else {
-        bool isOnGround = false;
-
         for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
             auto tileX = floor(x / TILE_SIZE);
             auto tileY = floor(bottomY / TILE_SIZE);
@@ -239,6 +237,7 @@ void Player::handleFloorCollisions() {
                 // std::cout << tilePos.y << ", " << bottomY << std::endl;
 
                 if (!partOfWall) {
+                    std::cout << "Hit ground" << std::endl;
                     position.setY(tilePos.y - PLAYER_HEIGHT / 2);
                     velocity.setY(0);
                     isJumping = false;
@@ -296,7 +295,14 @@ void Player::handleRightCollisions() {
         auto collideWorld = level -> getWorldCollisionObject(Vector2(floor(rightX / TILE_SIZE), floor(y / TILE_SIZE)));
 
         if (collideWorld) {
-            // std::cout<<"Right Collision Detected"<<std::endl;
+            auto bounds = collideWorld->bounds;
+
+            // The idea is to not have a collision because the block is too low/high
+            if (bounds.y >= bottomY || (bounds.y + bounds.h <= topY)) {
+                continue;
+            }
+
+            std::cout<<"Right Collision Detected"<<std::endl;
             // std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x<<"player width" <<hitboxWidth<<" rightX *32 "<<rightX*TILE_SIZE<<std::endl;/
             // position.setX(collideWorld->bounds.x - hitboxWidth);
             position.setX(collideWorld->bounds.x - PLAYER_WIDTH / 2 - 1);
@@ -323,6 +329,13 @@ void Player::handleLeftCollisions() {
         auto collideWorld = level -> getWorldCollisionObject(Vector2(floor(leftX / TILE_SIZE), floor(y / TILE_SIZE)));
 
         if (collideWorld) {
+            auto bounds = collideWorld->bounds;
+
+            // The idea is to not have a collision because the block is too low/high
+            if (bounds.y >= bottomY || (bounds.y + bounds.h <= topY)) {
+                continue;
+            }
+
             // std::cout<<"Left Collision Detected"<<std::endl;
             // std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x+collideWorld->bounds.h<<"player width" <<hitboxWidth<<" leftX*32 "<<leftX*TILE_SIZE<<std::endl;
             position.setX(collideWorld->bounds.x + collideWorld->bounds.w + PLAYER_WIDTH / 2 + 1);
