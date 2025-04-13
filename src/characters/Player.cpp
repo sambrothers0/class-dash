@@ -221,6 +221,13 @@ void Player::handleFloorCollisions() {
 
             // This line is the key
             if (worldTile) {
+                auto bounds = worldTile->bounds;
+    
+                // Check if the player is too far left/right
+                if (bounds.x >= rightX || (bounds.x + bounds.w <= leftX)) {
+                    continue;
+                }
+
                 // If partOfWall is true, then we are against a wall and should not be able to jump or land.
                 auto partOfWall = level->getWorldCollisionObject(Vector2(tileX, tileY - 1));
 
@@ -268,6 +275,13 @@ void Player::handleCeilingCollisions() {
         auto collideWorld = level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(topY / TILE_SIZE)));
 
         if (collideWorld) {
+            auto bounds = collideWorld->bounds;
+
+            // Check if the player is too far left/right
+            if (bounds.x >= rightX || (bounds.x + bounds.w <= leftX)) {
+                continue;
+            }
+
             std::cout << "ceiling collision" << std::endl;
             // position.setX(collideWorld->bounds.x - hitboxWidth);
             position.setY(collideWorld->bounds.y + collideWorld->bounds.h + PLAYER_HEIGHT / 2 + 1);

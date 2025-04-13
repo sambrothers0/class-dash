@@ -48,7 +48,7 @@ void GameLogic::activate(SDL_Renderer* renderer) {
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
 
-    if (!level->loadFromTMX("../assets/visual/Level3.tmx", renderer)) {
+    if (!level->loadFromTMX("../assets/visual/Level2.tmx", renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
