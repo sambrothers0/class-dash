@@ -77,7 +77,7 @@ void GameScreen::draw() {
 
     playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT);
 
-    bool direction = false;
+    bool direction = true;
 
     // Draw the player hitbox
     if (showHitboxes)
@@ -87,13 +87,13 @@ void GameScreen::draw() {
     for (auto proj : player->getProjectiles()) {
         Vector2 projectilePosition = proj.getPosition();
         //boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
-        if (player->getCurrentDirection() == MoveDirection::RIGHT) {
-            direction = false;
-        }
-        else if (player->getCurrentDirection() == MoveDirection::LEFT) {
+        if (player->getLastDirection() == MoveDirection::RIGHT) {
             direction = true;
         }
-        objectSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), direction);
+        else if (player->getLastDirection() == MoveDirection::LEFT) {
+            direction = false;
+        }
+        playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), direction);
     }
     
     // Display the Time on the screen

@@ -17,7 +17,7 @@ class GameScreen : public Screen {
 
     // Spritesheet for the player
     Spritesheet playerSprite;
-    Spritesheet objectSprite;
+    Spritesheet playerProjectileSprite;
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
@@ -47,7 +47,7 @@ class GameScreen : public Screen {
             Vector2(PLAYER_WIDTH, PLAYER_HEIGHT),
             5,
             2
-        ), objectSprite(
+        ), playerProjectileSprite(
             _renderer,
             "../assets/visual/objectSpritesheet.png",
             Vector2(32, 32),
