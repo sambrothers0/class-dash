@@ -223,6 +223,7 @@ void Player::handleFloorCollisions() {
 
             // This line is the key
             if (worldTile) {
+                // If partOfWall is true, then we are against a wall and should not be able to jump or land.
                 auto partOfWall = level->getWorldCollisionObject(Vector2(tileX, tileY - 1));
 
                 auto tilePos = worldTile->bounds;
@@ -261,6 +262,7 @@ void Player::handleCeilingCollisions() {
     auto bottomY = hitbox.getBottomY();
     auto leftX = hitbox.getLeftX();
     auto rightX = hitbox.getRightX();
+    int unused;
 
     // The idea is to factor in if the player is moving in a direction
     for (auto x = (currentDirection == MoveDirection::LEFT ? leftX + 4 : leftX); x <= (currentDirection == MoveDirection::RIGHT ? rightX - 8 : rightX); x += TILE_SIZE / 2) {
