@@ -21,8 +21,11 @@ class Enemy : public Character {
 
         // Last direction moved
         MoveDirection lastDirection = MoveDirection::RIGHT;
+
+        int animationTicks = 0;
+
     public:
-        Enemy(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {velocity.setX(100);}
+        Enemy(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {velocity.setX(120);}
 
         MoveDirection getCurrentDirection() const {
             return currentDirection;
@@ -30,6 +33,10 @@ class Enemy : public Character {
 
         MoveDirection getLastDirection() const {
             return lastDirection;
+        }
+
+        int getCurrentAnimationOffset() const {
+            return (animationTicks % 20) / 10;
         }
 
         virtual void move(double ms);

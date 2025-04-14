@@ -2,6 +2,7 @@
 #include "GameLogic.hpp"
 #include "levels/Level.hpp"
 #include "sprites/PlayerTexture.hpp"
+#include "sprites/EnemyTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -83,7 +84,7 @@ void GameScreen::draw() {
 
     playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT);
 
-    enemySprite.draw(1, enemyPosition - Vector2(scrollOffset, 0));
+    enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT);
 
     // Draw the player hitbox
     if (showHitboxes)

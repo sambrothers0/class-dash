@@ -1,4 +1,5 @@
 #include "characters/Enemy.hpp"
+#include <iostream>
 
 void Enemy::move(double ms) {
     Character::move(ms);
@@ -22,22 +23,22 @@ void Enemy::moveOnTrack(double ms, Vector2 pointA, Vector2 pointB) {
     if (position.getY() >= 580) {
         velocity.setY(0);
         position.setY(580);
-        //position.setY(position.getY()-1);
     }
     //------------
 
     Character::move(ms);
+    animationTicks++;
     
 }
 
 void Enemy::moveLeft() {
-    velocity.setX(-100);
+    velocity.setX(-120);
     currentDirection = MoveDirection::LEFT;
     lastDirection = MoveDirection::LEFT;
 }
 
 void Enemy::moveRight() {
-    velocity.setX(100);
+    velocity.setX(120);
     currentDirection = MoveDirection::RIGHT;
     lastDirection = MoveDirection::RIGHT;
 }

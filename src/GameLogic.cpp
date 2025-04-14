@@ -32,7 +32,7 @@ void GameLogic::init() {
 void GameLogic::runTick(double ms) {
     if (isLevelActive()) {
         player->move(ms);
-        enemy->moveOnTrack(ms, Vector2(800,500), Vector2(1000,500));
+        enemy->moveOnTrack(ms, Vector2(600,500), Vector2(1200,500));
     }
 }
 
