@@ -19,9 +19,10 @@ void Enemy::moveOnTrack(double ms, Vector2 pointA, Vector2 pointB) {
     }
     
     // Placeholder until collision added ------
-    if (position.getY() <= 608) {
+    if (position.getY() >= 580) {
         velocity.setY(0);
-        //position.setY(608);
+        position.setY(580);
+        //position.setY(position.getY()-1);
     }
     //------------
 
@@ -30,13 +31,13 @@ void Enemy::moveOnTrack(double ms, Vector2 pointA, Vector2 pointB) {
 }
 
 void Enemy::moveLeft() {
-    velocity.setX(-150);
+    velocity.setX(-100);
     currentDirection = MoveDirection::LEFT;
     lastDirection = MoveDirection::LEFT;
 }
 
 void Enemy::moveRight() {
-    velocity.setX(150);
+    velocity.setX(100);
     currentDirection = MoveDirection::RIGHT;
     lastDirection = MoveDirection::RIGHT;
 }
