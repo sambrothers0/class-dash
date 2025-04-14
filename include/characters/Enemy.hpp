@@ -22,7 +22,7 @@ class Enemy : public Character {
         // Last direction moved
         MoveDirection lastDirection = MoveDirection::RIGHT;
     public:
-        Enemy(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {}
+        Enemy(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {velocity.setX(150);}
 
         MoveDirection getCurrentDirection() const {
             return currentDirection;

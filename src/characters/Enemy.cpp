@@ -10,16 +10,23 @@ void Enemy::shoot() {
 
 void Enemy::moveOnTrack(double ms, Vector2 pointA, Vector2 pointB) {
     // Made it to the left end of the track
-    if (position.getX() == pointA.getX()) {
+    if (position.getX() <= pointA.getX()) {
         moveRight();
     }
     // Made it to the right end of the track
-    else if (position.getX() == pointB.getX()) {
+    else if (position.getX() >= pointB.getX()) {
         moveLeft();
     }
-    else {
-        Character::move(ms);
+    
+    // Placeholder until collision added ------
+    if (position.getY() <= 608) {
+        velocity.setY(0);
+        //position.setY(608);
     }
+    //------------
+
+    Character::move(ms);
+    
 }
 
 void Enemy::moveLeft() {
