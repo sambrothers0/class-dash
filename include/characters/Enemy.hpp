@@ -8,6 +8,8 @@
 const int ENEMY_WIDTH = 32;
 const int ENEMY_HEIGHT = 64;
 
+class GameLogic;
+
 class Enemy : public Character {
 
     private:

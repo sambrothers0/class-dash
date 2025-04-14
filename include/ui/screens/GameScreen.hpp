@@ -18,6 +18,7 @@ class GameScreen : public Screen {
     // Spritesheet for the player
     Spritesheet playerSprite;
     Spritesheet playerProjectileSprite;
+    Spritesheet enemySprite;
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
@@ -53,6 +54,12 @@ class GameScreen : public Screen {
             Vector2(32, 32),
             1,
             4
+        ), enemySprite(
+            _renderer, 
+            "../assets/visual/regularEnemysSpritesheet.png",
+            Vector2(ENEMY_WIDTH, ENEMY_HEIGHT),
+            4,
+            1
         ) {}
 
     virtual void draw();

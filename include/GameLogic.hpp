@@ -4,15 +4,22 @@
 #include "levels/Level.hpp"
 #include "GameState.hpp"
 #include "TimeKeeper.hpp"
+#include "characters/Enemy.hpp"
 
 #include <memory>
 
 class Player;
+class Enemy;
 
 class GameLogic {
     private:
     std::shared_ptr<Player> player;
     std::shared_ptr<TimeKeeper> timer;
+
+    // will likely need to change this for a list of enemies
+    // also may need to move it to the level class later
+    std::shared_ptr<Enemy> enemy;
+    
 
     // Current level
     std::shared_ptr<Level> level;
@@ -26,6 +33,10 @@ class GameLogic {
 
     std::shared_ptr<Player> getPlayer(){
         return player;
+    }
+
+    std::shared_ptr<Enemy> getEnemy() {
+        return enemy;
     }
 
     std::shared_ptr<TimeKeeper> getTimer() {

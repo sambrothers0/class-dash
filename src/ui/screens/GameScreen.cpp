@@ -68,6 +68,10 @@ void GameScreen::draw() {
     auto player = gameLogic.getPlayer();
     Vector2 playerPosition = player->getPosition();
 
+    // Get the enemy and their position
+    auto enemy = gameLogic.getEnemy();
+    Vector2 enemyPosition = enemy->getPosition();
+
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
 
@@ -79,7 +83,7 @@ void GameScreen::draw() {
 
     playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT);
 
-    //bool Direction = true;
+    enemySprite.draw(1, enemyPosition - Vector2(scrollOffset, 0));
 
     // Draw the player hitbox
     if (showHitboxes)
