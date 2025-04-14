@@ -38,7 +38,7 @@ class GameScreen : public Screen {
             _font,
             Vector2(150, 100),
             50,
-            SDL_Color { 0, 255, 255 },
+            SDL_Color { 255, 255, 255 },
             //"Test"
             gameLogic.getTimer()->getTime()
         ), playerSprite(
@@ -57,9 +57,9 @@ class GameScreen : public Screen {
 
     virtual void draw();
 
-    virtual void handleExtraEvents();
-
     virtual ScreenType handleEvent(SDL_Event&);
+    virtual ScreenType handleExtraEvents();
+
     void updateLevelTextures(std::shared_ptr<Level> level);
 
 

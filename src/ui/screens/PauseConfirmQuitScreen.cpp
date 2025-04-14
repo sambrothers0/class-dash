@@ -6,7 +6,7 @@ void PauseConfirmQuitScreen::draw() {
     // Draw the title screen
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
-    confirmText.draw();
+    confirm.draw();
 
     SDL_Color buttonColor;
     SDL_Color defaultColor = {147, 115, 64, 255}; // Default color for buttons
@@ -14,16 +14,20 @@ void PauseConfirmQuitScreen::draw() {
 
     if (cursorPosition == 0) {
         buttonColor = highlightedColor;
+        yes.setText(">Yes<");
     } else {
         buttonColor = defaultColor;
+        yes.setText("Yes");
     }
     drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
     yes.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
+        no.setText(">No<");
     } else {
         buttonColor = defaultColor;
+        no.setText("No");
     }
     drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
     no.draw();

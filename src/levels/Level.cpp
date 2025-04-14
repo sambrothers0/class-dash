@@ -4,7 +4,7 @@
 // gets global ID for a given block
 uint32_t Level::getID(const Vector2& block) const { 
     for (size_t i = 0; i < blocks.size(); ++i) {
-        if (blocks[i] == block) { 
+        if (std::get<0>(blocks[i]) == block) { 
             return ids[i];         
         }
     }
@@ -144,9 +144,10 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
             
                 if (tile.ID > 0) {
                     if (tile.flipFlags != 0) {
+                        blocks.emplace_back(Vector2(x, y), 1);
                         std::cout << "flip " << tile.ID << std::endl;
                     }
-                    blocks.emplace_back(Vector2(x, y));
+                    else {blocks.emplace_back(Vector2(x, y), 0);}
                     ids.emplace_back(tile.ID);
                 }
             

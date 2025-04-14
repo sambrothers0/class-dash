@@ -25,8 +25,10 @@ bool isJumpPressed(const Uint8* keysPressed) {
 
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
     for (const auto& layer : level->getLayers()) {
-        for (const auto& block : layer->getBlocks()) {
-
+        for (const auto& blocks : layer->getBlocks()) {
+            auto block = std::get<0>(blocks);
+            // auto block = blocks[0];
+            auto flip = std::get<1>(blocks);
             uint32_t tileID = layer->getID(block);
             auto t = layer->hasFlipFlag(block);
             if(t){std::cout<<"got tile "<<tileID<<"flip flag? "<<t<<std::endl;}
@@ -49,7 +51,7 @@ void GameScreen::drawLevel(std::shared_ptr<Level> level) {
             Vector2 blockPosition(block.getX() * 32 - scrollOffset + drawOffset, block.getY() * 32 + drawOffset);
             int spriteIndex = tileID - spritesheet->getFirstGID();
 
-            spritesheet->draw(spriteIndex, blockPosition);
+            spritesheet->draw(spriteIndex, blockPosition, flip);
         }
     }
 }
@@ -169,7 +171,13 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
     return ScreenType::KEEP;
 }
 
-void GameScreen::handleExtraEvents() {
+ScreenType GameScreen::handleExtraEvents() {
+    // lose checking needs to happen outside handleEvent because 
+    // we need to lose the level even if the player is not pressing any keys
+    if (gameLogic.getTimer()->isTimeUp()) {
+        return ScreenType::LEVEL_LOSE; // Switch to level lose screen
+    }
+
     // Jump buffering handle needs to happen outside of HandleEvent because that can't tell if a key is still held down
     const Uint8* keysPressed = SDL_GetKeyboardState(NULL);
     auto player = gameLogic.getPlayer();
@@ -177,4 +185,6 @@ void GameScreen::handleExtraEvents() {
     if (isJumpPressed(keysPressed)) {
         player->jump();
     }
+
+    return ScreenType::KEEP;
 }

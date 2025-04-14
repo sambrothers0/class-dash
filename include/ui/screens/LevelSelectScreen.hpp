@@ -10,7 +10,7 @@ class LevelSelectScreen : public Screen {
 
     int cursorPosition = 0;
 
-    Text selectText, back;
+    Text levelSelect, back;
 
     unsigned int levelsUnlocked;
 
