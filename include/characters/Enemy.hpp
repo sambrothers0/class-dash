@@ -5,6 +5,9 @@
 #include "MoveDirection.hpp"
 #include "physics/Vector2.hpp"
 
+const int ENEMY_WIDTH = 32;
+const int ENEMY_HEIGHT = 64;
+
 class Enemy : public Character {
 
     private:
@@ -12,7 +15,7 @@ class Enemy : public Character {
         GameLogic& gameLogic;
 
         // Set initial direction
-        MoveDirection currentDirection = MoveDirection::NONE;
+        MoveDirection currentDirection = MoveDirection::RIGHT;
 
         // Last direction moved
         MoveDirection lastDirection = MoveDirection::RIGHT;
