@@ -19,6 +19,10 @@ class Projectile {
             return currentPosition;
         }
 
+        MoveDirection getCurrentDirection() const {
+            return currentDirection;
+        }
+
         Vector2 getStartingPosition() const {
             return startingPosition;
         }
@@ -38,6 +42,10 @@ class Projectile {
         void setStartingPosition(MoveDirection direction);
         void setVelocity(double x, double y);
         void move(double ms);
+
+        void setDirection(MoveDirection direction) {
+            currentDirection = direction;
+        }
 
 };
 

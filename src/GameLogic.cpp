@@ -32,6 +32,7 @@ void GameLogic::init() {
 void GameLogic::runTick(double ms) {
     if (isLevelActive()) {
         player->move(ms);
+        enemy->moveOnTrack(ms, Vector2(600,500), Vector2(1200,500));
     }
 }
 
@@ -54,6 +55,8 @@ void GameLogic::activate(SDL_Renderer* renderer) {
     }
 
     player = std::make_shared<Player>(Player(*this, Vector2(500, 500)));
+    
+    enemy = std::make_shared<Enemy>(*this, Vector2(800,550));
 
     state = GameState::ACTIVE;
 }

@@ -3,6 +3,7 @@
 #include "gameDimensions.hpp"
 #include "levels/Level.hpp"
 #include "sprites/PlayerTexture.hpp"
+#include "sprites/EnemyTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -69,6 +70,10 @@ void GameScreen::draw() {
     auto player = gameLogic.getPlayer();
     Vector2 playerPosition = player->getPosition();
 
+    // Get the enemy and their position
+    auto enemy = gameLogic.getEnemy();
+    Vector2 enemyPosition = enemy->getPosition();
+
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
 
@@ -80,6 +85,8 @@ void GameScreen::draw() {
 
     playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT);
 
+    enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT);
+
     // Draw the player hitbox
     if (showHitboxes)
         drawCollisionHitbox(playerPosition, player->getHitbox());
@@ -87,7 +94,13 @@ void GameScreen::draw() {
     // Display the projectiles that have been shot
     for (auto proj : player->getProjectiles()) {
         Vector2 projectilePosition = proj.getPosition();
-        boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
+        //boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
+        if (proj.getVelocity().getX() < 0) {
+            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), false);
+        } 
+        else {
+            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), true);
+        }      
     }
     
     // Display the Time on the screen
