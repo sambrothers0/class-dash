@@ -1,4 +1,6 @@
 #include "characters/Player.hpp"
+#include "gameDimensions.hpp"
+#include "physics/physicsConstants.hpp"
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -12,9 +14,23 @@ int Player::getCurrentAnimationOffset() const {
     return (animationTicks % 40) / 10;
 }
 
-void Player::move(double ms) {
-    Character::move(ms);
+void Player::move(double ms) {    
+    // Basic character movement
+    double seconds = ms / 1000;
 
+    // Only apply vertical acceleration if the player is not on the ground
+    if (!onGround) {
+        velocity.setY(velocity.getY() + GRAVITY * seconds);
+
+        // Once the jump has reached its maximum height, start falling
+        if (isJumping && velocity.getY() > 0) {
+            falling = true;
+        }
+    }
+
+    position += velocity * seconds;
+
+    // Deal with more advanced functionality
     if (currentDirection != MoveDirection::NONE) {
         animationTicks++;
     }
@@ -124,10 +140,16 @@ void Player::moveRight() {
 
 void Player::jump() {
     if (velocity.getY() == 0) {
+        std::cout << "jump" << std::endl;
         velocity.setY(-500);
         position -= Vector2(0, 1); // Update position to avoid an immediate collision with the ground
         bufferedJump = false;
         onGround= false;
+        isJumping = true;
+        falling = false;
+
+        // Fall height isn't applicable
+        fallHeight = -1000;
     } else {
         bufferedJump = true;
     }
@@ -137,175 +159,225 @@ Vector2 Player::getHitboxCenter() const {
     return position + hitbox.getOffset() + hitbox.getSize() / 2.0;
 }
 
+void Player::handleFloorCollisions() {
+    // If the player is on the ground, confirm that they are still on the ground by checking for a collision
+    // Otherwise, check if the player has collided with the ground. If they have, set them as on the ground and update their position + velocity. If they have a buffered jump, then jump.
 
-
-void Player::handleCollisions() {
-    std::cout<<"ground?: "<<onGround<<std::endl;
-    std::cout<<"POSITION: "<<position.getX()<<" "<<position.getY()<<"\n\n"<<std::endl;
-    if (position.getY() >= 800 - PLAYER_HEIGHT / 2) { //THIS WILL NEED TO BE BASED ON COLLISIONS NOT GROUND HEIGHT LATER
-        std::cout<<"position at fall: x "<< position.getX()<<" y "<<position.getY()<<std::endl;
-        position.setY(300 - PLAYER_HEIGHT / 2);
-        velocity.setY(0);
-        std::cout<<"fell, reset location"<<std::endl;
-    }
+    /**
+     * if onGround {
+     *   if player is not on the ground {
+     *     set onGround to false
+     *     set falling to true
+     *   }
+     * } else {
+     *   if player is colliding with the ground {
+     *     if falling and the collided tile is on the same y-level as the original falling location {
+     *       continue
+     *     } else if jumping and not falling {
+     *       continue
+     *     } else if bufferedJump {
+     *       jump (should set isJumping to true)
+     *     } else {
+     *       set position to be on top of the block
+     *       reset vertical velocity
+     *       set onGround to true
+     *     }
+     *   }
+     * }
+     * 
+     */
 
     auto hitbox = getHitbox() + position;
-    auto level = gameLogic.getLevel();
 
+    auto level = gameLogic.getLevel();
+    auto topY = hitbox.getTopY();
+    auto bottomY = hitbox.getBottomY();
+    auto leftX = hitbox.getLeftX();
+    auto rightX = hitbox.getRightX();
+
+    // std::cout << position << ", " << hitbox.getOffset() << std::endl;
+
+     if (onGround) {
+        bool isOnGround = false;
+
+        for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
+            if (level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))) {
+                isOnGround = true;
+                break;
+            }
+        }
+
+        if (!isOnGround) {
+            // Start falling
+            onGround = false;
+            falling = true;
+            fallHeight = bottomY;
+        }
+     } else {
+        for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
+            auto tileX = floor(x / TILE_SIZE);
+            auto tileY = floor(bottomY / TILE_SIZE);
+            auto worldTile = level->getWorldCollisionObject(Vector2(tileX, tileY));
+
+            // This line is the key
+            if (worldTile) {
+                auto bounds = worldTile->bounds;
+    
+                // Check if the player is too far left/right
+                if (bounds.x >= rightX || (bounds.x + bounds.w <= leftX)) {
+                    continue;
+                }
+
+                // If partOfWall is true, then we are against a wall and should not be able to jump or land.
+                auto partOfWall = level->getWorldCollisionObject(Vector2(tileX, tileY - 1));
+
+                auto tilePos = worldTile->bounds;
+
+                // Falling off the same height
+                if (falling && tilePos.y == fallHeight) {
+                    continue;
+                } else if (isJumping && !falling) {
+                    continue;
+                } else if (bufferedJump) {
+                    jump();
+                }
+                // std::cout << tilePos.y << ", " << bottomY << std::endl;
+
+                if (!partOfWall) {
+                    std::cout << "Hit ground" << std::endl;
+                    position.setY(tilePos.y - PLAYER_HEIGHT / 2);
+                    velocity.setY(0);
+                    isJumping = false;
+                    onGround = true;
+                    falling = false;
+                    break;
+                }
+            }
+        }
+     }
+}
+
+void Player::handleCeilingCollisions() {
+    auto hitbox = getHitbox() + position;
+    auto level = gameLogic.getLevel();
+    
     auto hitboxWidth = hitbox.getSize().getX();
     auto hitboxHeight = hitbox.getSize().getY();
 
-    // Check the tiles in the level
-    auto topY = floor(hitbox.getTopY() / 32);
-    auto bottomY = floor(hitbox.getBottomY() / 32);
-    auto leftX = floor(hitbox.getLeftX() / 32);
-    auto rightX = floor(hitbox.getRightX() / 32);
-    // std::cout<<"topY: "<<topY<<" bottomY: "<<bottomY<<" leftX: "<<leftX<<" rightX: "<<rightX<<std::endl;
+    auto topY = hitbox.getTopY();
+    auto bottomY = hitbox.getBottomY();
+    auto leftX = hitbox.getLeftX();
+    auto rightX = hitbox.getRightX();
+    int unused;
 
-    // Push the player out of a wall
-    // if (velocity.getX() > 0) {
-        for (auto y = topY; y <= bottomY-1; y++) {
-            if (getCurrentDirection()==MoveDirection::RIGHT){
-            auto collideWorld = level -> getWorldCollisionObject(Vector2(rightX, y));
-            if (collideWorld) {
-                std::cout<<"Right Collision Detected"<<std::endl;
-                std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x<<"player width" <<hitboxWidth<<" rightX *32 "<<rightX*32<<std::endl;
-                // position.setX(collideWorld->bounds.x - hitboxWidth);
-                position.setX((rightX*32)-(PLAYER_WIDTH/2));
-                velocity.setX(0);
+    // The idea is to factor in if the player is moving in a direction
+    for (auto x = (currentDirection == MoveDirection::LEFT ? leftX + 4 : leftX); x <= (currentDirection == MoveDirection::RIGHT ? rightX - 8 : rightX); x += TILE_SIZE / 2) {
+        auto collideWorld = level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(topY / TILE_SIZE)));
 
-            }}
-            else if (getCurrentDirection()==MoveDirection::LEFT){ // stops player from going off the left edge of the map
-                if(position.getX()<=(0+(PLAYER_WIDTH/2))) {
-                    velocity.setX(0); 
-                    position.setX(0+(PLAYER_WIDTH/2));
-                } 
-                auto collideWorld = level -> getWorldCollisionObject(Vector2(leftX, y));
-                if (collideWorld ){
-                    std::cout<<"Left Collision Detected"<<std::endl;
-                    std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x+collideWorld->bounds.h<<"player width" <<hitboxWidth<<" leftX*32 "<<leftX*32<<std::endl;
-                    position.setX((leftX*32)+collideWorld->bounds.w+(PLAYER_WIDTH/2)-2);
-                    // position.setX(collideWorld->bounds.x+collideWorld->bounds.w+(PLAYER_WIDTH/2)+1);
-                    velocity.setX(0);
+        if (collideWorld) {
+            auto bounds = collideWorld->bounds;
 
-            }}
-        }
-    // }
-
-    // Check bottom tiles
-    for (auto x = leftX; x <= rightX; x++) {
-        // if (level->colliderTileAt(Vector2(x, bottomY))) {
-            auto collideWorld = level -> getWorldCollisionObject(Vector2(x, bottomY));
-
-            if(collideWorld){
-                auto collideLocal = level-> getLocalCollisionObject(Vector2(x,bottomY));
-                std::cout<<"CW x: "<<collideWorld->bounds.x<<" y: "<<collideWorld->bounds.y<<" w: "<<collideWorld->bounds.w<<" h: "<<collideWorld->bounds.h<<std::endl;
-                std::cout<<"CL x: "<<collideLocal->bounds.x<<" y: "<<collideLocal->bounds.y<<" w: "<<collideLocal->bounds.w<<" h: "<<collideLocal->bounds.h<<std::endl;
-            // Push the player back out
-
-
-                position.setY((bottomY * 32 - PLAYER_HEIGHT / 2)+ (collideLocal->bounds.y));
-
-
-                velocity.setY(0);
-                onGround=true;
-                // Attempt a buffered jump
-                if (bufferedJump) {
-                    jump();
-                }
-
-                break;
+            // Check if the player is too far left/right
+            if (bounds.x >= rightX || (bounds.x + bounds.w <= leftX)) {
+                continue;
             }
-    }
 
-    // Check ceiling tiles
-    for (auto x = leftX; x <= rightX; x++) {
-            auto collideWorld = level -> getWorldCollisionObject(Vector2(x, topY));
-            if(collideWorld&& velocity.getY() < 0){
-                auto collideLocal = level-> getLocalCollisionObject(Vector2(x,topY));
-                std::cout<<"CW x: "<<collideWorld->bounds.x<<" y: "<<collideWorld->bounds.y<<" w: "<<collideWorld->bounds.w<<" h: "<<collideWorld->bounds.h<<std::endl;
-                std::cout<<"CL x: "<<collideLocal->bounds.x<<" y: "<<collideLocal->bounds.y<<" w: "<<collideLocal->bounds.w<<" h: "<<collideLocal->bounds.h<<std::endl;
+            std::cout << "ceiling collision" << std::endl;
+            // position.setX(collideWorld->bounds.x - hitboxWidth);
+            position.setY(collideWorld->bounds.y + collideWorld->bounds.h + PLAYER_HEIGHT / 2 + 1);
+            velocity.setY(0.1);
+            falling = true;
+            break;
 
-                if(hitbox.getTopY() <=(collideWorld->bounds.y+collideLocal->bounds.h)){
-                    std::cout<<"Top Collision Detected"<<std::endl;
-                    position.setY(collideWorld->bounds.y+collideLocal->bounds.h+PLAYER_HEIGHT/2);
-                    velocity.setY(0.1);
-
-
-
-
-            // Push the player back out
-            // position.setY((topY + 1) * 32 + PLAYER_HEIGHT / 2);
-
-            // velocity.setY(0.1); // Can't be 0, otherwise player can float on the ceiling
-
-            break;}
-                // }
         }
     }
+}
 
-    // // Check bottom tiles first
-    // // To collide with the floor
-    // // The player's bottom y coordinate must be greater than the floor tile's top y coordinate
-    // for (auto x = leftX; x <= rightX; x++) {
-    //     if (level->colliderTileAt(Vector2(x, bottomY))) {
-    //         auto center = getHitboxCenter();
-    //         auto playerY = center.getY();
-    //         auto playerBottomY = playerY + hitboxHeight / 2;
+void Player::handleRightCollisions() {
+    auto hitbox = getHitbox() + position;
+    auto level = gameLogic.getLevel();
+    
+    auto hitboxWidth = hitbox.getSize().getX();
+    auto hitboxHeight = hitbox.getSize().getY();
 
-    //         std::cout << position << ", " << playerBottomY << ", " << bottomY * 32 << std::endl;
+    auto topY = hitbox.getTopY();
+    auto bottomY = hitbox.getBottomY();
+    auto leftX = hitbox.getLeftX();
+    auto rightX = hitbox.getRightX();
 
-    //         // Push the player back out
-    //         position.setY(bottomY * 32 - hitboxHeight / 2);
+    for (auto y = topY; y <= bottomY - 1; y += TILE_SIZE / 2) {
+        auto collideWorld = level -> getWorldCollisionObject(Vector2(floor(rightX / TILE_SIZE), floor(y / TILE_SIZE)));
 
-    //         velocity.setY(0);
+        if (collideWorld) {
+            auto bounds = collideWorld->bounds;
 
-    //         // Attempt a buffered jump
-    //         if (bufferedJump) {
-    //             jump();
-    //         }
+            // The idea is to not have a collision because the block is too low/high
+            if (bounds.y >= bottomY || (bounds.y + bounds.h <= topY)) {
+                continue;
+            }
 
-    //         break;
-    //     }
-    // }
+            std::cout<<"Right Collision Detected"<<std::endl;
+            // std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x<<"player width" <<hitboxWidth<<" rightX *32 "<<rightX*TILE_SIZE<<std::endl;/
+            // position.setX(collideWorld->bounds.x - hitboxWidth);
+            position.setX(collideWorld->bounds.x - PLAYER_WIDTH / 2 - 1);
+            velocity.setX(0);
+            break;
 
-    // // Check ceiling tiles
-    // for (auto x = leftX; x <= rightX; x++) {
-    //     if (level->colliderTileAt(Vector2(x, topY))) {
-    //         // Push the player back out
-    //         position.setY((topY + 1) * 32 + hitboxHeight / 2);
+        }
+    }
+}
 
-    //         velocity.setY(0.1); // Can't be 0, otherwise player can float on the ceiling
+void Player::handleLeftCollisions() {
+    auto hitbox = getHitbox() + position;
+    auto level = gameLogic.getLevel();
+    
+    auto hitboxWidth = hitbox.getSize().getX();
+    auto hitboxHeight = hitbox.getSize().getY();
 
-    //         break;
-    //     }
-    // }
+    auto topY = hitbox.getTopY();
+    auto bottomY = hitbox.getBottomY();
+    auto leftX = hitbox.getLeftX();
+    auto rightX = hitbox.getRightX();
 
-    // Check right tiles
+    for (auto y = topY; y <= bottomY-1; y += TILE_SIZE / 2) {
+        auto collideWorld = level -> getWorldCollisionObject(Vector2(floor(leftX / TILE_SIZE), floor(y / TILE_SIZE)));
 
-    // for (auto y = topY; y <= bottomY; y++) {
-    //     // Get updated player position
-    //     auto center = getHitboxCenter();
-    //     auto playerX = center.getX();
-    //     auto playerY = center.getY();
+        if (collideWorld) {
+            auto bounds = collideWorld->bounds;
 
-    //     // This needs a more complex collision detector, we need to check if the box overlaps
-    //     // First check is if the new y position is past the bottom bar
-    //     // y here is the top-left position of the tile we are colliding with
-    //     if (level->colliderTileAt(Vector2(rightX, y)) && playerY + hitboxHeight / 2 > y * 32 && playerY - hitboxHeight / 2 < y * 32) {
-    //         std::cout << "Right collision" << std::endl;
+            // The idea is to not have a collision because the block is too low/high
+            if (bounds.y >= bottomY || (bounds.y + bounds.h <= topY)) {
+                continue;
+            }
 
-    //         // Calculate the amount that gets collided
+            // std::cout<<"Left Collision Detected"<<std::endl;
+            // std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x+collideWorld->bounds.h<<"player width" <<hitboxWidth<<" leftX*32 "<<leftX*TILE_SIZE<<std::endl;
+            position.setX(collideWorld->bounds.x + collideWorld->bounds.w + PLAYER_WIDTH / 2 + 1);
+            // position.setX(collideWorld->bounds.x+collideWorld->bounds.w+(PLAYER_WIDTH/2)+1);
+            velocity.setX(0);
+        }
+    }
+}
 
-    //         // std::cout << topY << ", " << bottomY << std::endl;
-    //         // std::cout << position << std::endl;
-    //         // std::cout << "right collision at " << Vector2(rightX + 1, y) * 32 << " with offset " << hitbox.getOffset() << " and size " << hitbox.getSize() << std::endl;
-    //         // Push the player back out
-    //         position.setX(rightX * 32 - hitbox.getSize().getX() / 2 - 1);
+void Player::handleCollisions() {
+    /**
+     * if player is hitting an obstacle to the right and is moving right, push them back
+     * if player is hitting an obstacle to the left and is moving left, push them back
+     * check bottom tiles
+     * check top tiles
+     * 
+     * To fix one issue, if the player is falling off of a structure, don't check vertically unless the new position is lower
+     * If the player is jumping, only check vertically once they reach the peak of their jump
+     */
 
-    //         velocity.setX(0);
+     handleFloorCollisions();
 
-    //         break;
-    //     }
-    // }
+     if (velocity.getY() < 0)
+        handleCeilingCollisions();
+
+     if (velocity.getX() > 0) {
+        handleRightCollisions();
+     } else if (velocity.getX() < 0) {
+        handleLeftCollisions();
+     }
 }

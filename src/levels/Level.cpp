@@ -1,4 +1,5 @@
 #include "levels/Level.hpp"
+#include "gameDimensions.hpp"
 
 
 // gets global ID for a given block
@@ -46,7 +47,7 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
         int tileHeight = tileset.getTileSize().y;
         int columns = tileset.getColumnCount();
         int rows = tileset.getTileCount() / columns;
-        std::shared_ptr<Spritesheet> spritesheet = std::make_shared<Spritesheet>(renderer, texturePath, Vector2(32, 32), rows, columns);
+        std::shared_ptr<Spritesheet> spritesheet = std::make_shared<Spritesheet>(renderer, texturePath, Vector2(TILE_SIZE, TILE_SIZE), rows, columns);
         spritesheet->setGID(tileset.getFirstGID(),tileset.getLastGID());
         
         spritesheets.emplace_back(spritesheet);
@@ -127,8 +128,8 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
             
                     for (const auto& objTemplate : it->second) {
                         CollisionObject worldObj = objTemplate;
-                        worldObj.bounds.x += x * 32;
-                        worldObj.bounds.y += y * 32;
+                        worldObj.bounds.x += x * TILE_SIZE;
+                        worldObj.bounds.y += y * TILE_SIZE;
             
                         std::cout << "    Adding collision object:"
                                   << " ID=" << tileID
@@ -195,19 +196,19 @@ const CollisionObject* Level::getWorldCollisionObject(const Vector2& position) c
             // Find the actual collision object in the world
             for (const auto& obj : collisionObjects) {
                 // Calculate the tile position from the object's position
-                int objTileX = obj.bounds.x /32;
-                int objTileY = obj.bounds.y /32;
+                int objTileX = obj.bounds.x / TILE_SIZE;
+                int objTileY = obj.bounds.y / TILE_SIZE;
                 // std::cout<<"collide X: "<<objTileX<<"collide Y" <<objTileY<<std::endl;
                 
                 // Check if this object is at the same tile position
                 if (objTileX == tileX && objTileY == tileY) {
-                    std::cout << "World collision object found at tile (" << tileX << "," << tileY << ")" << std::endl;
-                    std::cout << "Global bounds: x=" << obj.bounds.x 
-                              << " y=" << obj.bounds.y 
-                              << " w=" << obj.bounds.w
-                              << " h=" << obj.bounds.h 
-                              << " type=" << obj.type <<" class=" <<obj.name
-                              << std::endl;
+                    // std::cout << "World collision object found at tile (" << tileX << "," << tileY << ")" << std::endl;
+                    // std::cout << "Global bounds: x=" << obj.bounds.x 
+                    //           << " y=" << obj.bounds.y 
+                    //           << " w=" << obj.bounds.w
+                    //           << " h=" << obj.bounds.h 
+                    //           << " type=" << obj.type <<" class=" <<obj.name
+                    //           << std::endl;
                               return &obj;
                               
                 }
@@ -254,8 +255,8 @@ bool Level::colliderTileAt(const Vector2& position) const {
             // Find the actual collision object in the world
             for (const auto& obj : collisionObjects) {
                 // Calculate the tile position from the object's position
-                int objTileX = obj.bounds.x /32;
-                int objTileY = obj.bounds.y /32;
+                int objTileX = obj.bounds.x / TILE_SIZE;
+                int objTileY = obj.bounds.y / TILE_SIZE;
                 // std::cout<<"collide X: "<<objTileX<<"collide Y" <<objTileY<<std::endl;
                 
                 // Check if this object is at the same tile position

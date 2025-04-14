@@ -7,7 +7,7 @@
 TimeKeeper::TimeKeeper() {
     SDL_Init(SDL_INIT_TIMER);
 
-    startTime = 30;
+    startTime = 120;
     endTime = 0;
     minutes = 0;
     seconds = 0;
