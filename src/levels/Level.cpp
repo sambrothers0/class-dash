@@ -153,8 +153,9 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                 }
             
             }
-            
-        std::shared_ptr<Layer> new_layer = std::make_shared<Layer>(blocks, ids, tileLayer.getName());
+            float opacity =1.0;
+        if (tileLayer.getOpacity()){opacity=tileLayer.getOpacity();}
+        std::shared_ptr<Layer> new_layer = std::make_shared<Layer>(blocks, ids, tileLayer.getName(), opacity);
         layers.emplace_back(new_layer);
             }
         

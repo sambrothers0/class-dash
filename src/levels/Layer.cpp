@@ -28,3 +28,4 @@ bool Layer::hasFlipFlag(const Vector2& block) const {
 
     return (gid & (H_FLIP | V_FLIP | D_FLIP)) != 0;
 }
+
