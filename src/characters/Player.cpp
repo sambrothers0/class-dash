@@ -339,6 +339,11 @@ void Player::handleLeftCollisions() {
     auto leftX = hitbox.getLeftX();
     auto rightX = hitbox.getRightX();
 
+    // Check collisions with the side wall
+    if (leftX < 0) {
+        position.setX(PLAYER_WIDTH / 2 + 1);
+    }
+
     for (auto y = topY; y <= bottomY-1; y += TILE_SIZE / 2) {
         auto collideWorld = level -> getWorldCollisionObject(Vector2(floor(leftX / TILE_SIZE), floor(y / TILE_SIZE)));
 
