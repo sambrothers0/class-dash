@@ -106,7 +106,15 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
     for (const auto& layer : map.getLayers()) {
         blocks.clear();
         ids.clear();
-        
+        if(layer->getType() == tmx::Layer::Type::Object)
+            {
+                const auto& objectLayer = layer->getLayerAs<tmx::ObjectGroup>();
+                const auto& objects = objectLayer.getObjects();
+                for(const auto& object : objects)
+                {
+                    std::cout<<"Object Name: "<<object.getName()<<" ObjectLayer Name: "<<object.getPosition().x<<std::endl;
+                }
+            }
         if (layer->getType() == tmx::Layer::Type::Tile) {
             const auto& tileLayer = layer->getLayerAs<tmx::TileLayer>();
             const auto& tiles = tileLayer.getTiles();
@@ -146,7 +154,6 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                 if (tile.ID > 0) {
                     if (tile.flipFlags != 0) {
                         blocks.emplace_back(Vector2(x, y), 1);
-                        std::cout << "flip " << tile.ID << std::endl;
                     }
                     else {blocks.emplace_back(Vector2(x, y), 0);}
                     ids.emplace_back(tile.ID);
