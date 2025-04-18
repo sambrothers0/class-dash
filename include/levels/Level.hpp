@@ -50,13 +50,16 @@ class Level {
     // Store tile IDs with their respective collision object with local coordinates (ie: since the bounds for a grass block are the full sqaure, x:0, y:0, w:32, h:32)
     std::unordered_map<uint32_t, std::vector<CollisionObject>> tileCollisions;
 
+    Vector2 playerspawn;
     public:
     Level(Vector2 _dimensions, SDL_Renderer* _renderer) : dimensions(_dimensions), renderer(_renderer) {}
     Vector2 getDimensions() const {
         return dimensions;
     }
 
-
+    Vector2 getPlayerSpawnPoint() const {
+        return playerspawn;
+    }
     std::vector<std::tuple<Vector2,int>>& getBlocks() {
         return blocks;
     }
