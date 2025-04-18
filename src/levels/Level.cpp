@@ -43,8 +43,6 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
         std::string texturePath =  tileset.getImagePath();  
         std::cout << texturePath << std::endl;
         
-        int tileWidth = tileset.getTileSize().x;
-        int tileHeight = tileset.getTileSize().y;
         int columns = tileset.getColumnCount();
         int rows = tileset.getTileCount() / columns;
         std::shared_ptr<Spritesheet> spritesheet = std::make_shared<Spritesheet>(renderer, texturePath, Vector2(TILE_SIZE, TILE_SIZE), rows, columns);
@@ -110,7 +108,6 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
         if (layer->getType() == tmx::Layer::Type::Tile) {
             const auto& tileLayer = layer->getLayerAs<tmx::TileLayer>();
             const auto& tiles = tileLayer.getTiles();
-            int x = 0, y = 0;
             for (std::size_t i = 0; i < tiles.size(); ++i) {
                 const auto& tile = tiles[i];
             
@@ -219,61 +216,4 @@ const CollisionObject* Level::getWorldCollisionObject(const Vector2& position) c
         }
     }
     return nullptr;
-}
-    // for (const auto& layer : layers) {
-    //     uint32_t gid = layer->getID(position);  // Get the GID for the tile at the given position
-
-    //     if (isCollisionGID(gid)) {
-
-    //         auto it = tileCollisions.find(gid);
-    //         if (it != tileCollisions.end() && !it->second.empty()) {
-                
-    //             // if(position.get(X))
-    //             std::cout << "Collide with " << it->second[0].name << std::endl;
-    //             return &it->second[0];  
-    //         }
-    //     }
-    // }
-    // return nullptr;
-
-
-// bool Level::collidedWith(const Vector2& position) const {
-
-// }
-
-bool Level::colliderTileAt(const Vector2& position) const {
-    // std::cout << "Total collision objects in world: " << collisionObjects.size() << std::endl;
-
-    for (const auto layer : layers) {
-        uint32_t gid = layer->getID(position);
-        if (isCollisionGID(gid)) {
-            // std::cout<<"FOUND ID: "<<gid<<std::endl;
-            // Calculate the tile's grid position
-            int tileX = static_cast<int>(position.getX() );
-            int tileY = static_cast<int>(position.getY() );
-            // std::cout<<"TileX: "<<tileX<<" TileY: "<<tileY<<std::endl;
-            // std::cout<<collisionObjects.size()<<std::endl;
-            // Find the actual collision object in the world
-            for (const auto& obj : collisionObjects) {
-                // Calculate the tile position from the object's position
-                int objTileX = obj.bounds.x / TILE_SIZE;
-                int objTileY = obj.bounds.y / TILE_SIZE;
-                // std::cout<<"collide X: "<<objTileX<<"collide Y" <<objTileY<<std::endl;
-                
-                // Check if this object is at the same tile position
-                if (objTileX == tileX && objTileY == tileY) {
-                    std::cout << "World collision object found at tile (" << tileX << "," << tileY << ")" << std::endl;
-                    std::cout << "Global bounds: x=" << obj.bounds.x 
-                              << " y=" << obj.bounds.y 
-                              << " w=" << obj.bounds.w
-                              << " h=" << obj.bounds.h 
-                              << " type=" << obj.type <<" class=" <<obj.name
-                              << std::endl;
-               return true; }
-            }
-            
-            
-        }
-    }
-    return false;
 }

@@ -23,7 +23,7 @@ void HowToPlayScreen::draw() {
     objectiveText9.draw();
     objectiveText10.draw();
 
-    drawButton(renderer, 512 - 250, 665, 500, 60, {207, 171, 112, 255});
+    drawButton(512 - 250, 665, 500, 60, {207, 171, 112, 255});
     back.draw();
 }
 

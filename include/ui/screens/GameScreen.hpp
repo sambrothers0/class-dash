@@ -22,7 +22,7 @@ class GameScreen : public Screen {
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
-    double scrollOffset;
+    double scrollOffset = 0;
 
     // Display hitboxes?
     bool showHitboxes = false;
@@ -66,9 +66,6 @@ class GameScreen : public Screen {
 
     virtual ScreenType handleEvent(SDL_Event&);
     virtual ScreenType handleExtraEvents();
-
-    void updateLevelTextures(std::shared_ptr<Level> level);
-
 
     ~GameScreen() {}
 };

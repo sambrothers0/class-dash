@@ -7,6 +7,9 @@
 const int FPS = 60;
 const int FRAMETIME = 1000 / FPS;
 
+// Should we print the current framerate
+const bool PRINT_FPS = false;
+
 void Game::run() {
     /*** Main Loop ***/
     SDL_Event e;
@@ -17,7 +20,7 @@ void Game::run() {
 
     // Load the level
     SDL_Renderer* renderer = playerView.getRenderer();
-    std::shared_ptr<Level> level = std::make_shared<Level>(Vector2(2240, 768), renderer);
+    std::shared_ptr<Level> level = std::make_shared<Level>(Vector2(2240, 768));
     if (!level->loadFromTMX("../assets/visual/ColliderTest.tmx", renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
@@ -60,6 +63,12 @@ void Game::run() {
         ticks = ticks2;
 
         gameLogic.runTick(difference);
+
+        // FPS printer
+        if (PRINT_FPS && difference > 0) {
+            // std::cout << difference << std::endl;
+            std::cout << ((float) FRAMETIME) / ((float) difference) * 60.0 << std::endl;
+        }
         
         // Set to 60 fps
         if (difference < FRAMETIME) {

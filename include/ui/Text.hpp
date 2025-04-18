@@ -28,13 +28,13 @@ class Text {
     void generateTexture();
 
     public:
-    Text(SDL_Renderer* _renderer, TTF_Font* _font, Vector2 _position, double _fontSize, SDL_Color _color, std::string _text) :
+    Text(SDL_Renderer* _renderer, TTF_Font* _font, const Vector2& _position, double _fontSize, SDL_Color _color, std::string _text) :
         renderer(_renderer), font(_font), position(_position), fontSize(_fontSize), color(_color), text(_text) {}
 
     void draw();
 
     void setText(const std::string& _text);
-    std::string getText() const { return text; }
+    const std::string& getText() const { return text; }
 
     ~Text();
 };

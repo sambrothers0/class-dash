@@ -40,7 +40,7 @@ void LevelSelectScreen::draw() {
             currentText.setText(levelTexts[i].getText());
         }
 
-        drawButton(renderer, 512 - 225, 160 + i * 100, 450, 75, buttonColor);
+        drawButton(512 - 225, 160 + i * 100, 450, 75, buttonColor);
         currentText.draw();
     }
 
@@ -52,7 +52,7 @@ void LevelSelectScreen::draw() {
         back.setText("Back");
     }
 
-    drawButton(renderer, 512 - 150, 665, 300, 60, buttonColor);
+    drawButton(512 - 150, 665, 300, 60, buttonColor);
     back.draw();
 }
 
