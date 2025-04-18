@@ -24,7 +24,6 @@ class GameLogic;
 
 class Player : public Character {
     private:
-    // Reference to the game logic
     GameLogic& gameLogic;
 
     // Current direction of movement
@@ -63,7 +62,7 @@ class Player : public Character {
     void handleLeftCollisions();
 
     public:
-    Player(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
+    Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;

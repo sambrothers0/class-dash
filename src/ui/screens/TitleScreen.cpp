@@ -24,7 +24,7 @@ void TitleScreen::draw() {
         start.setText("Start");
 
     }
-    drawButton(renderer, 512 - 170, 384 + 150, 350, 100, buttonColor);
+    drawButton(512 - 170, 384 + 150, 350, 100, buttonColor);
     start.draw();
 
     // Draw the second button (How to Play Button)
@@ -35,7 +35,7 @@ void TitleScreen::draw() {
         buttonColor = defaultColor;
         howToPlay.setText("How To Play");
     }
-    drawButton(renderer, 512 - 220, 384 + 275, 450, 75, buttonColor);
+    drawButton(512 - 220, 384 + 275, 450, 75, buttonColor);
     howToPlay.draw();
 
 }

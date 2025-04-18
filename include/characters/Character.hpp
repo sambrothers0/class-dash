@@ -10,11 +10,11 @@ class Character {
     public:
     Character(Vector2 _position) : position(_position), velocity(Vector2(0, 0)) {}
 
-    Vector2 getPosition() const {
+    const Vector2& getPosition() const {
         return position;
     }
 
-    Vector2 getVelocity() const {
+    const Vector2& getVelocity() const {
         return velocity;
     }
 

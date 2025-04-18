@@ -25,10 +25,13 @@ class Layer {
         return blocks;
     }
 
-    // gets global ID for a given block
+    // gets global ID for a given block (probably don't use this)
     uint32_t getID(const Vector2& block) const;
 
-    bool hasFlipFlag(const Vector2& block) const ;
+    // Gets the global ID at a given index
+    uint32_t getID(int index) const;
+
+    bool hasFlipFlag(int index) const ;
     float getOpacity() const{
         return opacity;
     }

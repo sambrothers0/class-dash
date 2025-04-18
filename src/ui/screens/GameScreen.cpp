@@ -27,12 +27,17 @@ bool isJumpPressed(const Uint8* keysPressed) {
 
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
     for (const auto& layer : level->getLayers()) {
-        for (const auto& blocks : layer->getBlocks()) {
-            auto block = std::get<0>(blocks);
+        auto& blocks = layer->getBlocks();
+        
+        for (auto i = 0; i < blocks.size(); i++) {
+            auto& blockEntry = blocks[i];
+            auto block = std::get<0>(blockEntry);
             // auto block = blocks[0];
-            auto flip = std::get<1>(blocks);
-            uint32_t tileID = layer->getID(block);
-            auto t = layer->hasFlipFlag(block);
+            auto flip = std::get<1>(blockEntry);
+            
+            uint32_t tileID = layer->getID(i);
+            auto t = layer->hasFlipFlag(i);
+
             if(t){std::cout<<"got tile "<<tileID<<"flip flag? "<<t<<std::endl;}
             auto opacity = layer->getOpacity();
 

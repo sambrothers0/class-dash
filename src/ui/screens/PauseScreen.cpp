@@ -20,7 +20,7 @@ void PauseScreen::draw() {
         buttonColor = defaultColor;
         resume.setText("Resume");
     }
-    drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
+    drawButton(512 - 200, 260, 400, 75, buttonColor);
     resume.draw();
 
     if (cursorPosition == 1) {
@@ -30,7 +30,7 @@ void PauseScreen::draw() {
         buttonColor = defaultColor;
         quit.setText("Quit");
     }
-    drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
+    drawButton(512 - 200, 360, 400, 75, buttonColor);
     quit.draw();
 }
 
