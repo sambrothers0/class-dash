@@ -44,7 +44,7 @@ double GameLogic::getScrollOffset() const {
 }
 
 void GameLogic::activate(SDL_Renderer* renderer) {
-    level = std::make_shared<Level>(Vector2(2240, 768), renderer);
+    level = std::make_shared<Level>(Vector2(2240, 768));
     timer = std::make_shared<TimeKeeper>();
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
@@ -56,7 +56,7 @@ void GameLogic::activate(SDL_Renderer* renderer) {
 
     player = std::make_shared<Player>(Player(*this, Vector2(500, 500)));
     
-    enemy = std::make_shared<Enemy>(*this, Vector2(800,550));
+    enemy = std::make_shared<Enemy>(Vector2(800,550));
 
     state = GameState::ACTIVE;
 }

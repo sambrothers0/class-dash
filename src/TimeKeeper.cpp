@@ -57,7 +57,7 @@ void TimeKeeper::resetTimer() {
     */
 }
 
-std::string TimeKeeper::getTime() {
+std::string TimeKeeper::getTime() const {
     if ((minutes < 10) && (seconds < 10)) {
         return '0' + std::to_string(minutes) + ":" + "0" + std::to_string(seconds);
     }

@@ -1,6 +1,6 @@
 #include "sprites/Sprite.hpp"
 
-Sprite::Sprite(SDL_Texture* _sprite, SDL_Renderer* _renderer) : sprite(_sprite), renderer(_renderer) {
+Sprite::Sprite(SDL_Texture* _sprite) : sprite(_sprite) {
     targetRect.x = 0;
     targetRect.y = 0;
     textureRect.x = 0;
@@ -45,6 +45,6 @@ void Sprite::setDepth(unsigned int newDepth) {
 }
 
 // draws the sprite to the screen
-void Sprite::draw() {
+void Sprite::draw(SDL_Renderer* renderer) const {
     SDL_RenderCopy(renderer, sprite, &textureRect, &targetRect);
 }

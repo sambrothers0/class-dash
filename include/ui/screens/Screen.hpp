@@ -16,9 +16,9 @@ class Screen {
     public:
     Screen(SDL_Renderer* _renderer) : renderer(_renderer) {}
 
-    void drawButton(SDL_Renderer *renderer, int x, int y, int width, int height, SDL_Color color);
+    void drawButton(int x, int y, int width, int height, SDL_Color color);
 
-    void drawCircle(SDL_Renderer *renderer, int cx, int cy, int radius);
+    void drawCircle(int cx, int cy, int radius);
 
     // Draws the screen using the renderer
     virtual void draw() = 0;

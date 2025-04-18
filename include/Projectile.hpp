@@ -15,7 +15,7 @@ class Projectile {
     public:
         Projectile(Vector2 playerPosition, MoveDirection playerDirection);
 
-        Vector2 getPosition() const {
+        const Vector2& getPosition() const {
             return currentPosition;
         }
 
@@ -23,11 +23,11 @@ class Projectile {
             return currentDirection;
         }
 
-        Vector2 getStartingPosition() const {
+        const Vector2& getStartingPosition() const {
             return startingPosition;
         }
 
-        Vector2 getVelocity() const {
+        const Vector2& getVelocity() const {
             return velocity;
         }
 

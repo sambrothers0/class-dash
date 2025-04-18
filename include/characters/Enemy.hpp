@@ -13,9 +13,6 @@ class GameLogic;
 class Enemy : public Character {
 
     private:
-        // Reference to the game logic
-        GameLogic& gameLogic;
-
         // Set initial direction
         MoveDirection currentDirection = MoveDirection::RIGHT;
 
@@ -25,7 +22,7 @@ class Enemy : public Character {
         int animationTicks = 0;
 
     public:
-        Enemy(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {velocity.setX(120);}
+        explicit Enemy(Vector2 _position) : Character(_position) {velocity.setX(120);}
 
         MoveDirection getCurrentDirection() const {
             return currentDirection;
@@ -44,7 +41,7 @@ class Enemy : public Character {
         virtual void shoot();
 
         // Enemy moves along a set predetermined track
-        void moveOnTrack(double ms, Vector2 pointA, Vector2 pointB);
+        void moveOnTrack(double ms, const Vector2& pointA, const Vector2& pointB);
 
         // Moves the enemy in either direction
         void moveLeft();

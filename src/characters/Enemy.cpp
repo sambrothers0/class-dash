@@ -9,7 +9,7 @@ void Enemy::shoot() {
 
 }
 
-void Enemy::moveOnTrack(double ms, Vector2 pointA, Vector2 pointB) {
+void Enemy::moveOnTrack(double ms, const Vector2& pointA, const Vector2& pointB) {
     // Made it to the left end of the track
     if (position.getX() <= pointA.getX()) {
         moveRight();
