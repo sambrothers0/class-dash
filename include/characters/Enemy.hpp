@@ -24,6 +24,7 @@ class Enemy : public Character {
 
         int animationTicks = 0;
 
+        double shooting_range; //the range at which the enemy begins shooting at the player
     public:
         Enemy(GameLogic& _gameLogic, Vector2 _position) : gameLogic(_gameLogic), Character(_position) {velocity.setX(120);}
 
