@@ -76,9 +76,8 @@ void GameScreen::draw() {
     auto player = gameLogic.getPlayer();
     Vector2 playerPosition = player->getPosition();
 
-    // Get the enemy and their position
-    auto enemy = gameLogic.getEnemy();
-    Vector2 enemyPosition = enemy->getPosition();
+    // Get the enemies and their positions
+    auto enemies = gameLogic.getLevel()->getEnemies();
 
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
@@ -91,11 +90,19 @@ void GameScreen::draw() {
 
     playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT, 1.0);
 
-    enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, 1.0);
+    for (auto enemy : enemies) {
+        Vector2 enemyPosition = enemy->getPosition();
+        enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, 1.0);
+    }
 
-    // Draw the player hitbox
-    if (showHitboxes)
+    // Draw the player hitbox + enemy hitboxes
+    if (showHitboxes) {
         drawCollisionHitbox(playerPosition, player->getHitbox());
+
+        for (auto enemy : enemies) {
+            drawCollisionHitbox(enemy->getPosition(), enemy->getHitbox());
+        }
+    }
 
     // Display the projectiles that have been shot
     for (auto proj : player->getProjectiles()) {

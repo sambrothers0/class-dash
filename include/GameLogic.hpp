@@ -2,9 +2,9 @@
 #define _GAME_LOGIC_H
 
 #include "levels/Level.hpp"
+#include "levels/LevelData.hpp"
 #include "GameState.hpp"
 #include "TimeKeeper.hpp"
-#include "characters/Enemy.hpp"
 
 #include <memory>
 
@@ -15,10 +15,6 @@ class GameLogic {
     private:
     std::shared_ptr<Player> player;
     std::shared_ptr<TimeKeeper> timer;
-
-    // will likely need to change this for a list of enemies
-    // also may need to move it to the level class later
-    std::shared_ptr<Enemy> enemy;
     
 
     // Current level
@@ -32,23 +28,13 @@ class GameLogic {
     int levelIndex = 0;
 
     // TODO: Replace with actual levels
-    std::array<std::string, 5> levelNames {
-        "../assets/visual/SunkenGardenLevel.tmx",
-        "../assets/visual/Level1.tmx",
-        "../assets/visual/Level2.tmx",
-        "../assets/visual/Level3.tmx",
-        "../assets/visual/ColliderTest.tmx"
-    };
+    std::array<LevelData, 5> levelData;
 
     public:
-    GameLogic(){}
+    GameLogic();
 
     std::shared_ptr<Player> getPlayer(){
         return player;
-    }
-
-    std::shared_ptr<Enemy> getEnemy() {
-        return enemy;
     }
 
     std::shared_ptr<TimeKeeper> getTimer() {

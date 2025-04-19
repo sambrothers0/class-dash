@@ -8,6 +8,25 @@
 #include <thread>
 #include <chrono>
 
+GameLogic::GameLogic() {
+    std::vector<EnemyData> level1Enemies {
+        EnemyData(Vector2(900, 580), 600, 1200)
+    };
+
+    levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx", level1Enemies);
+    levelData[1] = LevelData("../assets/visual/Level1.tmx");
+    levelData[2] = LevelData("../assets/visual/Level2.tmx");
+
+    std::vector<EnemyData> level4Enemies {
+        EnemyData(Vector2(608, 480), 608, 736),
+        EnemyData(Vector2(1420, 400), 1410, 1756)
+    };
+
+    levelData[3] = LevelData("../assets/visual/Level3.tmx", level4Enemies);
+
+    levelData[4] = LevelData("../assets/visual/ColliderTest.tmx");
+}
+
 void GameLogic::init() {
     // Load the levels.txt file, creating it if it does not exist
     std::fstream file;
@@ -32,7 +51,10 @@ void GameLogic::init() {
 void GameLogic::runTick(double ms) {
     if (isLevelActive()) {
         player->move(ms);
-        enemy->moveOnTrack(ms, Vector2(600,500), Vector2(1200,500));
+
+        for (auto enemy : level->getEnemies()) {
+            enemy->moveOnTrack(ms);
+        }
     }
 }
 
@@ -49,7 +71,7 @@ void GameLogic::activate(SDL_Renderer* renderer) {
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
 
-    if (!level->loadFromTMX(levelNames.at(levelIndex), renderer)) {
+    if (!level->loadData(levelData.at(levelIndex), renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
@@ -59,8 +81,6 @@ void GameLogic::activate(SDL_Renderer* renderer) {
 
     // player = std::make_shared<Player>(Player(*this, Vector2(500, 500)));
     player = std::make_shared<Player>(Player(*this, spawn));
-    
-    enemy = std::make_shared<Enemy>(Vector2(800,550));
 
     state = GameState::ACTIVE;
 }
