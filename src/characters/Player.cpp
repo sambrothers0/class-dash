@@ -364,6 +364,20 @@ void Player::handleLeftCollisions() {
     }
 }
 
+void Player::handleEnemyCollisions() {
+    auto enemies = gameLogic.getLevel()->getEnemies();
+
+    for (auto enemy : enemies){
+        auto playerHitbox = getHitbox() + position;
+        auto enemyHitbox = enemy->getHitbox() + enemy->getPosition();
+
+        // Detect if the 2 bounding boxes overlap
+        if (playerHitbox.overlaps(enemyHitbox)) {
+            std::cout << "Collision with enemy!" << std::endl; 
+        }
+    }
+}
+
 void Player::handleCollisions() {
     /**
      * if player is hitting an obstacle to the right and is moving right, push them back
@@ -385,4 +399,6 @@ void Player::handleCollisions() {
      } else if (velocity.getX() < 0) {
         handleLeftCollisions();
      }
+
+     handleEnemyCollisions();
 }

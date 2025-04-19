@@ -61,6 +61,9 @@ class Player : public Character {
     void handleRightCollisions();
     void handleLeftCollisions();
 
+    // Detects collisions with the enemy
+    void handleEnemyCollisions();
+
     public:
     Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
 
