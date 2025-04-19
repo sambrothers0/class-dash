@@ -54,7 +54,11 @@ void GameLogic::activate(SDL_Renderer* renderer) {
         return;
     }
 
-    player = std::make_shared<Player>(Player(*this, Vector2(500, 500)));
+    auto spawn = level-> getPlayerSpawnPoint();
+    std::cout<<spawn.getX()<<" "<<spawn.getY()<<std::endl;
+
+    // player = std::make_shared<Player>(Player(*this, Vector2(500, 500)));
+    player = std::make_shared<Player>(Player(*this, spawn));
     
     enemy = std::make_shared<Enemy>(Vector2(800,550));
 

@@ -26,11 +26,9 @@ bool Layer::hasFlipFlag(int index) const {
     // }
 
     const uint32_t H_FLIP = 0x80000000;
-    const uint32_t V_FLIP = 0x40000000;
-    const uint32_t D_FLIP = 0x20000000;
 
 
 
-    return (gid & (H_FLIP | V_FLIP | D_FLIP)) != 0;
+    return (gid & H_FLIP ) != 0;
 }
 
