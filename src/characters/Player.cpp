@@ -382,6 +382,7 @@ void Player::handleEnemyCollisions() {
         // Detect if the 2 bounding boxes overlap
         if (playerHitbox.overlaps(enemyHitbox)) {
             std::cout << "enemy collision" << std::endl;
+            gameLogic.getTimer()->subtractTime(5); // right now all enemy collisions are 5 seconds
             invincibilityFramesActive = true;
             invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);
         }
