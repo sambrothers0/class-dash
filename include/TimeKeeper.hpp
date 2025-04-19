@@ -9,7 +9,7 @@ class TimeKeeper {
 
     private:
         int minutes, seconds, startTime, endTime;
-        Uint64 timeElapsed;
+        int timeElapsed;
         bool timeRunning;
 
     public:

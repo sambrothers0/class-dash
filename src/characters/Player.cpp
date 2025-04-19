@@ -364,6 +364,14 @@ void Player::handleLeftCollisions() {
     }
 }
 
+Uint32 onInvincibilityEnd(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+
+    player->setInvincible(false);
+
+    return 0;
+}
+
 void Player::handleEnemyCollisions() {
     auto enemies = gameLogic.getLevel()->getEnemies();
 
@@ -373,7 +381,9 @@ void Player::handleEnemyCollisions() {
 
         // Detect if the 2 bounding boxes overlap
         if (playerHitbox.overlaps(enemyHitbox)) {
-            std::cout << "Collision with enemy!" << std::endl; 
+            std::cout << "enemy collision" << std::endl;
+            invincibilityFramesActive = true;
+            invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);
         }
     }
 }
@@ -400,5 +410,7 @@ void Player::handleCollisions() {
         handleLeftCollisions();
      }
 
-     handleEnemyCollisions();
+    if (!invincibilityFramesActive) {
+        handleEnemyCollisions();
+    }
 }
