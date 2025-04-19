@@ -44,12 +44,12 @@ double GameLogic::getScrollOffset() const {
 }
 
 void GameLogic::activate(SDL_Renderer* renderer) {
-    level = std::make_shared<Level>(Vector2(2240, 768));
+    level = std::make_shared<Level>(Vector2(2240, 768)); // In the future this maybe should not be hardcoded
     timer = std::make_shared<TimeKeeper>();
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
 
-    if (!level->loadFromTMX("../assets/visual/SunkenGardenLevel.tmx", renderer)) {
+    if (!level->loadFromTMX(levelNames.at(levelIndex), renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }

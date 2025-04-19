@@ -28,6 +28,18 @@ class GameLogic {
 
     GameState state = GameState::INACTIVE;
 
+    // Index of the active level
+    int levelIndex = 0;
+
+    // TODO: Replace with actual levels
+    std::array<std::string, 5> levelNames {
+        "../assets/visual/SunkenGardenLevel.tmx",
+        "../assets/visual/Level1.tmx",
+        "../assets/visual/Level2.tmx",
+        "../assets/visual/Level3.tmx",
+        "../assets/visual/ColliderTest.tmx"
+    };
+
     public:
     GameLogic(){}
 
@@ -65,6 +77,10 @@ class GameLogic {
 
     void setLevel(std::shared_ptr<Level> _level) {
         level = _level;
+    }
+
+    void setLevelIndex(int index) {
+        levelIndex = index;
     }
 
     // Setup function
