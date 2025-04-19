@@ -1,4 +1,5 @@
 #include "levels/Level.hpp"
+#include "gameDimensions.hpp"
 
 
 // gets global ID for a given block
@@ -35,18 +36,15 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
     
     
     dimensions = Vector2(mapSize.x * tileSize.x, mapSize.y * tileSize.y);
-    // std::cout<<"mapsize: "<<mapSize<<" tilesize: "<<tileSize<<" dimensions: "<<dimensions.getX()<<"x"<<dimensions.getY()<<std::endl;
     
     //trying to grab the textures here using the Tileset.hpp from the tmxlite library
     for (const auto& tileset : map.getTilesets()) {
         std::string texturePath =  tileset.getImagePath();  
         std::cout << texturePath << std::endl;
         
-        int tileWidth = tileset.getTileSize().x;
-        int tileHeight = tileset.getTileSize().y;
         int columns = tileset.getColumnCount();
         int rows = tileset.getTileCount() / columns;
-        std::shared_ptr<Spritesheet> spritesheet = std::make_shared<Spritesheet>(renderer, texturePath, Vector2(32, 32), rows, columns);
+        std::shared_ptr<Spritesheet> spritesheet = std::make_shared<Spritesheet>(renderer, texturePath, Vector2(TILE_SIZE, TILE_SIZE), rows, columns);
         spritesheet->setGID(tileset.getFirstGID(),tileset.getLastGID());
         
         spritesheets.emplace_back(spritesheet);
@@ -59,7 +57,6 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
             
             // Check if this tile has any collision objects
             for (const auto& object : tile.objectGroup.getObjects()) {
-                // for (const auto& object : objectGroup.objects) {
                     CollisionObject collObj;
                     
                     //Setup a locally based CollisionObject for a specific tile type
@@ -73,7 +70,6 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                     // Add a locally based CollisionObject for a specific gid
                     tileCollisions[globalID].push_back(collObj);
     
-                // }
             }
         
             
@@ -86,30 +82,23 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
         }
     }
 }
-    // std::cout<<"SIZE: "<<tileCollisions.size()<<std::endl;
-    // for (const auto& [tileID, collisionList] : tileCollisions) {
-    //     std::cout << "Tile ID: " << tileID << "\n";
-        
-    //     for (const auto& obj : collisionList) {
-    //         std::cout << "  CollisionObject:\n";
-    //         std::cout << "    Name: " << obj.name << "\n";
-    //         std::cout << "    Type: " << obj.type << "\n";
-    //         std::cout << "    Bounds: (x=" << obj.bounds.x
-    //                   << ", y=" << obj.bounds.y
-    //                   << ", w=" << obj.bounds.w
-    //                   << ", h=" << obj.bounds.h << ")\n";
-    //     }
-    
-    //     std::cout << std::endl;
-    // }
+
     for (const auto& layer : map.getLayers()) {
         blocks.clear();
         ids.clear();
-        
+        if(layer->getType() == tmx::Layer::Type::Object)
+            {
+                const auto& objectLayer = layer->getLayerAs<tmx::ObjectGroup>();
+                const auto& objects = objectLayer.getObjects();
+                for(const auto& object : objects)
+                {
+                    if(object.getName()=="Player"){playerspawn=Vector2(object.getPosition().x,object.getPosition().y-1);}
+                    std::cout<<"Object Name: "<<object.getName()<<" ObjectLayer Name: "<<object.getPosition().x<<std::endl;
+                }
+            }
         if (layer->getType() == tmx::Layer::Type::Tile) {
             const auto& tileLayer = layer->getLayerAs<tmx::TileLayer>();
             const auto& tiles = tileLayer.getTiles();
-            int x = 0, y = 0;
             for (std::size_t i = 0; i < tiles.size(); ++i) {
                 const auto& tile = tiles[i];
             
@@ -127,17 +116,8 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
             
                     for (const auto& objTemplate : it->second) {
                         CollisionObject worldObj = objTemplate;
-                        worldObj.bounds.x += x * 32;
-                        worldObj.bounds.y += y * 32;
-            
-                        std::cout << "    Adding collision object:"
-                                  << " ID=" << tileID
-                                  << " type=" << worldObj.type
-                                  << ", name=" << worldObj.name
-                                  << ", bounds=(" << worldObj.bounds.x << ", " << worldObj.bounds.y
-                                  << ", " << worldObj.bounds.w << ", " << worldObj.bounds.h << ")"
-                                  << std::endl;
-            
+                        worldObj.bounds.x += x * TILE_SIZE;
+                        worldObj.bounds.y += y * TILE_SIZE;            
                         collisionObjects.push_back(worldObj);
                     }
                 }
@@ -145,15 +125,15 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                 if (tile.ID > 0) {
                     if (tile.flipFlags != 0) {
                         blocks.emplace_back(Vector2(x, y), 1);
-                        std::cout << "flip " << tile.ID << std::endl;
                     }
                     else {blocks.emplace_back(Vector2(x, y), 0);}
                     ids.emplace_back(tile.ID);
                 }
             
             }
-            
-        std::shared_ptr<Layer> new_layer = std::make_shared<Layer>(blocks, ids, tileLayer.getName());
+            float opacity =1.0;
+        if (tileLayer.getOpacity()){opacity=tileLayer.getOpacity();}
+        std::shared_ptr<Layer> new_layer = std::make_shared<Layer>(blocks, ids, tileLayer.getName(), opacity);
         layers.emplace_back(new_layer);
             }
         
@@ -186,28 +166,19 @@ const CollisionObject* Level::getWorldCollisionObject(const Vector2& position) c
     for (const auto layer : layers) {
         uint32_t gid = layer->getID(position);
         if (isCollisionGID(gid)) {
-            // std::cout<<"FOUND ID: "<<gid<<std::endl;
+
             // Calculate the tile's grid position
             int tileX = static_cast<int>(position.getX() );
             int tileY = static_cast<int>(position.getY() );
-            // std::cout<<"TileX: "<<tileX<<" TileY: "<<tileY<<std::endl;
-            // std::cout<<collisionObjects.size()<<std::endl;
+        
             // Find the actual collision object in the world
             for (const auto& obj : collisionObjects) {
                 // Calculate the tile position from the object's position
-                int objTileX = obj.bounds.x /32;
-                int objTileY = obj.bounds.y /32;
-                // std::cout<<"collide X: "<<objTileX<<"collide Y" <<objTileY<<std::endl;
+                int objTileX = obj.bounds.x / TILE_SIZE;
+                int objTileY = obj.bounds.y / TILE_SIZE;
                 
                 // Check if this object is at the same tile position
                 if (objTileX == tileX && objTileY == tileY) {
-                    std::cout << "World collision object found at tile (" << tileX << "," << tileY << ")" << std::endl;
-                    std::cout << "Global bounds: x=" << obj.bounds.x 
-                              << " y=" << obj.bounds.y 
-                              << " w=" << obj.bounds.w
-                              << " h=" << obj.bounds.h 
-                              << " type=" << obj.type <<" class=" <<obj.name
-                              << std::endl;
                               return &obj;
                               
                 }
@@ -218,55 +189,26 @@ const CollisionObject* Level::getWorldCollisionObject(const Vector2& position) c
     }
     return nullptr;
 }
-    // for (const auto& layer : layers) {
-    //     uint32_t gid = layer->getID(position);  // Get the GID for the tile at the given position
-
-    //     if (isCollisionGID(gid)) {
-
-    //         auto it = tileCollisions.find(gid);
-    //         if (it != tileCollisions.end() && !it->second.empty()) {
-                
-    //             // if(position.get(X))
-    //             std::cout << "Collide with " << it->second[0].name << std::endl;
-    //             return &it->second[0];  
-    //         }
-    //     }
-    // }
-    // return nullptr;
-
-
-// bool Level::collidedWith(const Vector2& position) const {
-
-// }
 
 bool Level::colliderTileAt(const Vector2& position) const {
-    // std::cout << "Total collision objects in world: " << collisionObjects.size() << std::endl;
 
     for (const auto layer : layers) {
         uint32_t gid = layer->getID(position);
         if (isCollisionGID(gid)) {
-            // std::cout<<"FOUND ID: "<<gid<<std::endl;
             // Calculate the tile's grid position
             int tileX = static_cast<int>(position.getX() );
             int tileY = static_cast<int>(position.getY() );
-            // std::cout<<"TileX: "<<tileX<<" TileY: "<<tileY<<std::endl;
-            // std::cout<<collisionObjects.size()<<std::endl;
+           
             // Find the actual collision object in the world
             for (const auto& obj : collisionObjects) {
                 // Calculate the tile position from the object's position
-                int objTileX = obj.bounds.x /32;
-                int objTileY = obj.bounds.y /32;
+                int objTileX = obj.bounds.x / TILE_SIZE;
+                int objTileY = obj.bounds.y / TILE_SIZE;
                 // std::cout<<"collide X: "<<objTileX<<"collide Y" <<objTileY<<std::endl;
                 
                 // Check if this object is at the same tile position
                 if (objTileX == tileX && objTileY == tileY) {
-                    std::cout << "World collision object found at tile (" << tileX << "," << tileY << ")" << std::endl;
-                    std::cout << "Global bounds: x=" << obj.bounds.x 
-                              << " y=" << obj.bounds.y 
-                              << " w=" << obj.bounds.w
-                              << " h=" << obj.bounds.h 
-                              << " type=" << obj.type <<" class=" <<obj.name
-                              << std::endl;
+                   
                return true; }
             }
             

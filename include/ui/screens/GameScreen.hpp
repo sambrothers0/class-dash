@@ -17,10 +17,12 @@ class GameScreen : public Screen {
 
     // Spritesheet for the player
     Spritesheet playerSprite;
+    Spritesheet playerProjectileSprite;
+    Spritesheet enemySprite;
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
-    double scrollOffset;
+    double scrollOffset = 0;
 
     // Display hitboxes?
     bool showHitboxes = false;
@@ -46,15 +48,24 @@ class GameScreen : public Screen {
             Vector2(PLAYER_WIDTH, PLAYER_HEIGHT),
             5,
             2
+        ), playerProjectileSprite(
+            _renderer,
+            "../assets/visual/objectSpritesheet.png",
+            Vector2(32, 32),
+            1,
+            4
+        ), enemySprite(
+            _renderer, 
+            "../assets/visual/regularEnemysSpritesheet.png",
+            Vector2(ENEMY_WIDTH, ENEMY_HEIGHT),
+            4,
+            1
         ) {}
 
     virtual void draw();
 
     virtual ScreenType handleEvent(SDL_Event&);
     virtual ScreenType handleExtraEvents();
-
-    void updateLevelTextures(std::shared_ptr<Level> level);
-
 
     ~GameScreen() {}
 };

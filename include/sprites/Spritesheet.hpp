@@ -44,7 +44,7 @@ class Spritesheet {
     bool containsID(uint32_t index) const;
 
     // Draws the given texture at the given index
-    void draw(int index, Vector2 position, bool flipped);
+    void draw(int index, Vector2 position, bool flipped, float opacity);
 
     void draw(int index, Vector2 position);
 

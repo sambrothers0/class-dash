@@ -7,7 +7,7 @@
 TimeKeeper::TimeKeeper() {
     SDL_Init(SDL_INIT_TIMER);
 
-    startTime = 30;
+    startTime = 120;
     endTime = 0;
     minutes = 0;
     seconds = 0;
@@ -57,7 +57,7 @@ void TimeKeeper::resetTimer() {
     */
 }
 
-std::string TimeKeeper::getTime() {
+std::string TimeKeeper::getTime() const {
     if ((minutes < 10) && (seconds < 10)) {
         return '0' + std::to_string(minutes) + ":" + "0" + std::to_string(seconds);
     }

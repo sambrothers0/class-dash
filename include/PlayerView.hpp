@@ -15,9 +15,9 @@ class PlayerView {
     private:
     Game& game;
 
-    SDL_Renderer* renderer;
-    SDL_Window* window;
-    TTF_Font* font;
+    SDL_Renderer* renderer = nullptr;
+    SDL_Window* window = nullptr;
+    TTF_Font* font = nullptr;
 
     // Pointer to the current screen, it needs a pointer because Screen is an abstract class
     // This needs to be set in the constructor

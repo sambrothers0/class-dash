@@ -32,7 +32,6 @@ struct CollisionObject {
 class Level {
     private:
     Vector2 dimensions;
-    SDL_Renderer* renderer;
     // For now the level is just going to have a few blocks to be drawn (this is temporary)
     // These are relative coordinates multiplied by 32 for drawing, to make it easier to define manually
     std::vector<std::tuple<Vector2,int>> blocks; // int will be 1 if there is a flip flag for the tile
@@ -50,18 +49,21 @@ class Level {
     // Store tile IDs with their respective collision object with local coordinates (ie: since the bounds for a grass block are the full sqaure, x:0, y:0, w:32, h:32)
     std::unordered_map<uint32_t, std::vector<CollisionObject>> tileCollisions;
 
+    Vector2 playerspawn;
     public:
-    Level(Vector2 _dimensions, SDL_Renderer* _renderer) : dimensions(_dimensions), renderer(_renderer) {}
-    Vector2 getDimensions() const {
+    explicit Level(Vector2 _dimensions) : dimensions(_dimensions) {}
+    const Vector2& getDimensions() const {
         return dimensions;
     }
 
-
+    Vector2 getPlayerSpawnPoint() const {
+        return playerspawn;
+    }
     std::vector<std::tuple<Vector2,int>>& getBlocks() {
         return blocks;
     }
 
-    std::unordered_map<unsigned int, std::vector<CollisionObject>> getTileCollisions() {
+    std::unordered_map<unsigned int, std::vector<CollisionObject>>& getTileCollisions() {
         return tileCollisions;
     }
 
@@ -79,8 +81,7 @@ class Level {
     const CollisionObject* getWorldCollisionObject(const Vector2& position) const;
 
   
-
-    void setBlocks(std::vector<std::tuple<Vector2, int>> _blocks) {
+    void setBlocks(const std::vector<std::tuple<Vector2, int>>& _blocks) {
         blocks = _blocks;
     }
 

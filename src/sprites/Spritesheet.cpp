@@ -18,7 +18,7 @@ void Spritesheet::loadTexture() {
 
 Spritesheet::Spritesheet(SDL_Renderer* _renderer, std::string _path, Vector2 _spriteSize, int _rows, int _columns) : renderer(_renderer), path(_path), spriteSize(_spriteSize), rows(_rows), columns(_columns) {}
 
-void Spritesheet::draw(int index, Vector2 position, bool flipped) {
+void Spritesheet::draw(int index, Vector2 position, bool flipped, float opacity) {
     if (!hasLoadedTexture) {
         loadTexture();
     }
@@ -39,12 +39,12 @@ void Spritesheet::draw(int index, Vector2 position, bool flipped) {
         (int) spriteSize.getX(),
         (int) spriteSize.getY()
     };
-
+    SDL_SetTextureAlphaMod(texture, opacity*255);
     SDL_RenderCopyEx(renderer, texture, &sourcePosition, &drawPosition, 0, NULL, flipped ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }
 
 void Spritesheet::draw(int index, Vector2 position) {
-    draw(index, position, false);
+    draw(index, position, false, 1.0);
 }
 
 bool Spritesheet::containsID(uint32_t index) const {

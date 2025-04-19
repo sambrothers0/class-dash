@@ -1,7 +1,9 @@
 #include "ui/screens/GameScreen.hpp"
 #include "GameLogic.hpp"
+#include "gameDimensions.hpp"
 #include "levels/Level.hpp"
 #include "sprites/PlayerTexture.hpp"
+#include "sprites/EnemyTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -25,13 +27,19 @@ bool isJumpPressed(const Uint8* keysPressed) {
 
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
     for (const auto& layer : level->getLayers()) {
-        for (const auto& blocks : layer->getBlocks()) {
-            auto block = std::get<0>(blocks);
+        auto& blocks = layer->getBlocks();
+        
+        for (auto i = 0; i < blocks.size(); i++) {
+            auto& blockEntry = blocks[i];
+            auto block = std::get<0>(blockEntry);
             // auto block = blocks[0];
-            auto flip = std::get<1>(blocks);
-            uint32_t tileID = layer->getID(block);
-            auto t = layer->hasFlipFlag(block);
+            auto flip = std::get<1>(blockEntry);
+            
+            uint32_t tileID = layer->getID(i);
+            auto t = layer->hasFlipFlag(i);
+
             if(t){std::cout<<"got tile "<<tileID<<"flip flag? "<<t<<std::endl;}
+            auto opacity = layer->getOpacity();
 
 
             // Quit out if hitboxes are not being shown and the given tile is a hitbox tile
@@ -46,12 +54,12 @@ void GameScreen::drawLevel(std::shared_ptr<Level> level) {
                 continue;
             }
 
-            auto drawOffset = 16;
+            auto drawOffset = TILE_SIZE / 2;
 
-            Vector2 blockPosition(block.getX() * 32 - scrollOffset + drawOffset, block.getY() * 32 + drawOffset);
+            Vector2 blockPosition(block.getX() * TILE_SIZE - scrollOffset + drawOffset, block.getY() * TILE_SIZE + drawOffset);
             int spriteIndex = tileID - spritesheet->getFirstGID();
 
-            spritesheet->draw(spriteIndex, blockPosition, flip);
+            spritesheet->draw(spriteIndex, blockPosition, flip, opacity);
         }
     }
 }
@@ -68,6 +76,10 @@ void GameScreen::draw() {
     auto player = gameLogic.getPlayer();
     Vector2 playerPosition = player->getPosition();
 
+    // Get the enemy and their position
+    auto enemy = gameLogic.getEnemy();
+    Vector2 enemyPosition = enemy->getPosition();
+
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
 
@@ -77,7 +89,9 @@ void GameScreen::draw() {
 
     drawLevel(level);
 
-    playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT);
+    playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT, 1.0);
+
+    enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, 1.0);
 
     // Draw the player hitbox
     if (showHitboxes)
@@ -86,7 +100,13 @@ void GameScreen::draw() {
     // Display the projectiles that have been shot
     for (auto proj : player->getProjectiles()) {
         Vector2 projectilePosition = proj.getPosition();
-        boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
+        //boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
+        if (proj.getVelocity().getX() < 0) {
+            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), false, 1.0);
+        } 
+        else {
+            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), true, 1.0);
+        }      
     }
     
     // Display the Time on the screen
@@ -178,5 +198,13 @@ ScreenType GameScreen::handleExtraEvents() {
         player->jump();
     }
 
+    if (isMoveLeftPressed(keysPressed)) {
+        player->moveLeft();
+    }
+
+    if (isMoveRightPressed(keysPressed)) {
+        player->moveRight();
+    }
+    
     return ScreenType::KEEP;
 }

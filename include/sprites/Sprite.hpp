@@ -8,7 +8,6 @@
 class Sprite {
 
     private:
-        SDL_Renderer* renderer;
         SDL_Texture* sprite;
         SDL_Rect textureRect;
         SDL_Rect targetRect;
@@ -16,7 +15,7 @@ class Sprite {
         
 
     public:
-        Sprite(SDL_Texture* _sprite, SDL_Renderer* _renderer);
+        explicit Sprite(SDL_Texture* _sprite);
 
         // Position methods set position of the sprite
         // These methods can be used for setting inital position and for moving positions
@@ -37,7 +36,7 @@ class Sprite {
 
         void setDepth(unsigned int newDepth);
 
-        void draw();
+        void draw(SDL_Renderer* renderer) const;
 
 
 };

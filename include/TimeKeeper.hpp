@@ -17,9 +17,9 @@ class TimeKeeper {
         void pauseTimer() {timeRunning = false;}
         void resetTimer(); // set reset timer by setting the startime to the current time
         void beginTimer(); // updates the time in the gameloop
-        bool isTimeUp() { return timeElapsed <= 0; } // check if the time is up
+        bool isTimeUp() const { return timeElapsed <= 0; } // check if the time is up
 
-        std::string getTime();
+        std::string getTime() const;
     
 };
 

@@ -15,15 +15,19 @@ class Projectile {
     public:
         Projectile(Vector2 playerPosition, MoveDirection playerDirection);
 
-        Vector2 getPosition() const {
+        const Vector2& getPosition() const {
             return currentPosition;
         }
 
-        Vector2 getStartingPosition() const {
+        MoveDirection getCurrentDirection() const {
+            return currentDirection;
+        }
+
+        const Vector2& getStartingPosition() const {
             return startingPosition;
         }
 
-        Vector2 getVelocity() const {
+        const Vector2& getVelocity() const {
             return velocity;
         }
 
@@ -38,6 +42,10 @@ class Projectile {
         void setStartingPosition(MoveDirection direction);
         void setVelocity(double x, double y);
         void move(double ms);
+
+        void setDirection(MoveDirection direction) {
+            currentDirection = direction;
+        }
 
 };
 

@@ -19,7 +19,7 @@ void PauseConfirmQuitScreen::draw() {
         buttonColor = defaultColor;
         yes.setText("Yes");
     }
-    drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
+    drawButton(512 - 200, 260, 400, 75, buttonColor);
     yes.draw();
 
     if (cursorPosition == 1) {
@@ -29,7 +29,7 @@ void PauseConfirmQuitScreen::draw() {
         buttonColor = defaultColor;
         no.setText("No");
     }
-    drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
+    drawButton(512 - 200, 360, 400, 75, buttonColor);
     no.draw();
 }
 
