@@ -20,6 +20,9 @@ const int MAX_PROJECTILES = 5;
 // Delay for shooting projectiles in ms
 const int PROJECTILE_DELAY = 250;
 
+// Length of invincibility after being hit
+const int INVINCIBILITY_FRAMES = 1000;
+
 class GameLogic;
 
 class Player : public Character {
@@ -54,12 +57,18 @@ class Player : public Character {
 
     bool isJumping=false;
 
+    bool invincibilityFramesActive = false;
+    SDL_TimerID invincibilityTimerId;
+
     // Handles any floor collisions
     void handleFloorCollisions();
     void handleCeilingCollisions();
 
     void handleRightCollisions();
     void handleLeftCollisions();
+
+    // Detects collisions with the enemy
+    void handleEnemyCollisions();
 
     public:
     Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
@@ -103,6 +112,10 @@ class Player : public Character {
 
     void setBufferedJump(bool jump) {
         bufferedJump = jump;
+    }
+
+    void setInvincible(bool invinc) {
+        invincibilityFramesActive = invinc;
     }
 };
 

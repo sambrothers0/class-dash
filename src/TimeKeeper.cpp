@@ -8,8 +8,9 @@ TimeKeeper::TimeKeeper() {
     SDL_Init(SDL_INIT_TIMER);
 
     startTime = 120;
+    timeElapsed = startTime;
     endTime = 0;
-    minutes = 0;
+    minutes = startTime / 60;
     seconds = 0;
     timeRunning = false;
     timeElapsed = startTime;
@@ -19,15 +20,22 @@ void TimeKeeper::beginTimer() {
     timeRunning = true;
     while (timeRunning == true) {
         if (timeElapsed > 0) {
-            timeElapsed -= 1;
-            minutes = timeElapsed / 60;
-            seconds = timeElapsed % 60;
+            iterations++;
+
+            if (iterations >= 20) { // 20 = 1000 / 50
+                timeElapsed -= 1;
+                minutes = timeElapsed / 60;
+                seconds = timeElapsed % 60;
+                iterations = 0;
+            }
         }
         else {
             minutes = 0;
             seconds = 0;
         }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        
+        // More accurate timekeeping
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
 /*

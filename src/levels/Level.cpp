@@ -142,6 +142,51 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
     return true;
 }
 
+bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
+    if (!loadFromTMX(levelData.getFilePath(), renderer)) {
+        return false;
+    }
+
+    // Set up enemies
+    enemies.clear();
+
+    for (auto enemyData : levelData.getEnemies()) {
+        auto startPos = enemyData.getStartPos();
+
+        Enemy enemy(
+            enemyData.getStartPos(),
+            enemyData.getTrackStart(),
+            enemyData.getTrackEnd()
+        );
+
+        // Find a solid object along that line
+        auto hitbox = enemy.getHitbox() + startPos;
+
+        auto leftX = hitbox.getLeftX();
+        auto rightX = hitbox.getRightX();
+        auto centerX = (leftX + rightX) / 2.0;
+        auto bottomY = hitbox.getBottomY();
+
+        double targetY = 768;
+
+        // We only really care about the center x here
+        for (auto y = bottomY; y <= WINDOW_HEIGHT; y += TILE_SIZE / 2) {
+            auto worldTile = getWorldCollisionObject(Vector2(floor(centerX / TILE_SIZE), floor(y / TILE_SIZE)));
+
+            if (worldTile) {
+                auto bounds = worldTile->bounds;
+                targetY = bounds.y - ENEMY_HEIGHT / 2;
+                enemy.setGroundLevel(targetY);
+                break;
+            }
+        }
+
+        enemies.push_back(std::make_shared<Enemy>(enemy));
+    }
+
+    return true;
+}
+
 const CollisionObject* Level::getLocalCollisionObject(const Vector2& position) const {
     
     for (const auto& layer : layers) {
