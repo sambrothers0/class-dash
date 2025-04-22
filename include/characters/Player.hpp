@@ -34,7 +34,7 @@ class Player : public Character {
 
     // Last direction moved in
     MoveDirection lastDirection = MoveDirection::RIGHT;
-    
+
     // List of available projectiles
     std::deque<Projectile> projectiles;
 
@@ -50,7 +50,7 @@ class Player : public Character {
 
     // Jump buffering mechanic lets you hold down the jump key to jump as soon as you land
     bool bufferedJump = false;
-    
+
     bool onGround=false;
     bool falling=true;
     double fallHeight;
