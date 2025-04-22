@@ -69,6 +69,19 @@ void Projectile::move(double ms) {
             }
         }
     }
+
+    // Check for collisions with enemies
+    auto enemies = level->getEnemies();
+    
+    for (auto enemy : enemies) {
+        auto enemyHitbox = enemy->getHitbox() + enemy->getPosition();
+
+        if (hitboxPos.overlaps(enemyHitbox)) {
+            active = false;
+            enemy->decrementHealth();
+            break;
+        }
+    }
 }
 
 void Projectile::setStartingPosition(MoveDirection direction) {
