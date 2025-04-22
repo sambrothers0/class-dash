@@ -16,6 +16,8 @@
 #include "SDL_image.h"
 #include "Layer.hpp"
 #include <tuple>
+#include "characters/Enemy.hpp"
+#include "levels/LevelData.hpp"
 
 
 // Structure to represent a tsx object
@@ -49,13 +51,19 @@ class Level {
     // Store tile IDs with their respective collision object with local coordinates (ie: since the bounds for a grass block are the full sqaure, x:0, y:0, w:32, h:32)
     std::unordered_map<uint32_t, std::vector<CollisionObject>> tileCollisions;
 
+    // List of enemy entities
+    std::vector<std::shared_ptr<Enemy>> enemies;
+
+    Vector2 playerspawn;
     public:
     explicit Level(Vector2 _dimensions) : dimensions(_dimensions) {}
     const Vector2& getDimensions() const {
         return dimensions;
     }
 
-
+    Vector2 getPlayerSpawnPoint() const {
+        return playerspawn;
+    }
     std::vector<std::tuple<Vector2,int>>& getBlocks() {
         return blocks;
     }
@@ -66,6 +74,10 @@ class Level {
 
     std::vector<std::shared_ptr<Layer>>& getLayers() {
         return layers;
+    }
+
+    std::vector<std::shared_ptr<Enemy>>& getEnemies() {
+        return enemies;
     }
 
     // gets global ID for a given block
@@ -102,6 +114,9 @@ class Level {
     // loads map from tmx file, and populates spritesheets, blocks, and ids
     // later should be adjusted to account for layering and flip flags
     bool loadFromTMX(const std::string& filename, SDL_Renderer* renderer);
+
+    // Loads the level using the level data
+    bool loadData(LevelData& levelData, SDL_Renderer* renderer);
 
     ~Level() {}
 };

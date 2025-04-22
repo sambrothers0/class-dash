@@ -14,7 +14,7 @@ int Player::getCurrentAnimationOffset() const {
     return (animationTicks % 40) / 10;
 }
 
-void Player::move(double ms) {    
+void Player::move(double ms) {
     // Basic character movement
     double seconds = ms / 1000;
 
@@ -90,7 +90,7 @@ void Player::shoot() {
         return;
     }
 
-    auto newProjectile = Projectile(position, currentDirection);
+    auto newProjectile = Projectile(std::make_shared<GameLogic>(gameLogic), position, currentDirection);
 
     if (currentDirection == MoveDirection::LEFT) {
         newProjectile.setStartingPosition(currentDirection);
@@ -184,7 +184,7 @@ void Player::handleFloorCollisions() {
      *     }
      *   }
      * }
-     * 
+     *
      */
 
     auto hitbox = getHitbox() + position;
@@ -222,7 +222,7 @@ void Player::handleFloorCollisions() {
             // This line is the key
             if (worldTile) {
                 auto bounds = worldTile->bounds;
-    
+
                 // Check if the player is too far left/right
                 if (bounds.x >= rightX || (bounds.x + bounds.w <= leftX)) {
                     continue;
@@ -260,7 +260,7 @@ void Player::handleFloorCollisions() {
 void Player::handleCeilingCollisions() {
     auto hitbox = getHitbox() + position;
     auto level = gameLogic.getLevel();
-    
+
     auto hitboxWidth = hitbox.getSize().getX();
     auto hitboxHeight = hitbox.getSize().getY();
 
@@ -296,7 +296,7 @@ void Player::handleCeilingCollisions() {
 void Player::handleRightCollisions() {
     auto hitbox = getHitbox() + position;
     auto level = gameLogic.getLevel();
-    
+
     auto hitboxWidth = hitbox.getSize().getX();
     auto hitboxHeight = hitbox.getSize().getY();
 
@@ -330,7 +330,7 @@ void Player::handleRightCollisions() {
 void Player::handleLeftCollisions() {
     auto hitbox = getHitbox() + position;
     auto level = gameLogic.getLevel();
-    
+
     auto hitboxWidth = hitbox.getSize().getX();
     auto hitboxHeight = hitbox.getSize().getY();
 
@@ -364,13 +364,38 @@ void Player::handleLeftCollisions() {
     }
 }
 
+Uint32 onInvincibilityEnd(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+
+    player->setInvincible(false);
+
+    return 0;
+}
+
+void Player::handleEnemyCollisions() {
+    auto enemies = gameLogic.getLevel()->getEnemies();
+
+    for (auto enemy : enemies){
+        auto playerHitbox = getHitbox() + position;
+        auto enemyHitbox = enemy->getHitbox() + enemy->getPosition();
+
+        // Detect if the 2 bounding boxes overlap
+        if (playerHitbox.overlaps(enemyHitbox)) {
+            std::cout << "enemy collision" << std::endl;
+            gameLogic.getTimer()->subtractTime(5); // right now all enemy collisions are 5 seconds
+            invincibilityFramesActive = true;
+            invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);
+        }
+    }
+}
+
 void Player::handleCollisions() {
     /**
      * if player is hitting an obstacle to the right and is moving right, push them back
      * if player is hitting an obstacle to the left and is moving left, push them back
      * check bottom tiles
      * check top tiles
-     * 
+     *
      * To fix one issue, if the player is falling off of a structure, don't check vertically unless the new position is lower
      * If the player is jumping, only check vertically once they reach the peak of their jump
      */
@@ -385,4 +410,8 @@ void Player::handleCollisions() {
      } else if (velocity.getX() < 0) {
         handleLeftCollisions();
      }
+
+    if (!invincibilityFramesActive) {
+        handleEnemyCollisions();
+    }
 }

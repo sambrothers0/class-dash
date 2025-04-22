@@ -9,14 +9,24 @@ class TimeKeeper {
 
     private:
         int minutes, seconds, startTime, endTime;
-        Uint64 timeElapsed;
+        int timeElapsed;
         bool timeRunning;
+
+        int iterations = 0; // This is used so that we can update the timer more frequently in case the player gets hit.
 
     public:
         TimeKeeper(); // initialize the time 
         void pauseTimer() {timeRunning = false;}
         void resetTimer(); // set reset timer by setting the startime to the current time
         void beginTimer(); // updates the time in the gameloop
+
+         // Subtracts seconds from the timer
+        void subtractTime(int _seconds) {
+            timeElapsed -= _seconds;
+            minutes = timeElapsed / 60;
+            seconds = timeElapsed % 60;
+        }
+
         bool isTimeUp() const { return timeElapsed <= 0; } // check if the time is up
 
         std::string getTime() const;

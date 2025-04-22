@@ -3,17 +3,23 @@
 
 #include "physics/Vector2.hpp"
 #include "MoveDirection.hpp"
+#include "GameLogic.hpp"
 
 class Projectile {
 
     private:
+        // Apparently push_back does not work when a member variable is a reference, so I switched it to a pointer
+        std::shared_ptr<GameLogic> gameLogic;
+
         Vector2 currentPosition, velocity, startingPosition;
         bool active = false;
 
         // holds the current direction of the projectile, will be assigned players current direction
         MoveDirection currentDirection;
+
+        BoundingBox hitbox = BoundingBox(Vector2(-7, -9), Vector2(14, 18));
     public:
-        Projectile(Vector2 playerPosition, MoveDirection playerDirection);
+        Projectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 playerPosition, MoveDirection playerDirection);
 
         const Vector2& getPosition() const {
             return currentPosition;
@@ -29,6 +35,10 @@ class Projectile {
 
         const Vector2& getVelocity() const {
             return velocity;
+        }
+
+        const BoundingBox& getHitbox() const {
+            return hitbox;
         }
 
         void setActive(bool activity) {
