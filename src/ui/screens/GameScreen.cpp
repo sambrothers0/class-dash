@@ -137,9 +137,11 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
                 break;
             case SDLK_UP:
             case SDLK_w:
+                SoundManager::getInstance()->playSound(SoundEffect::JUMP);
                 player->jump();
                 break;
             case SDLK_SPACE:
+                SoundManager::getInstance()->playSound(SoundEffect::SHOOT);
                 player->shoot();
                 break;
             case SDLK_h:

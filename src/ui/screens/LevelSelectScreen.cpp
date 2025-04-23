@@ -62,12 +62,15 @@ ScreenType LevelSelectScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition - 1 + numOptions) % numOptions; // Wrap around
                 break;
             case SDLK_DOWN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition + 1) % numOptions; // Wrap around
                 break;
             case SDLK_RETURN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 if (cursorPosition != levelsUnlocked) {
                     return ScreenType::GAME; // this may need additional work to select correct level later
                 } else {

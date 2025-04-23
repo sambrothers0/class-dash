@@ -10,21 +10,26 @@ class GameFinishScreen : public Screen {
 
     int cursorPosition = 0;
 
-    Text pause, resume, quit;
+    Text title, subtitle1, subtitle2, quit;
+
+    SDL_Texture* background = nullptr;
 
     public:
     GameFinishScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
     Screen(_renderer), font(_font), 
-        pause(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Game Paused"),
-        resume(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Resume"),
-        quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit")
+        title(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Congratulations!"),
+        subtitle1(_renderer, _font, Vector2(512, 200), 40, { 0, 0, 0, 255 }, "You got every final on"),
+        subtitle2(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "time and graduated!"),
+        quit(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, ">Quit<")
     {}
 
     virtual void draw();
 
+    void drawBackground(SDL_Renderer* renderer, SDL_Texture* texture);
+
     virtual ScreenType handleEvent(SDL_Event& event);
 
-    ~GameFinishScreen() {}
+    ~GameFinishScreen() {};
 };
 
 #endif
