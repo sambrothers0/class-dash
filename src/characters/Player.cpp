@@ -89,6 +89,8 @@ void Player::shoot() {
     if (isProjectileTimerActive) {
         return;
     }
+    
+    SoundManager::getInstance()->playSound(SoundEffect::SHOOT);
 
     auto newProjectile = Projectile(position, currentDirection);
 
@@ -140,6 +142,7 @@ void Player::moveRight() {
 
 void Player::jump() {
     if (velocity.getY() == 0) {
+        SoundManager::getInstance()->playSound(SoundEffect::JUMP);
         std::cout << "jump" << std::endl;
         velocity.setY(-500);
         position -= Vector2(0, 1); // Update position to avoid an immediate collision with the ground

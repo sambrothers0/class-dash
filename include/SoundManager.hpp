@@ -14,24 +14,16 @@ class SoundManager {
     private:
         static SoundManager* instance;
         
-        // Store sound effects
         std::unordered_map<SoundEffect, Mix_Chunk*> soundEffects;
-        
-        // Store music tracks
         std::unordered_map<MusicTrack, Mix_Music*> musicTracks;
         
-        // Current music track
         MusicTrack currentMusic;
+    
+        bool musicPlaying = false;
         
-        // Volumes
-        int musicVolume = MIX_MAX_VOLUME;
-        int soundVolume = MIX_MAX_VOLUME;
-        
-        // Private constructor for singleton
         SoundManager();
         
     public:
-        // Get singleton instance
         static SoundManager* getInstance();
         
         // Initialize sound system
@@ -52,10 +44,8 @@ class SoundManager {
         // Pause/resume music
         void pauseMusic();
         void resumeMusic();
-        
-        // Volume control
-        void setMusicVolume(int volume); // 0-100
-        void setSoundVolume(int volume); // 0-100
+
+        bool isMusicPlaying() const { return musicPlaying; }
         
         // Clean up resources
         void cleanup();

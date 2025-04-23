@@ -21,7 +21,9 @@ class TitleScreen : public Screen {
         title(_renderer, _font, Vector2(512, 130), 50, {0, 0, 0, 255}, "Class Dash"),
         start(_renderer, _font, Vector2(512, 585), 40, {0, 0, 0, 255}, "Start"),
         howToPlay(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, "How to Play")
-    {}
+    {
+        SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
+    }
 
     virtual void draw();
 

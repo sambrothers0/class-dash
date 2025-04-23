@@ -11,7 +11,7 @@ SoundManager* SoundManager::getInstance() {
     return instance;
 }
 
-SoundManager::SoundManager() : currentMusic(MusicTrack::MENU) {
+SoundManager::SoundManager() : currentMusic(MusicTrack::TITLE_THEME) {
     // Private constructor
 }
 
@@ -76,6 +76,9 @@ void SoundManager::playSound(SoundEffect effect) {
 }
 
 void SoundManager::playMusic(MusicTrack track, bool loop) {
+    if (currentMusic == track && musicPlaying) {
+        return; // Music is already playing
+    }
     auto it = musicTracks.find(track);
     if (it != musicTracks.end()) {
         // Stop any currently playing music
@@ -85,10 +88,12 @@ void SoundManager::playMusic(MusicTrack track, bool loop) {
         Mix_PlayMusic(it->second, loop ? -1 : 0);
         currentMusic = track;
     }
+    musicPlaying = true;
 }
 
 void SoundManager::stopMusic() {
     Mix_HaltMusic();
+    musicPlaying = false;
 }
 
 void SoundManager::pauseMusic() {
@@ -101,18 +106,6 @@ void SoundManager::resumeMusic() {
     if (Mix_PausedMusic()) {
         Mix_ResumeMusic();
     }
-}
-
-void SoundManager::setMusicVolume(int volume) {
-    // Convert from 0-100 to 0-128 (SDL_mixer's range)
-    musicVolume = (volume * MIX_MAX_VOLUME) / 100;
-    Mix_VolumeMusic(musicVolume);
-}
-
-void SoundManager::setSoundVolume(int volume) {
-    // Convert from 0-100 to 0-128 (SDL_mixer's range)
-    soundVolume = (volume * MIX_MAX_VOLUME) / 100;
-    Mix_Volume(-1, soundVolume); // Set volume for all channels
 }
 
 void SoundManager::cleanup() {

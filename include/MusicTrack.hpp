@@ -2,8 +2,8 @@
 #define _MUSIC_TRACK_H
 
 enum class MusicTrack {
-    MENU,
-    LEVEL
+    TITLE_THEME,
+    LEVEL_MUSIC
 };
 
 #endif

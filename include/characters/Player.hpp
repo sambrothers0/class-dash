@@ -8,6 +8,7 @@
 #include "Projectile.hpp"
 #include "physics/BoundingBox.hpp"
 #include "physics/Vector2.hpp"
+#include "SoundManager.hpp"
 
 #include <deque>
 

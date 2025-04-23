@@ -13,6 +13,7 @@ LevelSelectScreen::LevelSelectScreen(SDL_Renderer* _renderer, TTF_Font* _font, i
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 400), 40, {0, 0, 0, 255}, "Wednesday"));
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 500), 40, {0, 0, 0, 255}, "Thursday"));
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 600), 40, {0, 0, 0, 255}, "Friday"));
+    SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
 }
 
 void LevelSelectScreen::draw() {
