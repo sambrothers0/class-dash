@@ -93,6 +93,11 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                 for(const auto& object : objects)
                 {
                     if(object.getName()=="Player"){playerspawn=Vector2(object.getPosition().x,object.getPosition().y-1);}
+
+                    if (object.getName() == "Endpoint") {
+                        levelEndPos = object.getPosition().x;
+                    }
+
                     std::cout<<"Object Name: "<<object.getName()<<" ObjectLayer Name: "<<object.getPosition().x<<std::endl;
                 }
             }

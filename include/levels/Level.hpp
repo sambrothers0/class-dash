@@ -54,6 +54,9 @@ class Level {
     // List of enemy entities
     std::vector<std::shared_ptr<Enemy>> enemies;
 
+    // X-position that triggers the end of the level
+    double levelEndPos = 1000000; // Replace this when loading the level
+
     Vector2 playerspawn;
     public:
     explicit Level(Vector2 _dimensions) : dimensions(_dimensions) {}
@@ -78,6 +81,10 @@ class Level {
 
     std::vector<std::shared_ptr<Enemy>>& getEnemies() {
         return enemies;
+    }
+
+    double getLevelEndPos() const {
+        return levelEndPos;
     }
 
     // gets global ID for a given block

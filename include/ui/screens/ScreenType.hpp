@@ -10,6 +10,8 @@ enum ScreenType {
     PAUSE,
     PAUSE_CONFIRM_QUIT,
     LEVEL_LOSE,
+    LEVEL_WIN,
+    GAME_FINISH
 };
 
 #endif
