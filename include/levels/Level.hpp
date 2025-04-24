@@ -118,6 +118,9 @@ class Level {
     // Loads the level using the level data
     bool loadData(LevelData& levelData, SDL_Renderer* renderer);
 
+    // Removes all enemies that died during the last tick
+    void removeDeadEnemies();
+
     ~Level() {}
 };
 

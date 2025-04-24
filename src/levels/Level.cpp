@@ -262,3 +262,27 @@ bool Level::colliderTileAt(const Vector2& position) const {
     }
     return false;
 }
+
+void Level::removeDeadEnemies() {
+    // Move the projectiles, while marking any which should be deleted
+    std::vector<size_t> toDelete;
+
+    for (size_t idx = 0; idx < enemies.size(); idx++) {
+        auto enemy = enemies[idx];
+
+        if (!enemy->isAlive()) {
+            toDelete.push_back(idx);
+        }
+    }
+
+    // Delete the corresponding indexes
+    if (toDelete.size() > 0) {
+        // This is needed to keep the indexes accurate
+        int deleted = 0;
+
+        for (auto idx : toDelete) {
+            enemies.erase(enemies.begin() + idx - deleted);
+            deleted++;
+        }
+    }
+}

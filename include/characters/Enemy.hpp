@@ -28,6 +28,9 @@ class Enemy : public Character {
         // y-level of the ground
         double groundLevel = 576;
 
+        // Amount of health
+        int health = 2;
+
     public:
         explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
             velocity.setX(120);
@@ -62,6 +65,14 @@ class Enemy : public Character {
         // Moves the enemy in either direction
         void moveLeft();
         void moveRight();
+
+        void decrementHealth() {
+            health--;
+        }
+
+        bool isAlive() const {
+            return health > 0;
+        }
 };
 
 #endif
