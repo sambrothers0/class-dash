@@ -3,5 +3,6 @@
 
 const int WINDOW_WIDTH = 1024;
 const int WINDOW_HEIGHT = 768;
+const int TILE_SIZE = 32;
 
 #endif

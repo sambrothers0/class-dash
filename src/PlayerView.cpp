@@ -3,12 +3,14 @@
 #include "Game.hpp"
 #include "gameDimensions.hpp"
 #include "sdlLogging.hpp"
+#include "SoundManager.hpp"
 #include "ui/screens/GameScreen.hpp"
 #include "ui/screens/LevelSelectScreen.hpp"
 #include "ui/screens/PauseConfirmQuitScreen.hpp"
 #include "ui/screens/PauseScreen.hpp"
 #include "ui/screens/TitleScreen.hpp"
 #include "ui/screens/HowToPlayScreen.hpp"
+#include "ui/screens/LevelLoseScreen.hpp"
 
 void PlayerView::setupSDL() {
     // Create window
@@ -23,6 +25,10 @@ void PlayerView::setupSDL() {
     // Initialize SDL_image
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
         sdlError("Unable to initialize SDL_image!");
+    }
+
+    if (!SoundManager::getInstance()->initialize()) {
+        sdlError("Unable to initialize sound manager!");
     }
 
     // Load font
@@ -54,7 +60,7 @@ void PlayerView::draw() {
 }
 
 void PlayerView::handleEvent(SDL_Event& event) {
-    int eventStatus = screen->handleEvent(event);
+    auto eventStatus = screen->handleEvent(event);
     if (eventStatus == ScreenType::TITLE) {
         switchToTitleScreen();
     } else if (eventStatus == ScreenType::HOW_TO_PLAY) {
@@ -67,6 +73,12 @@ void PlayerView::handleEvent(SDL_Event& event) {
         switchToPauseScreen();
     } else if (eventStatus == ScreenType::PAUSE_CONFIRM_QUIT) {
         switchToPauseConfirmQuitScreen();
+    }
+}
+
+void PlayerView::handleExtraEvents() {
+    if (screen->handleExtraEvents() == ScreenType::LEVEL_LOSE) {
+        switchToLevelLoseScreen();
     }
 }
 
@@ -86,7 +98,7 @@ void PlayerView::switchToLevelSelectScreen() {
         gameLogic.quitLevel();
     }
 
-    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font));
+    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font, gameLogic.getLevelsCompleted()));
 }
 
 void PlayerView::switchToPauseScreen() {
@@ -111,6 +123,12 @@ void PlayerView::switchToGameScreen() {
 
 void PlayerView::switchToPauseConfirmQuitScreen() {
     screen = std::make_unique<PauseConfirmQuitScreen>(PauseConfirmQuitScreen(renderer, font));
+}
+
+void PlayerView::switchToLevelLoseScreen() {
+    auto& gameLogic = game.getGameLogic();
+    gameLogic.quitLevel();
+    screen = std::make_unique<LevelLoseScreen>(LevelLoseScreen(renderer, font));
 }
 
 PlayerView::~PlayerView() {

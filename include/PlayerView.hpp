@@ -15,9 +15,9 @@ class PlayerView {
     private:
     Game& game;
 
-    SDL_Renderer* renderer;
-    SDL_Window* window;
-    TTF_Font* font;
+    SDL_Renderer* renderer = nullptr;
+    SDL_Window* window = nullptr;
+    TTF_Font* font = nullptr;
 
     // Pointer to the current screen, it needs a pointer because Screen is an abstract class
     // This needs to be set in the constructor
@@ -36,6 +36,9 @@ class PlayerView {
     // Handles an SDL event
     void handleEvent(SDL_Event& event);
 
+    // Handles extra SDL events that aren't specifically covered by SDL_Event, such as ensuring that a key is still held down
+    void handleExtraEvents();
+
     // Switches to the title screen
     void switchToTitleScreen();
 
@@ -51,7 +54,11 @@ class PlayerView {
     // Switches to the game screen
     void switchToGameScreen();
 
+    // Switches to the pause confirm quit screen
     void switchToPauseConfirmQuitScreen();
+    
+    // Switches to the level lose screen
+    void switchToLevelLoseScreen();
 
     // Pass Renderer
     SDL_Renderer* getRenderer() {

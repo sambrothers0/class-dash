@@ -15,18 +15,22 @@ void PauseScreen::draw() {
 
     if (cursorPosition == 0) {
         buttonColor = highlightedColor;
+        resume.setText(">Resume<");
     } else {
         buttonColor = defaultColor;
+        resume.setText("Resume");
     }
-    drawButton(renderer, 512 - 200, 260, 400, 75, buttonColor);
+    drawButton(512 - 200, 260, 400, 75, buttonColor);
     resume.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
+        quit.setText(">Quit<");
     } else {
         buttonColor = defaultColor;
+        quit.setText("Quit");
     }
-    drawButton(renderer, 512 - 200, 360, 400, 75, buttonColor);
+    drawButton(512 - 200, 360, 400, 75, buttonColor);
     quit.draw();
 }
 
@@ -34,12 +38,15 @@ ScreenType PauseScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition - 1 + 2) % 2; // Wrap around
                 break;
             case SDLK_DOWN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition + 1) % 2; // Wrap around
                 break;
             case SDLK_RETURN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 if (cursorPosition == 0) {
                     return ScreenType::GAME; // Resume the game
                 } else if (cursorPosition == 1) {

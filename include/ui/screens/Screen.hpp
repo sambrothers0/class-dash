@@ -6,6 +6,7 @@
 #include "GameLogic.hpp"
 #include "ui/Text.hpp"
 #include "ui/screens/ScreenType.hpp"
+#include "SoundManager.hpp"
 
 // Abstract class
 class Screen {
@@ -16,12 +17,15 @@ class Screen {
     public:
     Screen(SDL_Renderer* _renderer) : renderer(_renderer) {}
 
-    void drawButton(SDL_Renderer *renderer, int x, int y, int width, int height, SDL_Color color);
+    void drawButton(int x, int y, int width, int height, SDL_Color color);
 
-    void drawCircle(SDL_Renderer *renderer, int cx, int cy, int radius);
+    void drawCircle(int cx, int cy, int radius);
 
     // Draws the screen using the renderer
     virtual void draw() = 0;
+
+    // Handles extra SDL events that aren't specifically covered by SDL_Event, such as ensuring that a key is still held down
+    virtual ScreenType handleExtraEvents() { return ScreenType::KEEP; }
 
     // Handles events, return value indicates if the screen needs to be switched
     virtual ScreenType handleEvent(SDL_Event& event) { return ScreenType::KEEP; }

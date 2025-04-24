@@ -10,22 +10,15 @@ class LevelSelectScreen : public Screen {
 
     int cursorPosition = 0;
 
-    Text selectText, monday, tuesday, wednesday, thursday, friday, back;
+    Text levelSelect, back;
 
-    unsigned int levelsUnlocked = 0;
+    unsigned int levelsUnlocked;
+
+    // List of level texts (this exists to make drawing them easier)
+    std::vector<Text> levelTexts;
 
     public:
-    LevelSelectScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
-        Screen(_renderer), font(_font), 
-        selectText(_renderer, _font, Vector2(512, 70), 50, {0, 0, 0, 255}, "Level Select"),
-        monday(_renderer, _font, Vector2(512, 200), 40, {0, 0, 0, 255}, "Monday"),
-        tuesday(_renderer, _font, Vector2(512, 300), 40, {0, 0, 0, 255}, "Tuesday"),
-        wednesday(_renderer, _font, Vector2(512, 400), 40, {0, 0, 0, 255}, "Wednesday"),
-        thursday(_renderer, _font, Vector2(512, 500), 40, {0, 0, 0, 255}, "Thursday"),
-        friday(_renderer, _font, Vector2(512, 600), 40, {0, 0, 0, 255}, "Friday"),
-        back(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, "Back") 
-
-    {}
+    LevelSelectScreen(SDL_Renderer* _renderer, TTF_Font* _font, int levelsCompleted);
 
     virtual void draw();
 
