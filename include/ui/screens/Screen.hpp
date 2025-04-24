@@ -6,6 +6,7 @@
 #include "GameLogic.hpp"
 #include "ui/Text.hpp"
 #include "ui/screens/ScreenType.hpp"
+#include "SoundManager.hpp"
 
 // Abstract class
 class Screen {

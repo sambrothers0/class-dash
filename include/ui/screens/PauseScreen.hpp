@@ -18,7 +18,9 @@ class PauseScreen : public Screen {
         pause(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Game Paused"),
         resume(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Resume"),
         quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit")
-    {}
+    {
+        SoundManager::getInstance()->pauseMusic();
+    }
 
     virtual void draw();
 

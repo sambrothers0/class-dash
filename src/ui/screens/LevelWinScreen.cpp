@@ -1,13 +1,13 @@
-#include "ui/screens/LevelLoseScreen.hpp"
+#include "ui/screens/LevelWinScreen.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 // #include <iostream>
 
-void LevelLoseScreen::draw() {
+void LevelWinScreen::draw() {
     // Draw the title screen
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
-    title.draw();
+    pause.draw();
 
     SDL_Color buttonColor;
     SDL_Color defaultColor = {147, 115, 64, 255}; // Default color for buttons
@@ -15,13 +15,13 @@ void LevelLoseScreen::draw() {
 
     if (cursorPosition == 0) {
         buttonColor = highlightedColor;
-        restart.setText(">Restart<");
+        resume.setText(">Next Level<");
     } else {
         buttonColor = defaultColor;
-        restart.setText("Restart");
+        resume.setText("Next Level");
     }
     drawButton(512 - 200, 260, 400, 75, buttonColor);
-    restart.draw();
+    resume.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
@@ -34,7 +34,7 @@ void LevelLoseScreen::draw() {
     quit.draw();
 }
 
-ScreenType LevelLoseScreen::handleEvent(SDL_Event& event) {
+ScreenType LevelWinScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
@@ -50,10 +50,10 @@ ScreenType LevelLoseScreen::handleEvent(SDL_Event& event) {
                 if (cursorPosition == 0) {
                     return ScreenType::GAME; // Resume the game
                 } else if (cursorPosition == 1) {
-                    return ScreenType::LEVEL_SELECT; // Quit to level select
+                    return ScreenType::PAUSE_CONFIRM_QUIT; // Quit to level select
                 }
             case SDLK_ESCAPE:
-                return ScreenType::LEVEL_SELECT;
+                return ScreenType::PAUSE_CONFIRM_QUIT;
             default:
                 return ScreenType::KEEP;
         }
