@@ -116,3 +116,14 @@ void GameLogic::saveLevelsCompleted() const {
     file << std::to_string(levelsCompleted);
     file.close();
 }
+
+void GameLogic::stopLevelReachedEnd() {
+    player->stopMoving();
+    timer->pauseTimer();
+    state = GameState::FINISHED;
+}
+
+void GameLogic::endLevel() {
+    std::cout << "End level" << std::endl;
+    state = GameState::INACTIVE;
+}

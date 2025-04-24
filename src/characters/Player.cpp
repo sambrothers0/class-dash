@@ -417,4 +417,12 @@ void Player::handleCollisions() {
     if (!invincibilityFramesActive) {
         handleEnemyCollisions();
     }
+
+    // Check for reaching the end of the level
+    auto level = gameLogic.getLevel();
+
+    if (position.getX() >= level->getLevelEndPos()) {
+        // Reached the end of the level
+        gameLogic.stopLevelReachedEnd();
+    }
 }

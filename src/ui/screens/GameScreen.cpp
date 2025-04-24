@@ -59,7 +59,7 @@ void GameScreen::drawLevel(std::shared_ptr<Level> level) {
             Vector2 blockPosition(block.getX() * TILE_SIZE - scrollOffset + drawOffset, block.getY() * TILE_SIZE + drawOffset);
             int spriteIndex = tileID - spritesheet->getFirstGID();
 
-            spritesheet->draw(spriteIndex, blockPosition, flip, opacity);
+            spritesheet->draw(spriteIndex, blockPosition, flip, opacity * alpha);
         }
     }
 }
@@ -68,9 +68,25 @@ void GameScreen::drawCollisionHitbox(const Vector2& position, const BoundingBox&
     boxRGBA(renderer, position.getX() - scrollOffset + hitbox.getLeftX(), position.getY() + hitbox.getTopY(), position.getX() - scrollOffset + hitbox.getRightX(), position.getY() + hitbox.getBottomY(), 0, 255, 0, 100);
 }
 
+Uint32 onTransparencyTimerCallback(Uint32 interval, void* param) {
+    auto screen = reinterpret_cast<GameScreen*>(param);
+
+    auto alpha = screen->getAlpha();
+    auto returnValue = alpha <= 0.05f ? 0 : 50;
+
+    screen->updateAlpha();
+
+    return returnValue;
+}
+
 void GameScreen::draw() {
-    if (!gameLogic.isLevelActive())
+    if (!gameLogic.isLevelActive() && !gameLogic.isLevelFinished())
         return;
+
+    // Start updating alpha if the level is done
+    if (gameLogic.isLevelFinished() && alpha == 1.0f) {
+        alphaTimerID = SDL_AddTimer(50, onTransparencyTimerCallback, this);
+    }
 
     // Draw a box for the player
     auto player = gameLogic.getPlayer();
@@ -88,15 +104,15 @@ void GameScreen::draw() {
 
     drawLevel(level);
 
-    playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT, 1.0);
+    playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT, alpha);
 
     for (auto enemy : enemies) {
         Vector2 enemyPosition = enemy->getPosition();
-        enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, 1.0);
+        enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);
     }
 
     // Draw the player hitbox + enemy hitboxes
-    if (showHitboxes) {
+    if (showHitboxes && !gameLogic.isLevelFinished()) {
         drawCollisionHitbox(playerPosition, player->getHitbox());
 
         for (auto enemy : enemies) {
@@ -113,10 +129,10 @@ void GameScreen::draw() {
         Vector2 projectilePosition = proj.getPosition();
         //boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
         if (proj.getVelocity().getX() < 0) {
-            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), false, 1.0);
+            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), false, alpha);
         }
         else {
-            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), true, 1.0);
+            playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), true, alpha);
         }
     }
 
@@ -201,6 +217,15 @@ ScreenType GameScreen::handleExtraEvents() {
         return ScreenType::LEVEL_LOSE; // Switch to level lose screen
     }
 
+    // We don't switch to the level win screen until the animation is finished
+    if (finishedLevelComplete) {
+        return ScreenType::LEVEL_WIN;
+    }
+
+    if (!gameLogic.isLevelActive()) {
+        return ScreenType::KEEP;
+    }
+
     // Jump buffering handle needs to happen outside of HandleEvent because that can't tell if a key is still held down
     const Uint8* keysPressed = SDL_GetKeyboardState(NULL);
     auto player = gameLogic.getPlayer();
@@ -218,4 +243,17 @@ ScreenType GameScreen::handleExtraEvents() {
     }
 
     return ScreenType::KEEP;
+}
+
+void GameScreen::updateAlpha() {
+    if (alpha > 0) {
+        alpha -= 0.05f;
+
+        if (alpha <= 0) {
+            alpha = 0;
+            finishedLevelComplete = true;
+            SDL_RemoveTimer(alphaTimerID);
+            gameLogic.endLevel();
+        }
+    }
 }
