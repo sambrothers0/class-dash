@@ -21,7 +21,9 @@ class GameFinishScreen : public Screen {
         subtitle1(_renderer, _font, Vector2(512, 200), 40, { 0, 0, 0, 255 }, "You got every final on"),
         subtitle2(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "time and graduated!"),
         quit(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, ">Quit<")
-    {}
+    {
+        SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
+    }
 
     virtual void draw();
 

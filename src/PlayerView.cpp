@@ -12,6 +12,7 @@
 #include "ui/screens/HowToPlayScreen.hpp"
 #include "ui/screens/LevelLoseScreen.hpp"
 #include "ui/screens/LevelWinScreen.hpp"
+#include "ui/screens/GameFinishScreen.hpp"
 
 void PlayerView::setupSDL() {
     // Create window
@@ -84,6 +85,8 @@ void PlayerView::handleExtraEvents() {
         switchToLevelLoseScreen();
     } else if (eventStatus == ScreenType::LEVEL_WIN) {
         switchToLevelWinScreen();
+    } else if (eventStatus == ScreenType::GAME_FINISH) {
+        switchToGameFinishScreen();
     }
 }
 
@@ -137,7 +140,11 @@ void PlayerView::switchToLevelLoseScreen() {
 }
 
 void PlayerView::switchToLevelWinScreen() {
-    screen = std::make_unique<LevelWinScreen>(LevelWinScreen(renderer, font));
+    screen = std::make_unique<LevelWinScreen>(LevelWinScreen(renderer, font, game.getGameLogic()));
+}
+
+void PlayerView::switchToGameFinishScreen() {
+    screen = std::make_unique<GameFinishScreen>(GameFinishScreen(renderer, font));
 }
 
 PlayerView::~PlayerView() {

@@ -62,6 +62,8 @@ class PlayerView {
 
     void switchToLevelWinScreen();
 
+    void switchToGameFinishScreen();
+
     // Pass Renderer
     SDL_Renderer* getRenderer() {
         return renderer;

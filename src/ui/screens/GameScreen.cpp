@@ -219,7 +219,10 @@ ScreenType GameScreen::handleExtraEvents() {
 
     // We don't switch to the level win screen until the animation is finished
     if (finishedLevelComplete) {
-        return ScreenType::LEVEL_WIN;
+        if (gameLogic.getLevelIndex() == 4)
+            return ScreenType::GAME_FINISH;
+        else
+            return ScreenType::LEVEL_WIN;
     }
 
     if (!gameLogic.isLevelActive()) {

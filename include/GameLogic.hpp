@@ -69,6 +69,10 @@ class GameLogic {
         level = _level;
     }
 
+    int getLevelIndex() const {
+        return levelIndex;
+    }
+
     void setLevelIndex(int index) {
         levelIndex = index;
     }
