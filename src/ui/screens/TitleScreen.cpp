@@ -64,12 +64,15 @@ ScreenType TitleScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition - 1 + 2) % 2; // Wrap around
                 break;
             case SDLK_DOWN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition + 1) % 2; // Wrap around
                 break;
             case SDLK_RETURN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 if (cursorPosition == 0) {
                     return ScreenType::LEVEL_SELECT; // Switch to level select screen
                 } else if (cursorPosition == 1) {

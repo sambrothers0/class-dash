@@ -35,7 +35,7 @@ class HowToPlayScreen : public Screen {
         objectiveText7(_renderer, _font, Vector2(675, 480), 20, {0, 0, 0, 255}, "before time runs out! The"),
         objectiveText8(_renderer, _font, Vector2(675, 510), 20, {0, 0, 0, 255}, "faster you get to the end, the"),
         objectiveText9(_renderer, _font, Vector2(675, 540), 20, {0, 0, 0, 255}, "better your exam grade will be."),
-        objectiveText10(_renderer, _font, Vector2(675, 570), 20, {0, 0, 0, 255}, "Press Q at any time to quit"),
+        objectiveText10(_renderer, _font, Vector2(675, 570), 20, {0, 0, 0, 255}, "Press Q at any time to quit!"),
         back(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, ">Back<") 
 
     {}

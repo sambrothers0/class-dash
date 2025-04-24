@@ -3,6 +3,7 @@
 #include "Game.hpp"
 #include "gameDimensions.hpp"
 #include "sdlLogging.hpp"
+#include "SoundManager.hpp"
 #include "ui/screens/GameScreen.hpp"
 #include "ui/screens/LevelSelectScreen.hpp"
 #include "ui/screens/PauseConfirmQuitScreen.hpp"
@@ -24,6 +25,10 @@ void PlayerView::setupSDL() {
     // Initialize SDL_image
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
         sdlError("Unable to initialize SDL_image!");
+    }
+
+    if (!SoundManager::getInstance()->initialize()) {
+        sdlError("Unable to initialize sound manager!");
     }
 
     // Load font

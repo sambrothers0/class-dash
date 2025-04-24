@@ -31,8 +31,10 @@ ScreenType HowToPlayScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 return ScreenType::TITLE; // Switch to title screen
             case SDLK_ESCAPE:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 return ScreenType::TITLE; // Switch to title screen
             default:
                 return ScreenType::KEEP;

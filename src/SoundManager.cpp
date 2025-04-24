@@ -1,0 +1,130 @@
+#include "SoundManager.hpp"
+#include <iostream>
+
+// Initialize static instance
+SoundManager* SoundManager::instance = nullptr;
+
+SoundManager* SoundManager::getInstance() {
+    if (instance == nullptr) {
+        instance = new SoundManager();
+    }
+    return instance;
+}
+
+SoundManager::SoundManager() : currentMusic(MusicTrack::TITLE_THEME) {
+    // Private constructor
+}
+
+bool SoundManager::initialize() {
+    // Initialize SDL_mixer
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        return false;
+    }
+    
+    // Set number of channels for sound effects (default is 8)
+    Mix_AllocateChannels(16);
+    
+    return loadSounds();
+}
+
+bool SoundManager::loadSounds() {
+    // Load sound effects
+    const char* soundFiles[] = {
+        "../assets/audio/jump.wav",   
+        "../assets/audio/shoot.wav",  
+        "../assets/audio/button-switch.wav",     
+        "../assets/audio/button-select.wav"
+    };
+    
+    // Load each sound effect
+    for (int i = 0; i < 4; i++) {
+        Mix_Chunk* sound = Mix_LoadWAV(soundFiles[i]);
+        if (sound == nullptr) {
+            std::cerr << "Failed to load sound effect: " << soundFiles[i] << " SDL_mixer Error: " << Mix_GetError() << std::endl;
+            // Continue loading other sounds
+        } else {
+            soundEffects[static_cast<SoundEffect>(i)] = sound;
+        }
+    }
+    
+    // Load music tracks
+    const char* musicFiles[] = {
+        "../assets/audio/title-theme.mp3",
+        "../assets/audio/level-music.wav"
+    };
+    
+    // Load each music track
+    for (int i = 0; i < 2; i++) {
+        Mix_Music* music = Mix_LoadMUS(musicFiles[i]);
+        if (music == nullptr) {
+            std::cerr << "Failed to load music: " << musicFiles[i] << " SDL_mixer Error: " << Mix_GetError() << std::endl;
+            // Continue loading other music
+        } else {
+            musicTracks[static_cast<MusicTrack>(i)] = music;
+        }
+    }
+    
+    return true;
+}
+
+void SoundManager::playSound(SoundEffect effect) {
+    auto it = soundEffects.find(effect);
+    if (it != soundEffects.end()) {
+        Mix_PlayChannel(-1, it->second, 0);
+    }
+}
+
+void SoundManager::playMusic(MusicTrack track, bool loop) {
+    if (currentMusic == track && musicPlaying) {
+        return; // Music is already playing
+    }
+    auto it = musicTracks.find(track);
+    if (it != musicTracks.end()) {
+        // Stop any currently playing music
+        Mix_HaltMusic();
+        
+        // Play the new music track
+        Mix_PlayMusic(it->second, loop ? -1 : 0);
+        currentMusic = track;
+    }
+    musicPlaying = true;
+}
+
+void SoundManager::stopMusic() {
+    Mix_HaltMusic();
+    musicPlaying = false;
+}
+
+void SoundManager::pauseMusic() {
+    if (Mix_PlayingMusic()) {
+        Mix_PauseMusic();
+    }
+}
+
+void SoundManager::resumeMusic() {
+    if (Mix_PausedMusic()) {
+        Mix_ResumeMusic();
+    }
+}
+
+void SoundManager::cleanup() {
+    // Free sound effects
+    for (auto& pair : soundEffects) {
+        Mix_FreeChunk(pair.second);
+    }
+    soundEffects.clear();
+    
+    // Free music
+    for (auto& pair : musicTracks) {
+        Mix_FreeMusic(pair.second);
+    }
+    musicTracks.clear();
+    
+    // Quit SDL_mixer
+    Mix_CloseAudio();
+}
+
+SoundManager::~SoundManager() {
+    cleanup();
+}

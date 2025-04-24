@@ -14,6 +14,7 @@ LevelSelectScreen::LevelSelectScreen(GameLogic& _gameLogic, SDL_Renderer* _rende
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 400), 40, {0, 0, 0, 255}, "Wednesday"));
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 500), 40, {0, 0, 0, 255}, "Thursday"));
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 600), 40, {0, 0, 0, 255}, "Friday"));
+    SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
 }
 
 void LevelSelectScreen::onLevelSelected(int level) {
@@ -67,12 +68,15 @@ ScreenType LevelSelectScreen::handleEvent(SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition - 1 + numOptions) % numOptions; // Wrap around
                 break;
             case SDLK_DOWN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SWITCH);
                 cursorPosition = (cursorPosition + 1) % numOptions; // Wrap around
                 break;
             case SDLK_RETURN:
+                SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 if (cursorPosition != levelsUnlocked) {
                     onLevelSelected(cursorPosition);
                     return ScreenType::GAME; // this may need additional work to select correct level later

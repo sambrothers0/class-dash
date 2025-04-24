@@ -60,7 +60,10 @@ class GameScreen : public Screen {
             Vector2(ENEMY_WIDTH, ENEMY_HEIGHT),
             4,
             1
-        ) {}
+        ) {
+            SoundManager::getInstance()->resumeMusic();
+            SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_MUSIC);
+        }
 
     virtual void draw();
 
