@@ -24,6 +24,9 @@ const int PROJECTILE_DELAY = 250;
 // Length of invincibility after being hit
 const int INVINCIBILITY_FRAMES = 1000;
 
+// Length of reduced speed after obstacle collision
+const int SPEED_FRAMES= 1000;
+
 class GameLogic;
 
 class Player : public Character {
@@ -61,6 +64,12 @@ class Player : public Character {
     bool invincibilityFramesActive = false;
     SDL_TimerID invincibilityTimerId;
 
+    //handles speed reduction from enemies and obstacles
+    bool isSlowed = false;
+    SDL_TimerID slowTimerId; 
+    const float NORMAL_SPEED = 225.0f;
+    const float REDUCED_SPEED = 100.0f;
+
     // Handles any floor collisions
     void handleFloorCollisions();
     void handleCeilingCollisions();
@@ -70,6 +79,8 @@ class Player : public Character {
 
     // Detects collisions with the enemy
     void handleEnemyCollisions();
+
+
 
     public:
     Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
@@ -106,6 +117,11 @@ class Player : public Character {
     void jump();
     void handleCollisions();
 
+
+    // Handles obstacles that reduce player speed
+    void reduceSpeed();
+    void restoreSpeed();
+
     // Sets if the projectile timer is active
     void setIfProjectileTimerActive(bool active) {
         isProjectileTimerActive = active;
@@ -118,6 +134,9 @@ class Player : public Character {
     void setInvincible(bool invinc) {
         invincibilityFramesActive = invinc;
     }
+ 
+
 };
+
 
 #endif

@@ -127,17 +127,17 @@ void Player::stopMoving() {
 }
 
 void Player::moveLeft() {
-    velocity.setX(-250);
+    float speed = isSlowed ? -REDUCED_SPEED : -NORMAL_SPEED;
+    velocity.setX(speed);
     currentDirection = MoveDirection::LEFT;
     lastDirection = MoveDirection::LEFT;
-    // velocity = Vector2(-250, 0);
 }
 
 void Player::moveRight() {
-    velocity.setX(250);
+    float speed = isSlowed ? REDUCED_SPEED : NORMAL_SPEED;
+    velocity.setX(speed);
     currentDirection = MoveDirection::RIGHT;
     lastDirection = MoveDirection::RIGHT;
-    // velocity = Vector2(250, 0);
 }
 
 void Player::jump() {
@@ -160,6 +160,35 @@ void Player::jump() {
 
 Vector2 Player::getHitboxCenter() const {
     return position + hitbox.getOffset() + hitbox.getSize() / 2.0;
+}
+
+Uint32 onSpeedReduceEnd(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+    player->restoreSpeed();
+    return 0; 
+}
+
+void Player::reduceSpeed() {
+    if (!isSlowed) {
+        std::cout<<"reducing speed"<<std::endl;
+        
+        
+        if (velocity.getX() > 0) {
+            velocity.setX(REDUCED_SPEED);
+        } else if (velocity.getX() < 0) {
+            velocity.setX(-REDUCED_SPEED);
+        }
+        
+        isSlowed = true;
+
+        slowTimerId = SDL_AddTimer(SPEED_FRAMES, onSpeedReduceEnd, this);
+        
+    }
+}
+
+void Player::restoreSpeed() {
+    isSlowed = false;
+    std::cout << "Reset speed to normal" << std::endl;
 }
 
 void Player::handleFloorCollisions() {
@@ -205,6 +234,10 @@ void Player::handleFloorCollisions() {
 
         for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
             if (level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))) {
+                if(level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type == "Obstacle") {
+                    reduceSpeed();
+                }
+                std::cout<<level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type<<std::endl;
                 isOnGround = true;
                 break;
             }
@@ -374,6 +407,8 @@ Uint32 onInvincibilityEnd(Uint32 interval, void *param) {
 
     return 0;
 }
+
+
 
 void Player::handleEnemyCollisions() {
     auto enemies = gameLogic.getLevel()->getEnemies();

@@ -25,7 +25,7 @@
  </tile>
  <tile id="5" type="Ground">
   <objectgroup draworder="index" id="2">
-   <object id="1" name="trip_block" type="Obstacle" x="0" y="0" width="32" height="32"/>
+   <object id="1" name="trip_block" type="Obstacle" x="0" y="0" width="32" height="9"/>
   </objectgroup>
  </tile>
  <tile id="6" type="Obstacle">
