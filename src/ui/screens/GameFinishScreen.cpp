@@ -19,7 +19,7 @@ void GameFinishScreen::draw() {
     buttonColor = highlightedColor;
     quit.setText(">Quit<");
 
-    // drawButton(512 - 200, 360, 400, 75, buttonColor);
+    drawButton(512 - 200, 660, 400, 75, buttonColor);
     quit.draw();
 }
 

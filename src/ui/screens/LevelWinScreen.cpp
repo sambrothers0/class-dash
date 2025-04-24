@@ -29,7 +29,7 @@ void LevelWinScreen::draw() {
         buttonColor = defaultColor;
         next.setText("Next Level");
     }
-    drawButton(512 - 200, 260, 400, 75, buttonColor);
+    drawButton(512 - 250, 260, 500, 75, buttonColor);
     next.draw();
 
     if (cursorPosition == 1) {
