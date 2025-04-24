@@ -9,11 +9,9 @@
 #include <chrono>
 
 GameLogic::GameLogic() {
-    std::vector<EnemyData> level1Enemies {
-        EnemyData(Vector2(900, 580), 600, 1200)
-    };
+  
 
-    levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx", level1Enemies);
+    levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx");
     levelData[1] = LevelData("../assets/visual/Level1.tmx");
     levelData[2] = LevelData("../assets/visual/Level2.tmx");
 
@@ -68,7 +66,8 @@ double GameLogic::getScrollOffset() const {
 }
 
 void GameLogic::activate(SDL_Renderer* renderer) {
-    level = std::make_shared<Level>(Vector2(2240, 768)); // In the future this maybe should not be hardcoded
+    level = std::make_shared<Level>();
+    // level = std::make_shared<Level>(Vector2(2240, 768)); // In the future this maybe should not be hardcoded
     timer = std::make_shared<TimeKeeper>();
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
@@ -77,6 +76,7 @@ void GameLogic::activate(SDL_Renderer* renderer) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
+
 
     auto spawn = level-> getPlayerSpawnPoint();
     std::cout<<spawn.getX()<<" "<<spawn.getY()<<std::endl;

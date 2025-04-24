@@ -10,6 +10,7 @@
 #include <tmxlite/Layer.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/Tileset.hpp>
+#include <tmxlite/Property.hpp>
 #include "sprites/Spritesheet.hpp"
 #include "physics/BoundingBox.hpp"
 #include "SDL.h"
@@ -54,15 +55,26 @@ class Level {
     // List of enemy entities
     std::vector<std::shared_ptr<Enemy>> enemies;
 
+    //List of EnemyData
+    std::vector<EnemyData> levelEnemyData;
+
     Vector2 playerspawn;
+    std::vector<Vector2> enemyspawns;
     public:
-    explicit Level(Vector2 _dimensions) : dimensions(_dimensions) {}
+    explicit Level() {}
+    void setDimensions(const Vector2& dims)  {
+        dimensions = dims;
+    }
+
     const Vector2& getDimensions() const {
         return dimensions;
     }
 
     Vector2 getPlayerSpawnPoint() const {
         return playerspawn;
+    }
+    std::vector<Vector2> getEnemySpawnPoints() const {
+        return enemyspawns;
     }
     std::vector<std::tuple<Vector2,int>>& getBlocks() {
         return blocks;
