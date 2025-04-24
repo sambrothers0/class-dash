@@ -28,13 +28,13 @@ bool isJumpPressed(const Uint8* keysPressed) {
 void GameScreen::drawLevel(std::shared_ptr<Level> level) {
     for (const auto& layer : level->getLayers()) {
         auto& blocks = layer->getBlocks();
-        
+
         for (auto i = 0; i < blocks.size(); i++) {
             auto& blockEntry = blocks[i];
             auto block = std::get<0>(blockEntry);
             // auto block = blocks[0];
             auto flip = std::get<1>(blockEntry);
-            
+
             uint32_t tileID = layer->getID(i);
             auto t = layer->hasFlipFlag(i);
 
@@ -76,9 +76,8 @@ void GameScreen::draw() {
     auto player = gameLogic.getPlayer();
     Vector2 playerPosition = player->getPosition();
 
-    // Get the enemy and their position
-    auto enemy = gameLogic.getEnemy();
-    Vector2 enemyPosition = enemy->getPosition();
+    // Get the enemies and their positions
+    auto enemies = gameLogic.getLevel()->getEnemies();
 
     // Calculate the scroll offset
     scrollOffset = gameLogic.getScrollOffset();
@@ -91,11 +90,23 @@ void GameScreen::draw() {
 
     playerSprite.draw(PlayerTexture::WALK1 + player->getCurrentAnimationOffset(), playerPosition - Vector2(scrollOffset, 0), player->getLastDirection() == MoveDirection::LEFT, 1.0);
 
-    enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, 1.0);
+    for (auto enemy : enemies) {
+        Vector2 enemyPosition = enemy->getPosition();
+        enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, 1.0);
+    }
 
-    // Draw the player hitbox
-    if (showHitboxes)
+    // Draw the player hitbox + enemy hitboxes
+    if (showHitboxes) {
         drawCollisionHitbox(playerPosition, player->getHitbox());
+
+        for (auto enemy : enemies) {
+            drawCollisionHitbox(enemy->getPosition(), enemy->getHitbox());
+        }
+
+        for (auto projectile : player->getProjectiles()) {
+            drawCollisionHitbox(projectile.getPosition(), projectile.getHitbox());
+        }
+    }
 
     // Display the projectiles that have been shot
     for (auto proj : player->getProjectiles()) {
@@ -103,12 +114,12 @@ void GameScreen::draw() {
         //boxRGBA(renderer, projectilePosition.getX() - 10 - scrollOffset, projectilePosition.getY() - 10, projectilePosition.getX() + 10 - scrollOffset, projectilePosition.getY() + 10, 0, 255, 255, 255);
         if (proj.getVelocity().getX() < 0) {
             playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), false, 1.0);
-        } 
+        }
         else {
             playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), true, 1.0);
-        }      
+        }
     }
-    
+
     // Display the Time on the screen
     timeText.setText(gameLogic.getTimer()->getTime());
     timeText.draw();
@@ -184,7 +195,7 @@ ScreenType GameScreen::handleEvent(SDL_Event& event) {
 }
 
 ScreenType GameScreen::handleExtraEvents() {
-    // lose checking needs to happen outside handleEvent because 
+    // lose checking needs to happen outside handleEvent because
     // we need to lose the level even if the player is not pressing any keys
     if (gameLogic.getTimer()->isTimeUp()) {
         return ScreenType::LEVEL_LOSE; // Switch to level lose screen
@@ -205,6 +216,6 @@ ScreenType GameScreen::handleExtraEvents() {
     if (isMoveRightPressed(keysPressed)) {
         player->moveRight();
     }
-    
+
     return ScreenType::KEEP;
 }

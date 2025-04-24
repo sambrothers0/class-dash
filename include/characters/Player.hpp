@@ -21,6 +21,9 @@ const int MAX_PROJECTILES = 5;
 // Delay for shooting projectiles in ms
 const int PROJECTILE_DELAY = 250;
 
+// Length of invincibility after being hit
+const int INVINCIBILITY_FRAMES = 1000;
+
 class GameLogic;
 
 class Player : public Character {
@@ -32,7 +35,7 @@ class Player : public Character {
 
     // Last direction moved in
     MoveDirection lastDirection = MoveDirection::RIGHT;
-    
+
     // List of available projectiles
     std::deque<Projectile> projectiles;
 
@@ -48,12 +51,15 @@ class Player : public Character {
 
     // Jump buffering mechanic lets you hold down the jump key to jump as soon as you land
     bool bufferedJump = false;
-    
+
     bool onGround=false;
     bool falling=true;
     double fallHeight;
 
     bool isJumping=false;
+
+    bool invincibilityFramesActive = false;
+    SDL_TimerID invincibilityTimerId;
 
     // Handles any floor collisions
     void handleFloorCollisions();
@@ -61,6 +67,9 @@ class Player : public Character {
 
     void handleRightCollisions();
     void handleLeftCollisions();
+
+    // Detects collisions with the enemy
+    void handleEnemyCollisions();
 
     public:
     Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
@@ -104,6 +113,10 @@ class Player : public Character {
 
     void setBufferedJump(bool jump) {
         bufferedJump = jump;
+    }
+
+    void setInvincible(bool invinc) {
+        invincibilityFramesActive = invinc;
     }
 };
 

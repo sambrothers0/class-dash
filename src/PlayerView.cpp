@@ -98,7 +98,7 @@ void PlayerView::switchToLevelSelectScreen() {
         gameLogic.quitLevel();
     }
 
-    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(renderer, font, gameLogic.getLevelsCompleted()));
+    screen = std::make_unique<LevelSelectScreen>(LevelSelectScreen(gameLogic, renderer, font, gameLogic.getLevelsCompleted()));
 }
 
 void PlayerView::switchToPauseScreen() {

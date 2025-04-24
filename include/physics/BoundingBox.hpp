@@ -25,6 +25,9 @@ class BoundingBox {
     double getLeftX() const;
     double getRightX() const;
 
+    // Returns if 2 bounding boxes overlap
+    bool overlaps(const BoundingBox& box) const;
+
     BoundingBox operator+(Vector2 const& vec) const {
         return BoundingBox(offset + vec, size);
     }

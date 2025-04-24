@@ -17,3 +17,17 @@ double BoundingBox::getLeftX() const {
 double BoundingBox::getRightX() const {
     return offset.getX() + size.getX();
 }
+
+bool BoundingBox::overlaps(const BoundingBox& box) const {
+    if (getRightX() < box.getLeftX()) {
+        return false;
+    } else if (getLeftX() > box.getRightX()) {
+        return false;
+    } else if (getTopY() > box.getBottomY()) {
+        return false;
+    } else if (getBottomY() < box.getTopY()) {
+        return false;
+    }
+
+    return true;
+}

@@ -1,14 +1,12 @@
 #ifndef _ENEMY_HPP
 #define _ENEMY_HPP
 #include "Character.hpp"
-#include "GameLogic.hpp"
 #include "MoveDirection.hpp"
 #include "physics/Vector2.hpp"
+#include "physics/BoundingBox.hpp"
 
 const int ENEMY_WIDTH = 32;
 const int ENEMY_HEIGHT = 64;
-
-class GameLogic;
 
 class Enemy : public Character {
 
@@ -21,8 +19,22 @@ class Enemy : public Character {
 
         int animationTicks = 0;
 
+        // Enemy hitbox dimensions
+        BoundingBox hitbox = BoundingBox(Vector2(-5, -24), Vector2(20, 56));
+
+        // Track the enemy moves on
+        double trackStart, trackEnd;
+
+        // y-level of the ground
+        double groundLevel = 576;
+
+        // Amount of health
+        int health = 2;
+
     public:
-        explicit Enemy(Vector2 _position) : Character(_position) {velocity.setX(120);}
+        explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
+            velocity.setX(120);
+        }
 
         MoveDirection getCurrentDirection() const {
             return currentDirection;
@@ -36,16 +48,31 @@ class Enemy : public Character {
             return (animationTicks % 20) / 10;
         }
 
+        void setGroundLevel(double _groundLevel) {
+            groundLevel = _groundLevel;
+            position.setY(_groundLevel);
+        }
+
+        BoundingBox getHitbox() const;
+
         virtual void move(double ms);
 
         virtual void shoot();
 
         // Enemy moves along a set predetermined track
-        void moveOnTrack(double ms, const Vector2& pointA, const Vector2& pointB);
+        void moveOnTrack(double ms);
 
         // Moves the enemy in either direction
         void moveLeft();
         void moveRight();
+
+        void decrementHealth() {
+            health--;
+        }
+
+        bool isAlive() const {
+            return health > 0;
+        }
 };
 
 #endif
