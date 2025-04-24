@@ -3,7 +3,8 @@
 
 #include "SDL2_gfxPrimitives.h"
 
-LevelSelectScreen::LevelSelectScreen(SDL_Renderer* _renderer, TTF_Font* _font, int levelsCompleted) :
+LevelSelectScreen::LevelSelectScreen(GameLogic& _gameLogic, SDL_Renderer* _renderer, TTF_Font* _font, int levelsCompleted) :
+    gameLogic(_gameLogic),
     Screen(_renderer), font(_font),
     levelSelect(_renderer, _font, Vector2(512, 70), 50, {0, 0, 0, 255}, "Level Select"),
     back(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, "Back"),
@@ -14,6 +15,10 @@ LevelSelectScreen::LevelSelectScreen(SDL_Renderer* _renderer, TTF_Font* _font, i
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 500), 40, {0, 0, 0, 255}, "Thursday"));
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 600), 40, {0, 0, 0, 255}, "Friday"));
     SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
+}
+
+void LevelSelectScreen::onLevelSelected(int level) {
+    gameLogic.setLevelIndex(level);
 }
 
 void LevelSelectScreen::draw() {
@@ -73,6 +78,7 @@ ScreenType LevelSelectScreen::handleEvent(SDL_Event& event) {
             case SDLK_RETURN:
                 SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 if (cursorPosition != levelsUnlocked) {
+                    onLevelSelected(cursorPosition);
                     return ScreenType::GAME; // this may need additional work to select correct level later
                 } else {
                     return ScreenType::TITLE; // Switch to title screen

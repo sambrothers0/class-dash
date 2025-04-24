@@ -5,6 +5,7 @@
 
 class LevelSelectScreen : public Screen {
     private:
+    GameLogic& gameLogic;
 
     TTF_Font* font;
 
@@ -12,13 +13,16 @@ class LevelSelectScreen : public Screen {
 
     Text levelSelect, back;
 
-    unsigned int levelsUnlocked;
+    unsigned int levelsUnlocked = 0;
 
     // List of level texts (this exists to make drawing them easier)
     std::vector<Text> levelTexts;
 
+    // Runs when a level is selected (index goes from 0 to 4)
+    void onLevelSelected(int level);
+
     public:
-    LevelSelectScreen(SDL_Renderer* _renderer, TTF_Font* _font, int levelsCompleted);
+    LevelSelectScreen(GameLogic& _gameLogic, SDL_Renderer* _renderer, TTF_Font* _font, int levelsCompleted);
 
     virtual void draw();
 
