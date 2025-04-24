@@ -28,6 +28,14 @@ class GameScreen : public Screen {
     bool showHitboxes = false;
     bool hitboxKeyActive = false;
 
+    // Alpha level
+    double alpha = 1.0f;
+
+    Uint32 alphaTimerID;
+
+    // Is the level complete animation done
+    bool finishedLevelComplete = false;
+
     void drawLevel(std::shared_ptr<Level> level);
 
     void drawCollisionHitbox(const Vector2& position, const BoundingBox& hitbox) const;
@@ -69,6 +77,13 @@ class GameScreen : public Screen {
 
     virtual ScreenType handleEvent(SDL_Event&);
     virtual ScreenType handleExtraEvents();
+
+    double getAlpha() const {
+        return alpha;
+    }
+
+    // Decrement the alpha (transparency)
+    void updateAlpha();
 
     ~GameScreen() {}
 };

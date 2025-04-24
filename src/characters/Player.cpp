@@ -127,14 +127,14 @@ void Player::stopMoving() {
 }
 
 void Player::moveLeft() {
-    velocity.setX(-250);
+    velocity.setX(-200);
     currentDirection = MoveDirection::LEFT;
     lastDirection = MoveDirection::LEFT;
     // velocity = Vector2(-250, 0);
 }
 
 void Player::moveRight() {
-    velocity.setX(250);
+    velocity.setX(200);
     currentDirection = MoveDirection::RIGHT;
     lastDirection = MoveDirection::RIGHT;
     // velocity = Vector2(250, 0);
@@ -416,5 +416,13 @@ void Player::handleCollisions() {
 
     if (!invincibilityFramesActive) {
         handleEnemyCollisions();
+    }
+
+    // Check for reaching the end of the level
+    auto level = gameLogic.getLevel();
+
+    if (position.getX() >= level->getLevelEndPos()) {
+        // Reached the end of the level
+        gameLogic.stopLevelReachedEnd();
     }
 }

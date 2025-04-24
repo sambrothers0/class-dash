@@ -3,11 +3,20 @@
 #include "SDL2_gfxPrimitives.h"
 // #include <iostream>
 
+LevelWinScreen::LevelWinScreen(SDL_Renderer* _renderer, TTF_Font* _font, GameLogic& _gameLogic) :
+    Screen(_renderer), font(_font), gameLogic(_gameLogic), 
+        complete(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Level Complete!"),
+        next(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Next Level"),
+        quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit")
+    {
+        SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
+    }
+
 void LevelWinScreen::draw() {
     // Draw the title screen
     boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
 
-    pause.draw();
+    complete.draw();
 
     SDL_Color buttonColor;
     SDL_Color defaultColor = {147, 115, 64, 255}; // Default color for buttons
@@ -15,13 +24,13 @@ void LevelWinScreen::draw() {
 
     if (cursorPosition == 0) {
         buttonColor = highlightedColor;
-        resume.setText(">Next Level<");
+        next.setText(">Next Level<");
     } else {
         buttonColor = defaultColor;
-        resume.setText("Next Level");
+        next.setText("Next Level");
     }
     drawButton(512 - 200, 260, 400, 75, buttonColor);
-    resume.draw();
+    next.draw();
 
     if (cursorPosition == 1) {
         buttonColor = highlightedColor;
@@ -48,12 +57,15 @@ ScreenType LevelWinScreen::handleEvent(SDL_Event& event) {
             case SDLK_RETURN:
                 SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 if (cursorPosition == 0) {
+                    // We need to set the level index too
+                    gameLogic.setLevelIndex(gameLogic.getLevelIndex() + 1);
+
                     return ScreenType::GAME; // Resume the game
                 } else if (cursorPosition == 1) {
-                    return ScreenType::PAUSE_CONFIRM_QUIT; // Quit to level select
+                    return ScreenType::LEVEL_SELECT; // Quit to level select
                 }
             case SDLK_ESCAPE:
-                return ScreenType::PAUSE_CONFIRM_QUIT;
+                return ScreenType::LEVEL_SELECT;
             default:
                 return ScreenType::KEEP;
         }
