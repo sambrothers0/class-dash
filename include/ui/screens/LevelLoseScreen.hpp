@@ -18,7 +18,9 @@ class LevelLoseScreen : public Screen {
         title(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Time's Up! You Lose"),
         restart(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Restart"),
         quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit")
-    {}
+    {
+        SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
+    }
 
     virtual void draw();
 

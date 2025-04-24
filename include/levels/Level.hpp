@@ -58,6 +58,9 @@ class Level {
     //List of EnemyData
     std::vector<EnemyData> levelEnemyData;
 
+    // X-position that triggers the end of the level
+    double levelEndPos = 1000000; // Replace this when loading the level
+
     Vector2 playerspawn;
     std::vector<Vector2> enemyspawns;
     public:
@@ -90,6 +93,10 @@ class Level {
 
     std::vector<std::shared_ptr<Enemy>>& getEnemies() {
         return enemies;
+    }
+
+    double getLevelEndPos() const {
+        return levelEndPos;
     }
 
     // gets global ID for a given block

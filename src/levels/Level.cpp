@@ -94,6 +94,7 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                 for(const auto& object : objects)
                 {
                     if(object.getName()=="Player"){playerspawn=Vector2(object.getPosition().x,object.getPosition().y-1);}
+
                     if(object.getType()=="EnemySpawn"){
                         enemyspawns.push_back(Vector2(object.getPosition().x,object.getPosition().y-1));
                         float trackStart = 0;
@@ -104,8 +105,15 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                             std::cout<<"Property "<<property.getName()<<" Value "<<property.getFloatValue()<<" Object "<<object.getName()<<std::endl;
                             
                             
-                        }levelEnemyData.push_back(EnemyData(Vector2(object.getPosition().x,object.getPosition().y-1), trackStart, trackEnd));
-                }
+                        }
+                        levelEnemyData.push_back(EnemyData(Vector2(object.getPosition().x,object.getPosition().y-1), trackStart, trackEnd));
+                    }
+
+                    if (object.getName() == "Endpoint") {
+                        levelEndPos = object.getPosition().x;
+                    }
+
+
                     std::cout<<"Object Name: "<<object.getName()<<" ObjectLayer Name: "<<object.getPosition().x<<std::endl;
                 }
             }

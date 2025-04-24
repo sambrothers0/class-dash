@@ -61,8 +61,16 @@ class GameLogic {
         return state == GameState::PAUSED;
     }
 
+    bool isLevelFinished() const {
+        return state == GameState::FINISHED;
+    }
+
     void setLevel(std::shared_ptr<Level> _level) {
         level = _level;
+    }
+
+    int getLevelIndex() const {
+        return levelIndex;
     }
 
     void setLevelIndex(int index) {
@@ -95,6 +103,13 @@ class GameLogic {
 
     // Saves the current number of levels completed to the file
     void saveLevelsCompleted() const;
+
+    // Stops the current level, since the player reached the end.
+    // This is separate from endLevel since that actually updates the state to inactive
+    void stopLevelReachedEnd();
+
+    // Ends the current level (completing it)
+    void endLevel();
 };
 
 #endif

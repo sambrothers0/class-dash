@@ -220,4 +220,7 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup id="11" name="Endpoint">
+  <object id="4" name="Endpoint" type="Endpoint" x="3152" y="0" width="32" height="768"/>
+ </objectgroup>
 </map>
