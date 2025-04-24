@@ -5,7 +5,8 @@
 
 void GameFinishScreen::draw() {
     // Draw the title screen
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
+    // boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
+    drawBackground();
 
     title.draw();
     subtitle1.draw();
@@ -22,10 +23,10 @@ void GameFinishScreen::draw() {
     quit.draw();
 }
 
-void GameFinishScreen::drawBackground(SDL_Renderer* renderer, SDL_Texture* texture) {
+void GameFinishScreen::drawBackground() {
     // only load the image if it hasn't been loaded yet
     if (!background) {
-        SDL_Surface* surface = IMG_Load("../assets/visual/title-screen-bg.png");
+        SDL_Surface* surface = IMG_Load("../assets/visual/EndGameGraduation.png");
         if (!surface) {
             std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
         }
@@ -38,7 +39,7 @@ void GameFinishScreen::drawBackground(SDL_Renderer* renderer, SDL_Texture* textu
         }
     }
     // Render to the screen
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderCopy(renderer, background, NULL, NULL);
 
 }
 

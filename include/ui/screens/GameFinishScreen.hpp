@@ -27,7 +27,7 @@ class GameFinishScreen : public Screen {
 
     virtual void draw();
 
-    void drawBackground(SDL_Renderer* renderer, SDL_Texture* texture);
+    void drawBackground();
 
     virtual ScreenType handleEvent(SDL_Event& event);
 
