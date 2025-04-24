@@ -34,8 +34,9 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
     auto mapSize = map.getTileCount();
     auto tileSize = map.getTileSize();
     
-    
-    dimensions = Vector2(mapSize.x * tileSize.x, mapSize.y * tileSize.y);
+    setDimensions(Vector2(mapSize.x * tileSize.x, mapSize.y * tileSize.y));
+    std::cout<<"dimensions "<<getDimensions()<<std::endl;
+    // dimensions = Vector2(mapSize.x * tileSize.x, mapSize.y * tileSize.y);
     
     //trying to grab the textures here using the Tileset.hpp from the tmxlite library
     for (const auto& tileset : map.getTilesets()) {
@@ -94,9 +95,24 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                 {
                     if(object.getName()=="Player"){playerspawn=Vector2(object.getPosition().x,object.getPosition().y-1);}
 
+                    if(object.getType()=="EnemySpawn"){
+                        enemyspawns.push_back(Vector2(object.getPosition().x,object.getPosition().y-1));
+                        float trackStart = 0;
+                        float trackEnd = 0;
+                            for (const auto& property : object.getProperties()) {
+                                if (property.getName()=="trackStart"){trackStart = property.getFloatValue();}
+                                else if (property.getName() == "trackEnd"){trackEnd =  property.getFloatValue();}
+                            std::cout<<"Property "<<property.getName()<<" Value "<<property.getFloatValue()<<" Object "<<object.getName()<<std::endl;
+                            
+                            
+                        }
+                        levelEnemyData.push_back(EnemyData(Vector2(object.getPosition().x,object.getPosition().y-1), trackStart, trackEnd));
+                    }
+
                     if (object.getName() == "Endpoint") {
                         levelEndPos = object.getPosition().x;
                     }
+
 
                     std::cout<<"Object Name: "<<object.getName()<<" ObjectLayer Name: "<<object.getPosition().x<<std::endl;
                 }
@@ -154,8 +170,12 @@ bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
 
     // Set up enemies
     enemies.clear();
-
-    for (auto enemyData : levelData.getEnemies()) {
+    // for (auto enemyData : levelEnemyData ) {
+    //     auto startPos = enemyData.getStartPos();
+    //     std::cout<<"startPoint"<< startPos<<std::endl;
+    // }
+    // for (auto enemyData : levelData.getEnemies()) {
+    for (auto enemyData : levelEnemyData) {
         auto startPos = enemyData.getStartPos();
 
         Enemy enemy(

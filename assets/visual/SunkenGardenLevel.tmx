@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="5">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="6">
  <tileset firstgid="1" source="tilesheet.tsx"/>
  <tileset firstgid="11" source="largetilesheet.tsx"/>
  <tileset firstgid="21" source="wren.tsx"/>
@@ -201,6 +201,24 @@
  </layer>
  <objectgroup id="10" name="Spawnpoint">
   <object id="2" name="Player" type="Spawn" x="96" y="416" width="32" height="32"/>
+  <object id="3" name="Enemy1" type="EnemySpawn" x="900" y="580" width="32" height="32">
+   <properties>
+    <property name="trackEnd" type="float" value="1200"/>
+    <property name="trackStart" type="float" value="600"/>
+   </properties>
+  </object>
+  <object id="4" name="Enemy2" type="EnemySpawn" x="2400" y="576" width="32" height="32">
+   <properties>
+    <property name="trackEnd" type="float" value="2688"/>
+    <property name="trackStart" type="float" value="2400"/>
+   </properties>
+  </object>
+  <object id="5" name="Enemy3" type="EnemySpawn" x="544" y="576" width="32" height="32">
+   <properties>
+    <property name="trackEnd" type="float" value="672"/>
+    <property name="trackStart" type="float" value="512"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="11" name="Endpoint">
   <object id="4" name="Endpoint" type="Endpoint" x="3152" y="0" width="32" height="768"/>
