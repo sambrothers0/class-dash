@@ -17,9 +17,9 @@ class GameFinishScreen : public Screen {
     public:
     GameFinishScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
     Screen(_renderer), font(_font), 
-        title(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Congratulations!"),
-        subtitle1(_renderer, _font, Vector2(512, 200), 40, { 0, 0, 0, 255 }, "You got every final on"),
-        subtitle2(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "time and graduated!"),
+        title(_renderer, _font, Vector2(512, 100), 50, { 255, 255, 255, 255 }, "Congratulations!"),
+        subtitle1(_renderer, _font, Vector2(512, 200), 40, { 255, 255, 255, 255 }, "You made every final on"),
+        subtitle2(_renderer, _font, Vector2(512, 300), 40, { 255, 255, 255, 255 }, "time and graduated!"),
         quit(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, ">Quit<")
     {
         SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);

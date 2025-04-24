@@ -19,7 +19,7 @@ void GameFinishScreen::draw() {
     buttonColor = highlightedColor;
     quit.setText(">Quit<");
 
-    drawButton(512 - 200, 360, 400, 75, buttonColor);
+    // drawButton(512 - 200, 360, 400, 75, buttonColor);
     quit.draw();
 }
 
@@ -48,10 +48,10 @@ ScreenType GameFinishScreen::handleEvent(SDL_Event& event) {
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
                 SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
-                return ScreenType::LEVEL_SELECT; // Quit to title screen
+                return ScreenType::TITLE; // Quit to title screen
             case SDLK_ESCAPE:
                 SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
-                return ScreenType::LEVEL_SELECT; // Quit to level select
+                return ScreenType::TITLE; // Quit to title screen
             default:
                 return ScreenType::KEEP;
         }
