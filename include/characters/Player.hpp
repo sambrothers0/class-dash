@@ -39,6 +39,9 @@ class Player : public Character {
     // Last direction moved in
     MoveDirection lastDirection = MoveDirection::RIGHT;
 
+    // Direction the player was moving when they jumped/fell
+    MoveDirection fallDirection = MoveDirection::NONE;
+
     // List of available projectiles
     std::deque<Projectile> projectiles;
 
@@ -73,6 +76,9 @@ class Player : public Character {
 
     Vector2 respawnPos;
     float offMapHeight = 1000.0f; 
+
+    // Should speed be restored when the player lands
+    bool restoreSpeedWhenLand = false;
  
     // Handles falling off the map
     void checkForFallRespawn();

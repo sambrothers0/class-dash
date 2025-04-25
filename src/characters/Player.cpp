@@ -84,11 +84,11 @@ void Player::checkForFallRespawn() {
 
 void Player::respawn() {
     
-    if (lastDirection == MoveDirection::RIGHT) {
+    if (fallDirection == MoveDirection::RIGHT) {
         respawnPos.setX(respawnPos.getX()-10);
         // respawnPos.setY(respawnPos.getY()-10);
     }
-    else if (lastDirection ==MoveDirection::LEFT) {
+    else if (fallDirection ==MoveDirection::LEFT) {
         respawnPos.setX(respawnPos.getX()+10);
         
     }
@@ -193,6 +193,7 @@ void Player::jump() {
         onGround= false;
         isJumping = true;
         falling = false;
+        fallDirection = currentDirection;
 
         // Fall height isn't applicable
         fallHeight = -1000;
@@ -230,8 +231,12 @@ void Player::reduceSpeed() {
 }
 
 void Player::restoreSpeed() {
-    isSlowed = false;
-    std::cout << "Reset speed to normal" << std::endl;
+    if (onGround) {
+        isSlowed = false;
+        std::cout << "Reset speed to normal" << std::endl;
+    } else {
+        restoreSpeedWhenLand = true;
+    }
 }
 
 void Player::handleFloorCollisions() {
@@ -280,7 +285,6 @@ void Player::handleFloorCollisions() {
                 if(level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type == "Obstacle") {
                     reduceSpeed();
                 }
-                std::cout<<level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type<<std::endl;
                 isOnGround = true;
                 break;
             }
@@ -290,6 +294,7 @@ void Player::handleFloorCollisions() {
             // Start falling
             onGround = false;
             falling = true;
+            fallDirection = currentDirection;
             fallHeight = bottomY;
         }
      } else {
@@ -323,12 +328,16 @@ void Player::handleFloorCollisions() {
                 // std::cout << tilePos.y << ", " << bottomY << std::endl;
 
                 if (!partOfWall) {
-                    std::cout << "Hit ground" << std::endl;
+                    // std::cout << "Hit ground" << std::endl;
                     position.setY(tilePos.y - PLAYER_HEIGHT / 2);
                     velocity.setY(0);
                     isJumping = false;
                     onGround = true;
                     falling = false;
+
+                    if (restoreSpeedWhenLand) {
+                        isSlowed = false;
+                    }
                     break;
                 }
             }
