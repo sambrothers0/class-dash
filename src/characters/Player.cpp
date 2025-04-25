@@ -14,6 +14,14 @@ int Player::getCurrentAnimationOffset() const {
     return (animationTicks % 40) / 10;
 }
 
+Uint32 onInvincibilityEnd(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+
+    player->setInvincible(false);
+
+    return 0;
+}
+
 void Player::move(double ms) {
     // Basic character movement
     double seconds = ms / 1000;
@@ -34,8 +42,9 @@ void Player::move(double ms) {
     if (currentDirection != MoveDirection::NONE) {
         animationTicks++;
     }
-
+    
     handleCollisions();
+    checkForFallRespawn();
 
     // Move the projectiles, while marking any which should be deleted
     std::vector<size_t> toDelete;
@@ -60,6 +69,36 @@ void Player::move(double ms) {
             deleted++;
         }
     }
+}
+
+void Player::checkForFallRespawn() {
+    if (onGround) {
+        respawnPos = position;
+    }
+    
+    if (position.getY() > offMapHeight) {
+        SoundManager::getInstance()->playSound(SoundEffect::JUMP); //CHANGE TO SOME FALL SOUND AND MAYBE ADJUST SO IT PLAYS WHILE PLAYER IS FALLING
+        respawn();
+    }
+}
+
+void Player::respawn() {
+    
+    if (lastDirection == MoveDirection::RIGHT) {
+        respawnPos.setX(respawnPos.getX()-10);
+        // respawnPos.setY(respawnPos.getY()-10);
+    }
+    else if (lastDirection ==MoveDirection::LEFT) {
+        respawnPos.setX(respawnPos.getX()+10);
+        
+    }
+    
+    position = respawnPos;
+    velocity = Vector2(0, 0);
+    onGround=true;
+  
+    
+    std::cout << "Player respawned at: " << position << std::endl;
 }
 
 BoundingBox Player::getHitbox() const {
@@ -400,13 +439,6 @@ void Player::handleLeftCollisions() {
     }
 }
 
-Uint32 onInvincibilityEnd(Uint32 interval, void *param) {
-    auto* player = reinterpret_cast<Player*>(param);
-
-    player->setInvincible(false);
-
-    return 0;
-}
 
 
 

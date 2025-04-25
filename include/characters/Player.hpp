@@ -70,6 +70,14 @@ class Player : public Character {
     const float NORMAL_SPEED = 225.0f;
     const float REDUCED_SPEED = 100.0f;
 
+
+    Vector2 respawnPos;
+    float offMapHeight = 1000.0f; 
+ 
+    // Handles falling off the map
+    void checkForFallRespawn();
+    void respawn();
+
     // Handles any floor collisions
     void handleFloorCollisions();
     void handleCeilingCollisions();
@@ -83,7 +91,7 @@ class Player : public Character {
 
 
     public:
-    Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
+    Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {respawnPos = _position;}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
