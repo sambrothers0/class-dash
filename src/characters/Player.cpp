@@ -281,11 +281,16 @@ void Player::handleFloorCollisions() {
         bool isOnGround = false;
 
         for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
-            if (level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))) {
-                if(level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type == "Obstacle") {
+            auto worldTile = level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)));
+
+            if (worldTile) {
+                if(worldTile->type == "Obstacle") {
                     reduceSpeed();
                 }
-                isOnGround = true;
+
+                if (fabs(worldTile->bounds.y - bottomY) <= 4)
+                    isOnGround = true;
+                    
                 break;
             }
         }
