@@ -92,6 +92,8 @@ void Player::respawn() {
         respawnPos.setX(respawnPos.getX()+10);
         
     }
+
+    gameLogic.getTimer()->subtractTime(10);
     
     position = respawnPos;
     velocity = Vector2(0, 0);
