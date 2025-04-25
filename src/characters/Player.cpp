@@ -94,6 +94,8 @@ void Player::respawn() {
     }
 
     gameLogic.getTimer()->subtractTime(10);
+    invincibilityFramesActive = true;
+    invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);
     
     position = respawnPos;
     velocity = Vector2(0, 0);
