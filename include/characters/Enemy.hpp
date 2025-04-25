@@ -57,6 +57,10 @@ class Enemy : public Character {
 
         virtual void move(double ms);
 
+        void moveToPlayer();
+
+        void detectPlayer();
+
         virtual void shoot();
 
         // Enemy moves along a set predetermined track
