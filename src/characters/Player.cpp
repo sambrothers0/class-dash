@@ -375,7 +375,7 @@ void Player::handleCeilingCollisions() {
                 continue;
             }
 
-            std::cout << "ceiling collision" << std::endl;
+            // std::cout << "ceiling collision" << std::endl;
             // position.setX(collideWorld->bounds.x - hitboxWidth);
             position.setY(collideWorld->bounds.y + collideWorld->bounds.h + PLAYER_HEIGHT / 2 + 1);
             velocity.setY(0.1);
@@ -409,7 +409,7 @@ void Player::handleRightCollisions() {
                 continue;
             }
 
-            std::cout<<"Right Collision Detected"<<std::endl;
+            // std::cout<<"Right Collision Detected"<<std::endl;
             // std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x<<"player width" <<hitboxWidth<<" rightX *32 "<<rightX*TILE_SIZE<<std::endl;/
             // position.setX(collideWorld->bounds.x - hitboxWidth);
             position.setX(collideWorld->bounds.x - PLAYER_WIDTH / 2 - 1);
@@ -469,7 +469,7 @@ void Player::handleEnemyCollisions() {
 
         // Detect if the 2 bounding boxes overlap
         if (playerHitbox.overlaps(enemyHitbox)) {
-            std::cout << "enemy collision" << std::endl;
+            // std::cout << "enemy collision" << std::endl;
             gameLogic.getTimer()->subtractTime(5); // right now all enemy collisions are 5 seconds
             invincibilityFramesActive = true;
             invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);

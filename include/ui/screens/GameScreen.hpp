@@ -30,6 +30,7 @@ class GameScreen : public Screen {
 
     // Alpha level
     double alpha = 1.0f;
+    bool alphaTimerActive = false;
 
     Uint32 alphaTimerID;
 
@@ -45,9 +46,9 @@ class GameScreen : public Screen {
         Screen(_renderer), gameLogic(_gameLogic), font(_font), timeText(
             _renderer,
             _font,
-            Vector2(150, 100),
+            Vector2(150, 50),
             50,
-            SDL_Color { 255, 255, 255 },
+            SDL_Color { 0, 0, 0 },
             //"Test"
             gameLogic.getTimer()->getTime()
         ), playerSprite(
