@@ -14,6 +14,14 @@ int Player::getCurrentAnimationOffset() const {
     return (animationTicks % 40) / 10;
 }
 
+Uint32 onInvincibilityEnd(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+
+    player->setInvincible(false);
+
+    return 0;
+}
+
 void Player::move(double ms) {
     // Basic character movement
     double seconds = ms / 1000;
@@ -34,8 +42,9 @@ void Player::move(double ms) {
     if (currentDirection != MoveDirection::NONE) {
         animationTicks++;
     }
-
+    
     handleCollisions();
+    checkForFallRespawn();
 
     // Move the projectiles, while marking any which should be deleted
     std::vector<size_t> toDelete;
@@ -60,6 +69,36 @@ void Player::move(double ms) {
             deleted++;
         }
     }
+}
+
+void Player::checkForFallRespawn() {
+    if (onGround) {
+        respawnPos = position;
+    }
+    
+    if (position.getY() > offMapHeight) {
+        SoundManager::getInstance()->playSound(SoundEffect::JUMP); //CHANGE TO SOME FALL SOUND AND MAYBE ADJUST SO IT PLAYS WHILE PLAYER IS FALLING
+        respawn();
+    }
+}
+
+void Player::respawn() {
+    
+    if (lastDirection == MoveDirection::RIGHT) {
+        respawnPos.setX(respawnPos.getX()-10);
+        // respawnPos.setY(respawnPos.getY()-10);
+    }
+    else if (lastDirection ==MoveDirection::LEFT) {
+        respawnPos.setX(respawnPos.getX()+10);
+        
+    }
+    
+    position = respawnPos;
+    velocity = Vector2(0, 0);
+    onGround=true;
+  
+    
+    std::cout << "Player respawned at: " << position << std::endl;
 }
 
 BoundingBox Player::getHitbox() const {
@@ -127,17 +166,17 @@ void Player::stopMoving() {
 }
 
 void Player::moveLeft() {
-    velocity.setX(-200);
+    float speed = isSlowed ? -REDUCED_SPEED : -NORMAL_SPEED;
+    velocity.setX(speed);
     currentDirection = MoveDirection::LEFT;
     lastDirection = MoveDirection::LEFT;
-    // velocity = Vector2(-250, 0);
 }
 
 void Player::moveRight() {
-    velocity.setX(200);
+    float speed = isSlowed ? REDUCED_SPEED : NORMAL_SPEED;
+    velocity.setX(speed);
     currentDirection = MoveDirection::RIGHT;
     lastDirection = MoveDirection::RIGHT;
-    // velocity = Vector2(250, 0);
 }
 
 void Player::jump() {
@@ -160,6 +199,35 @@ void Player::jump() {
 
 Vector2 Player::getHitboxCenter() const {
     return position + hitbox.getOffset() + hitbox.getSize() / 2.0;
+}
+
+Uint32 onSpeedReduceEnd(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+    player->restoreSpeed();
+    return 0; 
+}
+
+void Player::reduceSpeed() {
+    if (!isSlowed) {
+        std::cout<<"reducing speed"<<std::endl;
+        
+        
+        if (velocity.getX() > 0) {
+            velocity.setX(REDUCED_SPEED);
+        } else if (velocity.getX() < 0) {
+            velocity.setX(-REDUCED_SPEED);
+        }
+        
+        isSlowed = true;
+
+        slowTimerId = SDL_AddTimer(SPEED_FRAMES, onSpeedReduceEnd, this);
+        
+    }
+}
+
+void Player::restoreSpeed() {
+    isSlowed = false;
+    std::cout << "Reset speed to normal" << std::endl;
 }
 
 void Player::handleFloorCollisions() {
@@ -205,6 +273,10 @@ void Player::handleFloorCollisions() {
 
         for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
             if (level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))) {
+                if(level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type == "Obstacle") {
+                    reduceSpeed();
+                }
+                std::cout<<level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type<<std::endl;
                 isOnGround = true;
                 break;
             }
@@ -367,13 +439,8 @@ void Player::handleLeftCollisions() {
     }
 }
 
-Uint32 onInvincibilityEnd(Uint32 interval, void *param) {
-    auto* player = reinterpret_cast<Player*>(param);
 
-    player->setInvincible(false);
 
-    return 0;
-}
 
 void Player::handleEnemyCollisions() {
     auto enemies = gameLogic.getLevel()->getEnemies();
