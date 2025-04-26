@@ -13,6 +13,10 @@ void Enemy::shoot() {
 
 void Enemy::moveOnTrack(double ms) {
     // Made it to the left end of the track
+    if (currentDirection == MoveDirection::NONE) {
+        velocity.setX(0);
+        return;
+    }
     if (position.getX() <= trackStart) {
         moveRight();
     }
@@ -35,21 +39,43 @@ void Enemy::moveOnTrack(double ms) {
 
 void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
     // move to player within track range
+    //playerLoc = player->getPosition();
+    
+    if (playerLoc.getX() <= getPosition().getX()) {
+        if (position.getX() == (trackStart + 5)) {
+            //position.setX(trackStart + 5);
+            currentDirection = MoveDirection::NONE;
+        }
+        else
+            moveLeft();
+    }
+    else {
+        if (position.getX() == (trackEnd - 5)) {
+            //position.setX(trackEnd - 5);
+            currentDirection = MoveDirection::NONE;
+        }
+        else 
+            moveRight();
+    }
 }
 
-void Enemy::detectPlayer(std::shared_ptr<Player> player) {
+void Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
    // check if player is in range
    playerLoc = player->getPosition();
    Vector2 difference = playerLoc - getPosition();
 
    //check if x axis in range
-   if (difference.getX() < detectRange) {
+   if ((difference.getX() >= -detectRange) && (difference.getX() < detectRange)) {
        //check if y axis is in range
-       if (difference.getY() < detectRange) {
+       if ((difference.getY() >= -detectRange) && (difference.getY() < detectRange)) {
            // when in range move to player and shoot
            moveToPlayer(player);
        }
-   }   
+   } 
+   // if not in range, continue its track  
+   //else {
+    //moveOnTrack(ms);
+   //}
 }
 
 BoundingBox Enemy::getHitbox() const {

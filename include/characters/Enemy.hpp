@@ -68,7 +68,7 @@ class Enemy : public Character {
 
         void moveToPlayer(std::shared_ptr<Player> player);
 
-        void detectPlayer(std::shared_ptr<Player> player);
+        void detectPlayer(std::shared_ptr<Player> player, double ms);
 
         virtual void shoot();
 
