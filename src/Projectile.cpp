@@ -10,6 +10,8 @@ Projectile::Projectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 playerPosi
     startingPosition.setX(playerPosition.getX());
     startingPosition.setY(playerPosition.getY());
 
+    
+
     // Detect collisions with walls
 }
 

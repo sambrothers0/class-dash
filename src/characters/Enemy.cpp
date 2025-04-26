@@ -1,13 +1,42 @@
 #include "characters/Enemy.hpp"
 #include <iostream>
 #include "characters/Player.hpp"
+#include "Projectile.hpp"
+#include "GameLogic.hpp"
+
+//Projectile enemyProj;
+
 
 void Enemy::move(double ms) {
     Character::move(ms);
 }
 
 void Enemy::shoot() {
+
+}
+
+void Enemy::shoot(std::shared_ptr<GameLogic> gameLogic) {
     // shoots a projectile at the player
+    if (projActive == false) {
+        enemyProj = std::make_shared<Projectile>(gameLogic, getPosition(), currentDirection);
+
+        if (currentDirection == MoveDirection::LEFT) {
+            enemyProj->setStartingPosition(currentDirection);
+            enemyProj->setVelocity(-300, 0);
+        } else if (currentDirection == MoveDirection::RIGHT) {
+            enemyProj->setStartingPosition(currentDirection);
+            enemyProj->setVelocity(300, 0);
+        } else if (lastDirection == MoveDirection::LEFT) {
+            enemyProj->setStartingPosition(lastDirection);
+            enemyProj->setVelocity(-300, 0);
+        } else {
+            enemyProj->setStartingPosition(MoveDirection::RIGHT);
+            enemyProj->setVelocity(300, 0);
+        }
+    }
+    else {
+
+    }
 
 }
 
@@ -59,7 +88,7 @@ void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
     }
 }
 
-void Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
+bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
    // check if player is in range
    playerLoc = player->getPosition();
    Vector2 difference = playerLoc - getPosition();
@@ -70,8 +99,12 @@ void Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
        if ((difference.getY() >= -detectRange) && (difference.getY() < detectRange)) {
            // when in range move to player and shoot
            moveToPlayer(player);
+           //projActive = true;
+           return true;
        }
    } 
+
+   return false;
    // if not in range, continue its track  
    //else {
     //moveOnTrack(ms);
