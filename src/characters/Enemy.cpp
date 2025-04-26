@@ -1,5 +1,6 @@
 #include "characters/Enemy.hpp"
 #include <iostream>
+#include "characters/Player.hpp"
 
 void Enemy::move(double ms) {
     Character::move(ms);
@@ -32,14 +33,23 @@ void Enemy::moveOnTrack(double ms) {
     
 }
 
-void Enemy::moveToPlayer() {
+void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
     // move to player within track range
 }
 
-void Enemy::detectPlayer() {
-    // check if player is in range
+void Enemy::detectPlayer(std::shared_ptr<Player> player) {
+   // check if player is in range
+   playerLoc = player->getPosition();
+   Vector2 difference = playerLoc - getPosition();
 
-    // when in range move to player and shoot
+   //check if x axis in range
+   if (difference.getX() < detectRange) {
+       //check if y axis is in range
+       if (difference.getY() < detectRange) {
+           // when in range move to player and shoot
+           moveToPlayer(player);
+       }
+   }   
 }
 
 BoundingBox Enemy::getHitbox() const {

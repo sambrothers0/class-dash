@@ -1,9 +1,14 @@
-#ifndef _ENEMY_HPP
-#define _ENEMY_HPP
+#ifndef _ENEMY_H
+#define _ENEMY_H
+
 #include "Character.hpp"
 #include "MoveDirection.hpp"
 #include "physics/Vector2.hpp"
 #include "physics/BoundingBox.hpp"
+#include <memory>
+//#include "characters/Player.hpp"
+
+class Player;
 
 const int ENEMY_WIDTH = 32;
 const int ENEMY_HEIGHT = 64;
@@ -31,6 +36,10 @@ class Enemy : public Character {
         // Amount of health
         int health = 2;
 
+        Vector2 playerLoc; 
+
+        double detectRange = 200;
+
     public:
         explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
             velocity.setX(120);
@@ -57,9 +66,9 @@ class Enemy : public Character {
 
         virtual void move(double ms);
 
-        void moveToPlayer();
+        void moveToPlayer(std::shared_ptr<Player> player);
 
-        void detectPlayer();
+        void detectPlayer(std::shared_ptr<Player> player);
 
         virtual void shoot();
 

@@ -4,6 +4,7 @@
 #include "physics/Vector2.hpp"
 #include "MoveDirection.hpp"
 #include "GameLogic.hpp"
+#include <memory>
 
 class Projectile {
 
