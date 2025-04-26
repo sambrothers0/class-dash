@@ -19,6 +19,9 @@ class Projectile {
         MoveDirection currentDirection;
 
         BoundingBox hitbox = BoundingBox(Vector2(-7, -9), Vector2(14, 18));
+
+        double enemyProjTraveledDist = 0;
+
     public:
         Projectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 playerPosition, MoveDirection playerDirection);
 
@@ -53,6 +56,8 @@ class Projectile {
         void setStartingPosition(MoveDirection direction);
         void setVelocity(double x, double y);
         void move(double ms);
+
+        void enemyProjMove(double ms, Vector2 destination);
 
         void setDirection(MoveDirection direction) {
             currentDirection = direction;

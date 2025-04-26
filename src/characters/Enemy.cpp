@@ -37,6 +37,7 @@ void Enemy::shoot(std::shared_ptr<GameLogic> gameLogic) {
     else {
 
     }
+    projDest = gameLogic->getPlayer()->getPosition();
 
 }
 

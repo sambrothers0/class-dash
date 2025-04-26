@@ -52,6 +52,8 @@ class Enemy : public Character {
         double detectRange = 200;
 
         bool projActive = false;
+
+        Vector2 projDest;
         // List of available projectiles
         //std::deque<Projectile> projectiles;
 
