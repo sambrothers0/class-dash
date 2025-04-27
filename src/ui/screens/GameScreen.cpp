@@ -150,6 +150,13 @@ void GameScreen::draw() {
     // Display the Time on the screen
     drawButton(0, 0, 300, 100, SDL_Color {147, 115, 64, 255});
     timeText.setText(gameLogic.getTimer()->getTime());
+
+    if (gameLogic.getTimer()->getIsWarning()) {
+        timeText.setColor(SDL_Color { 255, 0, 0, 255 });
+    } else {
+        timeText.setColor(SDL_Color { 0, 0, 0, 255 });
+    }
+
     timeText.draw();
 }
 
