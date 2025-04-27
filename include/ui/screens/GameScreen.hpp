@@ -20,6 +20,7 @@ class GameScreen : public Screen {
     Spritesheet playerProjectileSprite;
     Spritesheet enemySprite;
     Spritesheet corgiSprite;
+    Spritesheet powerupSprite;
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
@@ -76,7 +77,13 @@ class GameScreen : public Screen {
             Vector2(32, 32),
             1,
             4
-        ) {
+        ), powerupSprite(
+            _renderer,
+            "../assets/visual/coffeePowerup.png",
+            Vector2(32, 32),
+            1,
+            8
+        )  {
             SoundManager::getInstance()->resumeMusic();
             SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_MUSIC);
         }

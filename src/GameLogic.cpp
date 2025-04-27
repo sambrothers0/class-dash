@@ -50,8 +50,12 @@ void GameLogic::runTick(double ms) {
         for (auto corgi : level->getCorgis()) {
             corgi->moveOnTrack(ms);
         }
+        for (auto powerup : level->getPowerups()) {
+            powerup->animate();
+        }
 
         level->removeDeadEnemies();
+        level->removeCollectedPowerups();
     }
 }
 
