@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="6">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="8">
  <tileset firstgid="1" source="tilesheet.tsx"/>
  <tileset firstgid="25" source="largetilesheet.tsx"/>
  <tileset firstgid="40" source="wren.tsx"/>
@@ -171,6 +171,20 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="11" name="Corgis">
+  <object id="6" name="Corgi1" type="CorgiSpawn" x="697" y="593.5">
+   <properties>
+    <property name="trackEnd" type="float" value="1300"/>
+    <property name="trackStart" type="float" value="400"/>
+   </properties>
+  </object>
+  <object id="7" name="Corgi1" type="CorgiSpawn" x="2266.5" y="593.5">
+   <properties>
+    <property name="trackEnd" type="float" value="2800"/>
+    <property name="trackStart" type="float" value="2200"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer id="6" name="Tile Layer 6" width="100" height="24">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

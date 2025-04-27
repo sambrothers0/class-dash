@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="120" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="14">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="120" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="24">
  <tileset firstgid="1" source="tilesheet.tsx"/>
  <tileset firstgid="25" source="largetilesheet.tsx"/>
  <layer id="2" name="Sky" width="120" height="24">
@@ -145,6 +145,66 @@
    <properties>
     <property name="trackEnd" type="float" value="3120"/>
     <property name="trackStart" type="float" value="2995"/>
+   </properties>
+  </object>
+  <object id="14" name="Corgi1" type="CorgiSpawn" x="281.667" y="573.333" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="860"/>
+    <property name="trackStart" type="float" value="260"/>
+   </properties>
+  </object>
+  <object id="15" name="Corgi1" type="CorgiSpawn" x="614.333" y="572.667" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="860"/>
+    <property name="trackStart" type="float" value="260"/>
+   </properties>
+  </object>
+  <object id="16" name="Corgi1" type="CorgiSpawn" x="1115" y="636" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="1175"/>
+    <property name="trackStart" type="float" value="1030"/>
+   </properties>
+  </object>
+  <object id="17" name="Corgi1" type="CorgiSpawn" x="1498.33" y="637.333" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="1560"/>
+    <property name="trackStart" type="float" value="1360"/>
+   </properties>
+  </object>
+  <object id="18" name="Corgi1" type="CorgiSpawn" x="1825" y="567.333" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3110"/>
+    <property name="trackStart" type="float" value="1800"/>
+   </properties>
+  </object>
+  <object id="19" name="Corgi1" type="CorgiSpawn" x="2181" y="573.333" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3110"/>
+    <property name="trackStart" type="float" value="1800"/>
+   </properties>
+  </object>
+  <object id="20" name="Corgi1" type="CorgiSpawn" x="2225" y="572.667" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3110"/>
+    <property name="trackStart" type="float" value="1800"/>
+   </properties>
+  </object>
+  <object id="21" name="Corgi1" type="CorgiSpawn" x="2553.67" y="572.667" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3110"/>
+    <property name="trackStart" type="float" value="1800"/>
+   </properties>
+  </object>
+  <object id="22" name="Corgi1" type="CorgiSpawn" x="2787" y="574" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3110"/>
+    <property name="trackStart" type="float" value="1800"/>
+   </properties>
+  </object>
+  <object id="23" name="Corgi1" type="CorgiSpawn" x="3381.67" y="573.333" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3540"/>
+    <property name="trackStart" type="float" value="3245"/>
    </properties>
   </object>
  </objectgroup>
