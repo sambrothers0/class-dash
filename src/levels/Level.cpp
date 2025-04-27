@@ -178,6 +178,8 @@ bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
     for (auto enemyData : levelEnemyData) {
         auto startPos = enemyData.getStartPos();
 
+        std::cout << enemyData.getStartPos() << ", " << enemyData.getTrackStart() << ", " << enemyData.getTrackEnd() << std::endl;
+
         Enemy enemy(
             enemyData.getStartPos(),
             enemyData.getTrackStart(),

@@ -12,17 +12,10 @@ GameLogic::GameLogic() {
   
 
     levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx");
-    levelData[1] = LevelData("../assets/visual/Level1.tmx");
-    levelData[2] = LevelData("../assets/visual/Level2.tmx");
-
-    std::vector<EnemyData> level4Enemies {
-        EnemyData(Vector2(608, 480), 608, 736),
-        EnemyData(Vector2(1420, 400), 1410, 1756)
-    };
-
-    levelData[3] = LevelData("../assets/visual/Level3.tmx", level4Enemies);
-
-    levelData[4] = LevelData("../assets/visual/ColliderTest.tmx");
+    levelData[1] = LevelData("../assets/visual/Level2.tmx");
+    levelData[2] = LevelData("../assets/visual/Level3.tmx");
+    levelData[3] = LevelData("../assets/visual/Level4.tmx");
+    levelData[4] = LevelData("../assets/visual/Level5.tmx");
 }
 
 void GameLogic::init() {

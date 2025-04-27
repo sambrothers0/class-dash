@@ -72,7 +72,7 @@ Uint32 onTransparencyTimerCallback(Uint32 interval, void* param) {
     auto screen = reinterpret_cast<GameScreen*>(param);
 
     auto alpha = screen->getAlpha();
-    auto returnValue = alpha <= 0.05f ? 0 : 50;
+    auto returnValue = alpha <= 0.1f ? 0 : 50;
 
     screen->updateAlpha();
 
@@ -84,7 +84,8 @@ void GameScreen::draw() {
         return;
 
     // Start updating alpha if the level is done
-    if (gameLogic.isLevelFinished() && alpha == 1.0f) {
+    if (gameLogic.isLevelFinished() && !alphaTimerActive) {
+        alphaTimerActive = true;
         alphaTimerID = SDL_AddTimer(50, onTransparencyTimerCallback, this);
     }
 
@@ -137,6 +138,7 @@ void GameScreen::draw() {
     }
 
     // Display the Time on the screen
+    drawButton(0, 0, 300, 100, SDL_Color {147, 115, 64, 255});
     timeText.setText(gameLogic.getTimer()->getTime());
     timeText.draw();
 }
@@ -250,7 +252,7 @@ ScreenType GameScreen::handleExtraEvents() {
 
 void GameScreen::updateAlpha() {
     if (alpha > 0) {
-        alpha -= 0.05f;
+        alpha -= 0.1f;
 
         if (alpha <= 0) {
             alpha = 0;
