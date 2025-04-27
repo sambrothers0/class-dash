@@ -52,6 +52,7 @@ class Projectile {
 
         void setStartingPosition(MoveDirection direction);
         void setVelocity(double x, double y);
+        
         virtual void move(double ms);
 
         void setDirection(MoveDirection direction) {
