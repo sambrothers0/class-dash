@@ -47,6 +47,10 @@ void GameLogic::runTick(double ms) {
             enemy->moveOnTrack(ms);
         }
 
+        for (auto corgi : level->getCorgis()) {
+            corgi->moveOnTrack(ms);
+        }
+
         level->removeDeadEnemies();
     }
 }

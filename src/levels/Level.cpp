@@ -109,6 +109,22 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                         levelEnemyData.push_back(EnemyData(Vector2(object.getPosition().x,object.getPosition().y-1), trackStart, trackEnd));
                     }
 
+                    if (object.getType() == "CorgiSpawn") {
+                        float trackStart = 0;
+                        float trackEnd = 0;
+                        for (const auto& property : object.getProperties()) {
+                            if (property.getName()=="trackStart"){trackStart = property.getFloatValue();}
+                            else if (property.getName() == "trackEnd"){trackEnd =  property.getFloatValue();}
+                            std::cout<<"Property "<<property.getName()<<" Value "<<property.getFloatValue()<<" Object "<<object.getName()<<std::endl;
+                        }
+
+                        corgiData.push_back(EnemyData(
+                            Vector2(object.getPosition().x, object.getPosition().y - 1),
+                            trackStart,
+                            trackEnd
+                        ));
+                    }
+
                     if (object.getName() == "Endpoint") {
                         levelEndPos = object.getPosition().x;
                     }
@@ -209,6 +225,40 @@ bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
         }
 
         enemies.push_back(std::make_shared<Enemy>(enemy));
+    }
+
+    for (auto corgiDataItem : corgiData) {
+        auto startPos = corgiDataItem.getStartPos();
+
+        Corgi corgi(
+            corgiDataItem.getStartPos(),
+            corgiDataItem.getTrackStart(),
+            corgiDataItem.getTrackEnd()
+        );
+
+        // Find a solid object along that line
+        auto hitbox = corgi.getHitbox() + startPos;
+
+        auto leftX = hitbox.getLeftX();
+        auto rightX = hitbox.getRightX();
+        auto centerX = (leftX + rightX) / 2.0;
+        auto bottomY = hitbox.getBottomY();
+
+        double targetY = 768;
+
+        // We only really care about the center x here
+        for (auto y = bottomY; y <= WINDOW_HEIGHT; y += TILE_SIZE / 2) {
+            auto worldTile = getWorldCollisionObject(Vector2(floor(centerX / TILE_SIZE), floor(y / TILE_SIZE)));
+
+            if (worldTile) {
+                auto bounds = worldTile->bounds;
+                targetY = bounds.y - 32 / 2;
+                corgi.setGroundLevel(targetY);
+                break;
+            }
+        }
+
+        corgis.push_back(std::make_shared<Corgi>(corgi));
     }
 
     return true;

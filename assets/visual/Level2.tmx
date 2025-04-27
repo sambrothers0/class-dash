@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="133" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="10">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="133" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="14">
  <tileset firstgid="1" source="tilesheet.tsx"/>
  <tileset firstgid="25" source="largetilesheet.tsx"/>
  <tileset firstgid="40" source="objects.tsx"/>
@@ -149,6 +149,30 @@
  </objectgroup>
  <objectgroup id="4" name="Endpoint">
   <object id="2" name="Endpoint" x="4209.33" y="0.666667" width="32" height="768"/>
+  <object id="10" name="Corgi1" type="CorgiSpawn" x="596" y="572.667" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="690"/>
+    <property name="trackStart" type="float" value="580"/>
+   </properties>
+  </object>
+  <object id="11" name="Corgi1" type="CorgiSpawn" x="3385.67" y="605.333" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3860"/>
+    <property name="trackStart" type="float" value="3360"/>
+   </properties>
+  </object>
+  <object id="12" name="Corgi1" type="CorgiSpawn" x="3580.33" y="606.667" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3860"/>
+    <property name="trackStart" type="float" value="3360"/>
+   </properties>
+  </object>
+  <object id="13" name="Corgi1" type="CorgiSpawn" x="3654.33" y="606" width="30" height="33.3333">
+   <properties>
+    <property name="trackEnd" type="float" value="3860"/>
+    <property name="trackStart" type="float" value="3360"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="5" name="Startpoint">
   <object id="4" name="Player" type="Spawn" x="84.3333" y="574.333" width="32" height="32"/>

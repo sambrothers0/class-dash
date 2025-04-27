@@ -4,6 +4,7 @@
 #include "levels/Level.hpp"
 #include "sprites/PlayerTexture.hpp"
 #include "sprites/EnemyTexture.hpp"
+#include "sprites/CorgiTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -111,6 +112,11 @@ void GameScreen::draw() {
         Vector2 enemyPosition = enemy->getPosition();
         enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);
     }
+    
+    for (auto corgi : level->getCorgis()) {
+        Vector2 corgiPosition = corgi->getPosition();
+        corgiSprite.draw(CorgiTexture::CORGI1WALK1 + corgi->getCurrentAnimationOffset(), corgiPosition - Vector2(scrollOffset, 0), corgi->getLastDirection() == MoveDirection::RIGHT, alpha);
+    }
 
     // Draw the player hitbox + enemy hitboxes
     if (showHitboxes && !gameLogic.isLevelFinished()) {
@@ -118,6 +124,10 @@ void GameScreen::draw() {
 
         for (auto enemy : enemies) {
             drawCollisionHitbox(enemy->getPosition(), enemy->getHitbox());
+        }
+
+        for (auto corgi : level->getCorgis()) {
+            drawCollisionHitbox(corgi->getPosition(), corgi->getHitbox());
         }
 
         for (auto projectile : player->getProjectiles()) {
