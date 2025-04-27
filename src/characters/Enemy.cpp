@@ -9,13 +9,17 @@
 
 void Enemy::move(double ms) {
     Character::move(ms);
+    if (enemyProj && enemyProj->isActive()) {
+        enemyProj->enemyProjMove(ms, projDest);
+    }
 }
 
 void Enemy::shoot() {
 
 }
 
-void Enemy::shoot(std::shared_ptr<GameLogic> gameLogic) {
+//void Enemy::shoot(std::shared_ptr<GameLogic> gameLogic) {
+    void Enemy::shoot(GameLogic* gameLogic) {
     // shoots a projectile at the player
     if (projActive == false) {
         enemyProj = std::make_shared<Projectile>(gameLogic, getPosition(), currentDirection);
@@ -33,10 +37,9 @@ void Enemy::shoot(std::shared_ptr<GameLogic> gameLogic) {
             enemyProj->setStartingPosition(MoveDirection::RIGHT);
             enemyProj->setVelocity(300, 0);
         }
+        projActive = true;
     }
-    else {
-
-    }
+   
     projDest = gameLogic->getPlayer()->getPosition();
 
 }
@@ -136,4 +139,8 @@ void Enemy::moveRight() {
     velocity.setX(120);
     currentDirection = MoveDirection::RIGHT;
     lastDirection = MoveDirection::RIGHT;
+}
+
+std::shared_ptr<Projectile> Enemy::getEnemyProj() {
+    return enemyProj;
 }

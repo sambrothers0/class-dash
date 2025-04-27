@@ -136,6 +136,20 @@ void GameScreen::draw() {
         }
     }
 
+    // Display enemy projectiles that have been shot
+    for (auto enemy : enemies) {
+        std::shared_ptr<Projectile> enemyProj = enemy->getEnemyProj();
+        if (enemyProj != nullptr && enemyProj->isActive()) {
+            Vector2 enemyProjectilePosition = enemy->getPosition();
+            if (enemyProj->getVelocity().getX() < 0) {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
+            }
+            else {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), true, alpha);
+            }
+        } 
+    }
+
     // Display the Time on the screen
     timeText.setText(gameLogic.getTimer()->getTime());
     timeText.draw();

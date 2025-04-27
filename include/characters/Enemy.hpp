@@ -99,7 +99,9 @@ class Enemy : public Character {
 
         virtual void shoot();
 
-        void shoot(std::shared_ptr<GameLogic> gameLogic);
+        void shoot(GameLogic* gameLogic);
+
+        std::shared_ptr<Projectile> getEnemyProj();
 
         // Enemy moves along a set predetermined track
         void moveOnTrack(double ms);

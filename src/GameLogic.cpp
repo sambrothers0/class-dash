@@ -52,7 +52,10 @@ void GameLogic::runTick(double ms) {
 
         for (auto enemy : level->getEnemies()) {
             enemy->moveOnTrack(ms);
-            enemy->detectPlayer(player, ms);
+            if (enemy->detectPlayer(player, ms)) {
+                //enemy->shoot(std::shared_ptr<GameLogic>(this));
+                enemy->shoot(this);
+            }
         }
 
         level->removeDeadEnemies();
