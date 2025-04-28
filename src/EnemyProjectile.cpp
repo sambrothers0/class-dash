@@ -1,5 +1,5 @@
 #include "EnemyProjectile.hpp"
-
+#include "gameDimensions.hpp"
 //EnemyProjectile::EnemyProjectile() {
 
 //}
