@@ -29,7 +29,7 @@ class EnemyProjectile {
     
     void move(double ms);
 
-    const Vector2& getPosiiton() const {
+    const Vector2& getPosition() const {
         return currentPosition;
     }
 
@@ -45,9 +45,9 @@ class EnemyProjectile {
         return velocity;
     }
 
-    
 
-    void setActive(bool activity) {
+
+    void setActive(bool activity) {;
         active = activity;
     }
 

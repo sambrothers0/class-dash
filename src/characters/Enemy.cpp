@@ -130,3 +130,10 @@ void Enemy::moveRight() {
     currentDirection = MoveDirection::RIGHT;
     lastDirection = MoveDirection::RIGHT;
 }
+
+std::shared_ptr<EnemyProjectile> Enemy::getEnemyProjectile() {
+    if (enemyProjectile && enemyProjectile->isActive()) {
+        return enemyProjectile;
+    }
+    return enemyProjectile;
+}

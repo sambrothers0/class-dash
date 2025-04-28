@@ -136,6 +136,15 @@ void GameScreen::draw() {
         }
     }
 
+    // Display Enemy Projectiles
+    for (auto enemy : enemies) {
+        auto enemyProj = enemy->getEnemyProjectile();
+        if (enemyProj && enemyProj->isActive()) {
+            Vector2 enemyProjectilePosition = enemyProj->getPosition();
+            playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
+        }
+    }
+
     // Display the Time on the screen
     timeText.setText(gameLogic.getTimer()->getTime());
     timeText.draw();

@@ -91,6 +91,8 @@ class Enemy : public Character {
         bool isAlive() const {
             return health > 0;
         }
+
+        std::shared_ptr<EnemyProjectile> getEnemyProjectile();
 };
 
 #endif
