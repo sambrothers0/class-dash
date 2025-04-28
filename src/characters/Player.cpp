@@ -187,12 +187,19 @@ void Player::jump() {
     if (velocity.getY() == 0) {
         SoundManager::getInstance()->playSound(SoundEffect::JUMP);
         std::cout << "jump" << std::endl;
-        velocity.setY(-500);
+
+        if (bigJump) {
+            velocity.setY(-700); 
+        } else {
+            velocity.setY(-500); 
+        }
+        // velocity.setY(-500);
         position -= Vector2(0, 1); // Update position to avoid an immediate collision with the ground
         bufferedJump = false;
         onGround= false;
         isJumping = true;
         falling = false;
+        bigJump =false;
         fallDirection = currentDirection;
 
         // Fall height isn't applicable
@@ -212,6 +219,13 @@ Uint32 onSpeedReduceEnd(Uint32 interval, void *param) {
     return 0; 
 }
 
+void Player::increaseJump() {
+        if (!bigJump) {
+            std::cout << "high jump activated!" << std::endl;
+            bigJump = true;
+        }
+    
+}
 void Player::reduceSpeed() {
     if (!isSlowed) {
         std::cout<<"reducing speed"<<std::endl;
@@ -287,7 +301,9 @@ void Player::handleFloorCollisions() {
                 if(worldTile->type == "Obstacle") {
                     reduceSpeed();
                 }
-
+                if(worldTile->type == "Boost") {
+                    increaseJump();
+                }
                 if (fabs(worldTile->bounds.y - bottomY) <= 4)
                     isOnGround = true;
                     

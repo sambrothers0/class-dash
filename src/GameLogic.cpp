@@ -11,7 +11,7 @@
 GameLogic::GameLogic() {
   
 
-    levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx");
+    levelData[0] = LevelData("../assets/visual/SwemLevel.tmx");
     levelData[1] = LevelData("../assets/visual/Level2.tmx");
     levelData[2] = LevelData("../assets/visual/Level3.tmx");
     levelData[3] = LevelData("../assets/visual/Level4.tmx");

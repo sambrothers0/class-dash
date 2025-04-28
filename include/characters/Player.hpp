@@ -73,6 +73,9 @@ class Player : public Character {
     const float NORMAL_SPEED = 225.0f;
     const float REDUCED_SPEED = 100.0f;
 
+    bool bigJump =false;
+    const float JUMP_BOOST = 100.0f;
+
 
     Vector2 respawnPos;
     float offMapHeight = 1000.0f; 
@@ -135,6 +138,7 @@ class Player : public Character {
     // Handles obstacles that reduce player speed
     void reduceSpeed();
     void restoreSpeed();
+    void increaseJump();
 
     // Sets if the projectile timer is active
     void setIfProjectileTimerActive(bool active) {
