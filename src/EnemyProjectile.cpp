@@ -11,7 +11,7 @@ void EnemyProjectile::move(double ms) {
     double dirY = destination.getY() - currentPosition.getY();
 
     double length = std::sqrt(dirX * dirX + dirY * dirY);
-    //if (length == 0) return;
+    if (length == 0) return;
     dirX /= length;
     dirY /= length;
 

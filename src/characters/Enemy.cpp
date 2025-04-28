@@ -8,6 +8,7 @@ void Enemy::move(double ms) {
 
 void Enemy::shoot() {
     // shoots a projectile at the player
+    EnemyProjectile projectile = EnemyProjectile(std::make_shared<GameLogic>(gameLogic), position, currentDirection);
 
 }
 

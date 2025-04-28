@@ -6,6 +6,7 @@
 #include "physics/Vector2.hpp"
 #include "physics/BoundingBox.hpp"
 #include <memory>
+#include "EnemyProjectile.hpp"
 //#include "characters/Player.hpp"
 
 class Player;
@@ -39,6 +40,8 @@ class Enemy : public Character {
         Vector2 playerLoc; 
 
         double detectRange = 200;
+        
+        //std::shared_ptr<EnemyProjectile> projectile;
 
     public:
         explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
