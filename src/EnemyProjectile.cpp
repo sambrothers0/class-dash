@@ -22,6 +22,7 @@ EnemyProjectile::EnemyProjectile(Vector2 playerPosition, Vector2 enemyPosition, 
     destination(playerPosition), 
     currentPosition(enemyPosition), 
     currentDirection(enemyDirection),
+    startingPosition(enemyPosition),
     active(true) {}
 
 
