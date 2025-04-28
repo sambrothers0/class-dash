@@ -22,15 +22,20 @@ const int MAX_ENEMY_PROJECTILES = 2;
 // Delay for shooting projectiles in ms
 const int ENEMY_PROJECTILE_DELAY = 250;
 
+/*
  // There is a delay between shooting projectiles
  extern SDL_TimerID enemyProjectileTimerId;
  extern bool isEnemyProjectileTimerActive; //= false;
-
-
+*/
 
 class Enemy : public Character {
 
     private:
+
+        // There is a delay between shooting projectiles
+        SDL_TimerID enemyProjectileTimerId;
+        bool isEnemyProjectileTimerActive; //= false;
+
         // Set initial direction
         MoveDirection currentDirection = MoveDirection::RIGHT;
 
