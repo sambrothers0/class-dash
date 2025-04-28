@@ -11,12 +11,14 @@ void Enemy::shoot() {
 
 }
 
-void Enemy::moveOnTrack(double ms) {
+void Enemy::moveOnTrack(std::shared_ptr<Player> player, double ms) {
     // Made it to the left end of the track
-    if (currentDirection == MoveDirection::NONE) {
-        velocity.setX(0);
-        return;
+
+    if (inRange(player)){
+        //move towards player if in range
+        moveToPlayer(player, ms);
     }
+    else{ //move on predetermined track
     if (position.getX() <= trackStart) {
         moveRight();
     }
@@ -24,7 +26,10 @@ void Enemy::moveOnTrack(double ms) {
     else if (position.getX() >= trackEnd) {
         moveLeft();
     }
-    
+}    if (currentDirection == MoveDirection::NONE) {
+        velocity.setX(0);
+        return;
+    }
     // Placeholder until collision added ------
     if (position.getY() >= groundLevel) {
         velocity.setY(0);
@@ -37,46 +42,33 @@ void Enemy::moveOnTrack(double ms) {
     
 }
 
-void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
-    // move to player within track range
-    //playerLoc = player->getPosition();
-    
-    if (playerLoc.getX() <= getPosition().getX()) {
-        if (position.getX() == (trackStart + 5)) {
-            //position.setX(trackStart + 5);
-            currentDirection = MoveDirection::NONE;
-        }
-        else
+void Enemy::moveToPlayer(std::shared_ptr<Player> player, double ms) {
+    playerLoc = player->getPosition();
+    auto diff = playerLoc - position;
+    // if in range but still far enough away, walk towards player
+    if (abs(diff.getX()) > 10) {  
+        if (playerLoc.getX() < position.getX() && position.getX()>trackStart) {
             moveLeft();
-    }
-    else {
-        if (position.getX() == (trackEnd - 5)) {
-            //position.setX(trackEnd - 5);
-            currentDirection = MoveDirection::NONE;
-        }
-        else 
+        } else if (playerLoc.getX() > position.getX() && position.getX()<trackEnd)  {
             moveRight();
+        }
+    } else {
+        // if directly next to player, stop
+        currentDirection = MoveDirection::NONE;
     }
 }
 
-void Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
-   // check if player is in range
-   playerLoc = player->getPosition();
-   Vector2 difference = playerLoc - getPosition();
+bool Enemy::inRange(std::shared_ptr<Player> player) {
+    playerLoc = player->getPosition();
+    auto difference = abs(playerLoc.getX() - getPosition().getX());
+    auto ydiff= abs(playerLoc.getY() - getPosition().getY());
+    if (difference <= detectRange && ydiff <= 75){
+        return true;
+    }
+    return false;
 
-   //check if x axis in range
-   if ((difference.getX() >= -detectRange) && (difference.getX() < detectRange)) {
-       //check if y axis is in range
-       if ((difference.getY() >= -detectRange) && (difference.getY() < detectRange)) {
-           // when in range move to player and shoot
-           moveToPlayer(player);
-       }
-   } 
-   // if not in range, continue its track  
-   //else {
-    //moveOnTrack(ms);
-   //}
 }
+
 
 BoundingBox Enemy::getHitbox() const {
     // The hitbox is different if the enemy is flipped

@@ -6,6 +6,7 @@
 #include "physics/Vector2.hpp"
 #include "physics/BoundingBox.hpp"
 #include <memory>
+#include <cmath>
 //#include "characters/Player.hpp"
 
 class Player;
@@ -66,14 +67,16 @@ class Enemy : public Character {
 
         virtual void move(double ms);
 
-        void moveToPlayer(std::shared_ptr<Player> player);
+        void moveToPlayer(std::shared_ptr<Player> player, double ms);
 
-        void detectPlayer(std::shared_ptr<Player> player, double ms);
+        // void detectPlayer(std::shared_ptr<Player> player, double ms);
+
+        bool inRange(std::shared_ptr<Player> player);
 
         virtual void shoot();
 
         // Enemy moves along a set predetermined track
-        void moveOnTrack(double ms);
+        void moveOnTrack(std::shared_ptr<Player> player, double ms);
 
         // Moves the enemy in either direction
         void moveLeft();

@@ -51,8 +51,8 @@ void GameLogic::runTick(double ms) {
         player->move(ms);
 
         for (auto enemy : level->getEnemies()) {
-            enemy->moveOnTrack(ms);
-            enemy->detectPlayer(player, ms);
+  
+            {enemy->moveOnTrack(player, ms);}
         }
 
         level->removeDeadEnemies();

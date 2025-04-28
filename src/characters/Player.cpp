@@ -278,7 +278,7 @@ void Player::handleFloorCollisions() {
                 if(level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type == "Obstacle") {
                     reduceSpeed();
                 }
-                std::cout<<level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type<<std::endl;
+                // std::cout<<level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type<<std::endl;
                 isOnGround = true;
                 break;
             }
