@@ -37,7 +37,7 @@ class Enemy : public Character {
 
         // There is a delay between shooting projectiles
         SDL_TimerID enemyProjectileTimerId;
-        bool isEnemyProjectileTimerActive; //= false;
+        bool isEnemyProjectileTimerActive = false; //= false;
 
         // Set initial direction
         MoveDirection currentDirection = MoveDirection::RIGHT;
@@ -72,8 +72,10 @@ class Enemy : public Character {
         // Texture offset for the enemy (can be either 0 or 2 for now)
         int textureOffset = 0;
 
+        bool canShoot = false; // Shoots and follows the player
+
     public:
-        explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd) {
+        explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd, bool _canShoot) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {
             velocity.setX(120);
             textureOffset = rand() % 2 == 0 ? 0 : 2;
         }

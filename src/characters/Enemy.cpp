@@ -22,6 +22,11 @@ Uint32 onEnemyProjectileTimer(Uint32 interval, void *param) {
 }
 
 void Enemy::shoot() {
+
+    if (!canShoot) {
+        return;
+    }
+
     if (isEnemyProjectileTimerActive) {
         return;
     }
@@ -121,6 +126,10 @@ void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
 }
 
 bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
+    if (!canShoot) {
+        return false; // the enemy is blind
+    }
+
    // check if player is in range
    playerLoc = player->getPosition();
    Vector2 difference = playerLoc - getPosition();

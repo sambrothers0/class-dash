@@ -99,14 +99,21 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                         enemyspawns.push_back(Vector2(object.getPosition().x,object.getPosition().y-1));
                         float trackStart = 0;
                         float trackEnd = 0;
+                        bool shoots = false;
                             for (const auto& property : object.getProperties()) {
-                                if (property.getName()=="trackStart"){trackStart = property.getFloatValue();}
-                                else if (property.getName() == "trackEnd"){trackEnd =  property.getFloatValue();}
-                            std::cout<<"Property "<<property.getName()<<" Value "<<property.getFloatValue()<<" Object "<<object.getName()<<std::endl;
+                                if (property.getName()=="trackStart"){
+                                    trackStart = property.getFloatValue();
+                                } else if (property.getName() == "trackEnd") {
+                                    trackEnd =  property.getFloatValue();
+                                } else if (property.getName() == "shoots") {
+                                    shoots = property.getBoolValue();
+                                }
+                            // std::cout<<"Property "<<property.getName()<<" Value "<<property.getFloatValue()<<" Object "<<object.getName()<<std::endl;
                             
                             
                         }
-                        levelEnemyData.push_back(EnemyData(Vector2(object.getPosition().x,object.getPosition().y-1), trackStart, trackEnd));
+
+                        levelEnemyData.push_back(EnemyData(Vector2(object.getPosition().x,object.getPosition().y-1), trackStart, trackEnd, shoots));
                     }
 
                     if (object.getType() == "CorgiSpawn") {
@@ -121,7 +128,8 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                         corgiData.push_back(EnemyData(
                             Vector2(object.getPosition().x, object.getPosition().y - 1),
                             trackStart,
-                            trackEnd
+                            trackEnd,
+                            false
                         ));
                     }
 
@@ -134,7 +142,8 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                         powerupData.push_back(EnemyData(
                             Vector2(object.getPosition().x, object.getPosition().y - 1),
                             object.getPosition().x,
-                            object.getPosition().x
+                            object.getPosition().x,
+                            false
                         ));
                     }
                     
@@ -210,7 +219,8 @@ bool Level::loadData(GameLogic& gameLogic, LevelData& levelData, SDL_Renderer* r
             gameLogic,
             enemyData.getStartPos(),
             enemyData.getTrackStart(),
-            enemyData.getTrackEnd()
+            enemyData.getTrackEnd(),
+            enemyData.getCanShoot()
         );
 
         // Find a solid object along that line

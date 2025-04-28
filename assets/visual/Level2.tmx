@@ -124,6 +124,7 @@
   </object>
   <object id="6" name="Enemy2" type="EnemySpawn" x="1636" y="533.333" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="1680"/>
     <property name="trackStart" type="float" value="1420"/>
    </properties>
@@ -136,12 +137,14 @@
   </object>
   <object id="8" name="Enemy4" type="EnemySpawn" x="3502.67" y="609.333" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="3600"/>
     <property name="trackStart" type="float" value="3360"/>
    </properties>
   </object>
   <object id="9" name="Enemy5" type="EnemySpawn" x="3722" y="606" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="3860"/>
     <property name="trackStart" type="float" value="3620"/>
    </properties>
