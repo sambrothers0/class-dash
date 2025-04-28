@@ -8,7 +8,7 @@
 
 class Projectile {
 
-    protected:
+    private:
         // Apparently push_back does not work when a member variable is a reference, so I switched it to a pointer
         std::shared_ptr<GameLogic> gameLogic;
 

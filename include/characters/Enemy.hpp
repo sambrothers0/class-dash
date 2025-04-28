@@ -40,6 +40,8 @@ class Enemy : public Character {
         Vector2 playerLoc; 
 
         double detectRange = 200;
+
+        std::shared_ptr<EnemyProjectile> enemyProjectile;
         
         //std::shared_ptr<EnemyProjectile> projectile;
 
@@ -71,7 +73,7 @@ class Enemy : public Character {
 
         void moveToPlayer(std::shared_ptr<Player> player);
 
-        void detectPlayer(std::shared_ptr<Player> player, double ms);
+        bool detectPlayer(std::shared_ptr<Player> player, double ms);
 
         virtual void shoot();
 

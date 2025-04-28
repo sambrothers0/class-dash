@@ -2,25 +2,61 @@
 #define _ENEMYPROJECTILE_H
 
 //#include "GameLogic.hpp"
-#include "Projectile.hpp"
+//#include "Projectile.hpp"
 //#include "characters/Player.hpp"
+#include "physics/Vector2.hpp"
+#include "MoveDirection.hpp"
+
 #include <memory>
 
 
 
-class EnemyProjectile : public Projectile {
+class EnemyProjectile {
 
     private:
-        Vector2 destination;
+
+        Vector2 currentPosition, destination, velocity, startingPosition;
+        bool active = false;
+
+        MoveDirection currentDirection;
 
         double enemyProjTraveledDist = 0;
         
     public:
 
-    EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 enemyPosition, MoveDirection enemyDirection);
+    EnemyProjectile(Vector2 playerPosition, Vector2 enemyPosition, MoveDirection enemyDirection);
     // move projectile towards player
-    virtual void move(double ms);
+    
+    void move(double ms);
 
+    const Vector2& getPosiiton() const {
+        return currentPosition;
+    }
+
+    MoveDirection getCurrentDirection() const {
+        return currentDirection;
+    }
+
+    const Vector2& getStartingPosition() const {
+        return startingPosition;
+    }
+
+    const Vector2& getVelocity() const {
+        return velocity;
+    }
+
+    
+
+    void setActive(bool activity) {
+        active = activity;
+    }
+
+    bool isActive() {
+        return active;
+    }
+
+    void setStartingPosition(MoveDirection direction);
+    void setVelocity(double x, double y);
 };
 
 #endif

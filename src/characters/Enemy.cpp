@@ -2,13 +2,29 @@
 #include <iostream>
 #include "characters/Player.hpp"
 
+
 void Enemy::move(double ms) {
     Character::move(ms);
 }
 
 void Enemy::shoot() {
     // shoots a projectile at the player
-    EnemyProjectile projectile = EnemyProjectile(std::make_shared<GameLogic>(gameLogic), position, currentDirection);
+    EnemyProjectile projectile = EnemyProjectile(playerLoc, position, currentDirection);
+    enemyProjectile = std::make_shared<EnemyProjectile>(projectile);
+
+    if (currentDirection == MoveDirection::LEFT) {
+        enemyProjectile->setStartingPosition(currentDirection);
+        enemyProjectile->setVelocity(-300, 0);
+    } else if (currentDirection == MoveDirection::RIGHT) {
+        enemyProjectile->setStartingPosition(currentDirection);
+        enemyProjectile->setVelocity(300, 0);
+    } else if (lastDirection == MoveDirection::LEFT) {
+        enemyProjectile->setStartingPosition(lastDirection);
+        enemyProjectile->setVelocity(-300, 0);
+    } else {
+        enemyProjectile->setStartingPosition(MoveDirection::RIGHT);
+        enemyProjectile->setVelocity(300, 0);
+    }
 
 }
 
@@ -35,7 +51,11 @@ void Enemy::moveOnTrack(double ms) {
 
     Character::move(ms);
     animationTicks++;
-    
+
+    if (enemyProjectile && enemyProjectile->isActive()) {
+        enemyProjectile->move(ms);
+    }
+
 }
 
 void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
@@ -58,9 +78,10 @@ void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
         else 
             moveRight();
     }
+   
 }
 
-void Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
+bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
    // check if player is in range
    playerLoc = player->getPosition();
    Vector2 difference = playerLoc - getPosition();
@@ -71,8 +92,13 @@ void Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
        if ((difference.getY() >= -detectRange) && (difference.getY() < detectRange)) {
            // when in range move to player and shoot
            moveToPlayer(player);
+           //if (!enemyProjectile->isActive()) {
+            //shoot();
+           //}
+           return true;
        }
    } 
+   return false;
    // if not in range, continue its track  
    //else {
     //moveOnTrack(ms);
