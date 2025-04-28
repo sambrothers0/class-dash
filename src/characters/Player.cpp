@@ -42,7 +42,7 @@ void Player::move(double ms) {
     if (currentDirection != MoveDirection::NONE) {
         animationTicks++;
     }
-    
+
     handleCollisions();
     checkForFallRespawn();
 
@@ -75,7 +75,7 @@ void Player::checkForFallRespawn() {
     if (onGround) {
         respawnPos = position;
     }
-    
+
     if (position.getY() > offMapHeight) {
         SoundManager::getInstance()->playSound(SoundEffect::JUMP); //CHANGE TO SOME FALL SOUND AND MAYBE ADJUST SO IT PLAYS WHILE PLAYER IS FALLING
         respawn();
@@ -83,25 +83,25 @@ void Player::checkForFallRespawn() {
 }
 
 void Player::respawn() {
-    
+
     if (fallDirection == MoveDirection::RIGHT) {
         respawnPos.setX(respawnPos.getX()-10);
         // respawnPos.setY(respawnPos.getY()-10);
     }
     else if (fallDirection ==MoveDirection::LEFT) {
         respawnPos.setX(respawnPos.getX()+10);
-        
+
     }
 
     gameLogic.getTimer()->subtractTime(10);
     invincibilityFramesActive = true;
     invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);
-    
+
     position = respawnPos;
     velocity = Vector2(0, 0);
     onGround=true;
-  
-    
+
+
     std::cout << "Player respawned at: " << position << std::endl;
 }
 
@@ -132,7 +132,7 @@ void Player::shoot() {
     if (isProjectileTimerActive) {
         return;
     }
-    
+
     SoundManager::getInstance()->playSound(SoundEffect::SHOOT);
 
     auto newProjectile = Projectile(std::make_shared<GameLogic>(gameLogic), position, currentDirection);
@@ -209,29 +209,29 @@ Vector2 Player::getHitboxCenter() const {
 Uint32 onSpeedSlowEnd(Uint32 interval, void *param) {
     auto* player = reinterpret_cast<Player*>(param);
     player->restoreSpeed();
-    return 0; 
+    return 0;
 }
 Uint32 onSpeedFastEnd(Uint32 interval, void *param) {
     auto* player = reinterpret_cast<Player*>(param);
     player->restoreSpeed();
-    return 0; 
+    return 0;
 }
 
 void Player::reduceSpeed() {
     if (!isSlowed) {
         std::cout<<"reducing speed"<<std::endl;
-        
-        
+
+
         if (velocity.getX() > 0) {
             velocity.setX(REDUCED_SPEED);
         } else if (velocity.getX() < 0) {
             velocity.setX(-REDUCED_SPEED);
         }
-        
+
         isSlowed = true;
 
         slowTimerId = SDL_AddTimer(SPEED_FRAMES, onSpeedSlowEnd, this);
-        
+
     }
 }
 void Player:: increaseSpeed() {
@@ -244,8 +244,12 @@ void Player:: increaseSpeed() {
             velocity.setX(-INCREASED_SPEED);
         }
 
-        isFast = true; 
+        isFast = true;
 
+        fastTimerId = SDL_AddTimer(SPEED_FRAMES, onSpeedFastEnd, this);
+    } else {
+        // If the timer is already on, just extend the timer
+        SDL_RemoveTimer(fastTimerId);
         fastTimerId = SDL_AddTimer(SPEED_FRAMES, onSpeedFastEnd, this);
     }
 }
@@ -320,7 +324,7 @@ void Player::handleFloorCollisions() {
 
                 if (fabs(worldTile->bounds.y - bottomY) <= 4)
                     isOnGround = true;
-                    
+
                 break;
             }
         }
@@ -373,6 +377,7 @@ void Player::handleFloorCollisions() {
                     if (restoreSpeedWhenLand) {
                         isSlowed = false;
                         isFast = false;
+                        restoreSpeedWhenLand = false;
                     }
                     break;
                 }
@@ -518,7 +523,7 @@ void Player::handleCollisions() {
      * To fix one issue, if the player is falling off of a structure, don't check vertically unless the new position is lower
      * If the player is jumping, only check vertically once they reach the peak of their jump
      */
-     
+
 
      handleFloorCollisions();
 
@@ -556,8 +561,8 @@ void Player::handlePowerupCollisions() {
             std::cout << "powewrup collision" << std::endl;
             increaseSpeed();
             powerup->deactivate();
-            
-            
+
+
         }
     }
 }
