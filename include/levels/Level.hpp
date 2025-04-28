@@ -19,6 +19,7 @@
 #include <tuple>
 #include "characters/Enemy.hpp"
 #include "levels/LevelData.hpp"
+#include "characters/Corgi.hpp"
 
 
 // Structure to represent a tsx object
@@ -54,9 +55,13 @@ class Level {
 
     // List of enemy entities
     std::vector<std::shared_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Corgi>> corgis;
 
     //List of EnemyData
     std::vector<EnemyData> levelEnemyData;
+
+    // Corgis have the same properties as enemies but don't hurt the player
+    std::vector<EnemyData> corgiData;
 
     // X-position that triggers the end of the level
     double levelEndPos = 1000000; // Replace this when loading the level
@@ -93,6 +98,10 @@ class Level {
 
     std::vector<std::shared_ptr<Enemy>>& getEnemies() {
         return enemies;
+    }
+
+    std::vector<std::shared_ptr<Corgi>>& getCorgis() {
+        return corgis;
     }
 
     double getLevelEndPos() const {

@@ -84,16 +84,18 @@ void Player::checkForFallRespawn() {
 
 void Player::respawn() {
     
-    if (lastDirection == MoveDirection::RIGHT) {
+    if (fallDirection == MoveDirection::RIGHT) {
         respawnPos.setX(respawnPos.getX()-10);
         // respawnPos.setY(respawnPos.getY()-10);
     }
-    else if (lastDirection ==MoveDirection::LEFT) {
+    else if (fallDirection ==MoveDirection::LEFT) {
         respawnPos.setX(respawnPos.getX()+10);
         
     }
 
     gameLogic.getTimer()->subtractTime(10);
+    invincibilityFramesActive = true;
+    invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);
     
     position = respawnPos;
     velocity = Vector2(0, 0);
@@ -191,6 +193,7 @@ void Player::jump() {
         onGround= false;
         isJumping = true;
         falling = false;
+        fallDirection = currentDirection;
 
         // Fall height isn't applicable
         fallHeight = -1000;
@@ -228,8 +231,12 @@ void Player::reduceSpeed() {
 }
 
 void Player::restoreSpeed() {
-    isSlowed = false;
-    std::cout << "Reset speed to normal" << std::endl;
+    if (onGround) {
+        isSlowed = false;
+        std::cout << "Reset speed to normal" << std::endl;
+    } else {
+        restoreSpeedWhenLand = true;
+    }
 }
 
 void Player::handleFloorCollisions() {
@@ -274,12 +281,16 @@ void Player::handleFloorCollisions() {
         bool isOnGround = false;
 
         for (auto x = leftX; x <= rightX; x += TILE_SIZE / 2) {
-            if (level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))) {
-                if(level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type == "Obstacle") {
+            auto worldTile = level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)));
+
+            if (worldTile) {
+                if(worldTile->type == "Obstacle") {
                     reduceSpeed();
                 }
-                // std::cout<<level->getWorldCollisionObject(Vector2(floor(x / TILE_SIZE), floor(bottomY / TILE_SIZE)))->type<<std::endl;
-                isOnGround = true;
+
+                if (fabs(worldTile->bounds.y - bottomY) <= 4)
+                    isOnGround = true;
+                    
                 break;
             }
         }
@@ -288,6 +299,7 @@ void Player::handleFloorCollisions() {
             // Start falling
             onGround = false;
             falling = true;
+            fallDirection = currentDirection;
             fallHeight = bottomY;
         }
      } else {
@@ -321,12 +333,16 @@ void Player::handleFloorCollisions() {
                 // std::cout << tilePos.y << ", " << bottomY << std::endl;
 
                 if (!partOfWall) {
-                    std::cout << "Hit ground" << std::endl;
+                    // std::cout << "Hit ground" << std::endl;
                     position.setY(tilePos.y - PLAYER_HEIGHT / 2);
                     velocity.setY(0);
                     isJumping = false;
                     onGround = true;
                     falling = false;
+
+                    if (restoreSpeedWhenLand) {
+                        isSlowed = false;
+                    }
                     break;
                 }
             }
@@ -359,7 +375,7 @@ void Player::handleCeilingCollisions() {
                 continue;
             }
 
-            std::cout << "ceiling collision" << std::endl;
+            // std::cout << "ceiling collision" << std::endl;
             // position.setX(collideWorld->bounds.x - hitboxWidth);
             position.setY(collideWorld->bounds.y + collideWorld->bounds.h + PLAYER_HEIGHT / 2 + 1);
             velocity.setY(0.1);
@@ -393,7 +409,7 @@ void Player::handleRightCollisions() {
                 continue;
             }
 
-            std::cout<<"Right Collision Detected"<<std::endl;
+            // std::cout<<"Right Collision Detected"<<std::endl;
             // std::cout<<"X position"<< position.getX()<<" tile X; "<< collideWorld->bounds.x<<"player width" <<hitboxWidth<<" rightX *32 "<<rightX*TILE_SIZE<<std::endl;/
             // position.setX(collideWorld->bounds.x - hitboxWidth);
             position.setX(collideWorld->bounds.x - PLAYER_WIDTH / 2 - 1);
@@ -453,7 +469,7 @@ void Player::handleEnemyCollisions() {
 
         // Detect if the 2 bounding boxes overlap
         if (playerHitbox.overlaps(enemyHitbox)) {
-            std::cout << "enemy collision" << std::endl;
+            // std::cout << "enemy collision" << std::endl;
             gameLogic.getTimer()->subtractTime(5); // right now all enemy collisions are 5 seconds
             invincibilityFramesActive = true;
             invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);

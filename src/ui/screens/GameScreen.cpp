@@ -4,6 +4,7 @@
 #include "levels/Level.hpp"
 #include "sprites/PlayerTexture.hpp"
 #include "sprites/EnemyTexture.hpp"
+#include "sprites/CorgiTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -72,7 +73,7 @@ Uint32 onTransparencyTimerCallback(Uint32 interval, void* param) {
     auto screen = reinterpret_cast<GameScreen*>(param);
 
     auto alpha = screen->getAlpha();
-    auto returnValue = alpha <= 0.05f ? 0 : 50;
+    auto returnValue = alpha <= 0.1f ? 0 : 50;
 
     screen->updateAlpha();
 
@@ -84,7 +85,8 @@ void GameScreen::draw() {
         return;
 
     // Start updating alpha if the level is done
-    if (gameLogic.isLevelFinished() && alpha == 1.0f) {
+    if (gameLogic.isLevelFinished() && !alphaTimerActive) {
+        alphaTimerActive = true;
         alphaTimerID = SDL_AddTimer(50, onTransparencyTimerCallback, this);
     }
 
@@ -110,6 +112,11 @@ void GameScreen::draw() {
         Vector2 enemyPosition = enemy->getPosition();
         enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);
     }
+    
+    for (auto corgi : level->getCorgis()) {
+        Vector2 corgiPosition = corgi->getPosition();
+        corgiSprite.draw(CorgiTexture::CORGI1WALK1 + corgi->getCurrentAnimationOffset(), corgiPosition - Vector2(scrollOffset, 0), corgi->getLastDirection() == MoveDirection::RIGHT, alpha);
+    }
 
     // Draw the player hitbox + enemy hitboxes
     if (showHitboxes && !gameLogic.isLevelFinished()) {
@@ -117,6 +124,10 @@ void GameScreen::draw() {
 
         for (auto enemy : enemies) {
             drawCollisionHitbox(enemy->getPosition(), enemy->getHitbox());
+        }
+
+        for (auto corgi : level->getCorgis()) {
+            drawCollisionHitbox(corgi->getPosition(), corgi->getHitbox());
         }
 
         for (auto projectile : player->getProjectiles()) {
@@ -137,7 +148,15 @@ void GameScreen::draw() {
     }
 
     // Display the Time on the screen
+    drawButton(0, 0, 300, 100, SDL_Color {147, 115, 64, 255});
     timeText.setText(gameLogic.getTimer()->getTime());
+
+    if (gameLogic.getTimer()->getIsWarning()) {
+        timeText.setColor(SDL_Color { 255, 0, 0, 255 });
+    } else {
+        timeText.setColor(SDL_Color { 0, 0, 0, 255 });
+    }
+
     timeText.draw();
 }
 
@@ -250,7 +269,7 @@ ScreenType GameScreen::handleExtraEvents() {
 
 void GameScreen::updateAlpha() {
     if (alpha > 0) {
-        alpha -= 0.05f;
+        alpha -= 0.1f;
 
         if (alpha <= 0) {
             alpha = 0;
