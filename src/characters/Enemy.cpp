@@ -6,6 +6,7 @@ void Enemy::move(double ms) {
 }
 
 void Enemy::shoot() {
+    // shoots a projectile at the player
 
 }
 
@@ -29,6 +30,16 @@ void Enemy::moveOnTrack(double ms) {
     Character::move(ms);
     animationTicks++;
     
+}
+
+void Enemy::moveToPlayer() {
+    // move to player within track range
+}
+
+void Enemy::detectPlayer() {
+    // check if player is in range
+
+    // when in range move to player and shoot
 }
 
 BoundingBox Enemy::getHitbox() const {
