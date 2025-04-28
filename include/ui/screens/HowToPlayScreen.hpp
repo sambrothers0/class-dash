@@ -11,7 +11,7 @@ class HowToPlayScreen : public Screen {
     Text howToPlay, playerControlsTitle, playerControlsText1, playerControlsText2, playerControlsText3,
         playerControlsText4, playerControlsText5, objectiveTitle, objectiveText1, objectiveText2, objectiveText3,
         objectiveText4, objectiveText5, objectiveText6, objectiveText7, objectiveText8, 
-        objectiveText9, back;
+        objectiveText9, objectiveText10, back;
 
     public:
     HowToPlayScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
@@ -36,6 +36,7 @@ class HowToPlayScreen : public Screen {
         objectiveText7(_renderer, _font, Vector2(675, 480), 20, {0, 0, 0, 255}, "before time runs out!"),
         objectiveText8(_renderer, _font, Vector2(675, 510), 20, {0, 0, 0, 255}, "Collect powerups for a speed boost!"),
         objectiveText9(_renderer, _font, Vector2(675, 570), 20, {0, 0, 0, 255}, "Press Q at any time to quit!"),
+        objectiveText10(_renderer, _font, Vector2(675, 540), 20, {0, 0, 0, 255}, "Avoid puddles and loose bricks!"),
         back(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, ">Back<") 
 
     {}
