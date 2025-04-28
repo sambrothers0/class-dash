@@ -11,6 +11,7 @@ void HowToPlayScreen::draw() {
     playerControlsText2.draw();
     playerControlsText3.draw();
     playerControlsText4.draw();
+    playerControlsText5.draw();
     objectiveTitle.draw();
     objectiveText1.draw();
     objectiveText2.draw();
@@ -21,7 +22,6 @@ void HowToPlayScreen::draw() {
     objectiveText7.draw();
     objectiveText8.draw();
     objectiveText9.draw();
-    objectiveText10.draw();
 
     drawButton(512 - 250, 665, 500, 60, {207, 171, 112, 255});
     back.draw();
