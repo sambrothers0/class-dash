@@ -116,7 +116,7 @@ void GameScreen::draw() {
         //draw enemy projectiles
         for (auto proj : enemy->getProjectiles()) {
             Vector2 enemyProjectilePosition = proj.getPosition();;
-            if (proj.getVelocity().getX() < 0) {
+            if (proj.isMovingLeft()) {
                 playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
             }
             else {

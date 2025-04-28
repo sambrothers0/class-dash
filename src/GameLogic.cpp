@@ -77,7 +77,7 @@ void GameLogic::activate(SDL_Renderer* renderer) {
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
 
-    if (!level->loadData(levelData.at(levelIndex), renderer)) {
+    if (!level->loadData(*this, levelData.at(levelIndex), renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }

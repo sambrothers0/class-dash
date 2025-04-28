@@ -189,7 +189,7 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
     return true;
 }
 
-bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
+bool Level::loadData(GameLogic& gameLogic, LevelData& levelData, SDL_Renderer* renderer) {
     if (!loadFromTMX(levelData.getFilePath(), renderer)) {
         return false;
     }
@@ -207,6 +207,7 @@ bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
         std::cout << enemyData.getStartPos() << ", " << enemyData.getTrackStart() << ", " << enemyData.getTrackEnd() << std::endl;
 
         Enemy enemy(
+            gameLogic,
             enemyData.getStartPos(),
             enemyData.getTrackStart(),
             enemyData.getTrackEnd()

@@ -20,7 +20,7 @@ const int ENEMY_HEIGHT = 64;
 const int MAX_ENEMY_PROJECTILES = 2;
 
 // Delay for shooting projectiles in ms
-const int ENEMY_PROJECTILE_DELAY = 250;
+const int ENEMY_PROJECTILE_DELAY = 1000;
 
 /*
  // There is a delay between shooting projectiles
@@ -28,9 +28,12 @@ const int ENEMY_PROJECTILE_DELAY = 250;
  extern bool isEnemyProjectileTimerActive; //= false;
 */
 
+class GameLogic;
+
 class Enemy : public Character {
 
     private:
+        GameLogic& gameLogic;
 
         // There is a delay between shooting projectiles
         SDL_TimerID enemyProjectileTimerId;
@@ -70,7 +73,7 @@ class Enemy : public Character {
         int textureOffset = 0;
 
     public:
-        explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
+        explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd) {
             velocity.setX(120);
             textureOffset = rand() % 2 == 0 ? 0 : 2;
         }

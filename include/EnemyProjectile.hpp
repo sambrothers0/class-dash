@@ -10,42 +10,30 @@
 
 #include <memory>
 
+class GameLogic;
+
 
 
 class EnemyProjectile {
 
     private:
-
-        Vector2 currentPosition, velocity, startingPosition;
+        std::shared_ptr<GameLogic> gameLogic;
+        Vector2 currentPosition;
         Vector2 direction;
         bool active = false;
-
-        MoveDirection currentDirection;
 
         double enemyProjTraveledDist = 0;
         BoundingBox hitbox = BoundingBox(Vector2(-7, -9), Vector2(14, 18));
         
     public:
 
-    EnemyProjectile(Vector2 playerPosition, Vector2 enemyPosition, MoveDirection enemyDirection);
+    EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 playerPosition, Vector2 enemyPosition);
     // move projectile towards player
     
     void move(double ms);
 
     const Vector2& getPosition() const {
         return currentPosition;
-    }
-
-    MoveDirection getCurrentDirection() const {
-        return currentDirection;
-    }
-
-    const Vector2& getStartingPosition() const {
-        return startingPosition;
-    }
-
-    const Vector2& getVelocity() const {
-        return velocity;
     }
 
     const BoundingBox& getHitbox() const {
@@ -61,8 +49,9 @@ class EnemyProjectile {
         return active;
     }
 
-    void setStartingPosition(MoveDirection direction);
-    void setVelocity(double x, double y);
+    bool isMovingLeft() const {
+        return direction.getX() < 0;
+    }
 };
 
 #endif

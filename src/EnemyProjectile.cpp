@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 //#include "characters/Player.hpp"
-//#include "GameLogic.hpp"
+#include "GameLogic.hpp"
 
 //EnemyProjectile::EnemyProjectile() {
 
@@ -19,10 +19,9 @@ EnemyProjectile::EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 
 }
 */
 
-EnemyProjectile::EnemyProjectile(Vector2 playerPosition, Vector2 enemyPosition, MoveDirection enemyDirection) : 
+EnemyProjectile::EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 playerPosition, Vector2 enemyPosition) : 
+    gameLogic(_gameLogic),
     currentPosition(enemyPosition), 
-    currentDirection(enemyDirection),
-    startingPosition(enemyPosition),
     direction((playerPosition - enemyPosition).normal() * 300),
     active(true) {}
 
@@ -40,32 +39,10 @@ void EnemyProjectile::move(double ms) {
 
     enemyProjTraveledDist += 300 * seconds;
 
-    std::cout << enemyProjTraveledDist << std::endl;
-
     if (enemyProjTraveledDist >= 500) {
         active = false;
     }
-}
 
-void EnemyProjectile::setStartingPosition(MoveDirection direction) {
-    double offset = 20;
-
-    if (direction == MoveDirection::LEFT) {
-        startingPosition.setX(startingPosition.getX() - offset);
-        currentPosition.setX(startingPosition.getX());
-    }
-    else if (direction == MoveDirection::RIGHT) {
-        startingPosition.setX(startingPosition.getX() + offset);
-        currentPosition.setX(startingPosition.getX());
-    }
-}
-
-void EnemyProjectile::setVelocity(double x, double y) {
-    velocity.setX(x);
-    velocity.setY(y);
-}
-
-    /*
     // Detect collisions with walls
     auto hitboxPos = hitbox + currentPosition;
     auto leftX = hitboxPos.getLeftX();
@@ -93,4 +70,4 @@ void EnemyProjectile::setVelocity(double x, double y) {
             }
         }
     }
-    */
+}

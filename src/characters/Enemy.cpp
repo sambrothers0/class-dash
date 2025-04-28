@@ -14,9 +14,9 @@ void Enemy::move(double ms) {
 
 // Callback for the projectile timer
 Uint32 onEnemyProjectileTimer(Uint32 interval, void *param) {
-    auto* player = reinterpret_cast<Player*>(param);
+    auto* enemy = reinterpret_cast<Enemy*>(param);
 
-    player->setIfProjectileTimerActive(false);
+    enemy->setIfProjectileTimerActive(false);
 
     return 0; // Don't repeat
 }
@@ -29,30 +29,16 @@ void Enemy::shoot() {
     // shoots a projectile at the player
     //EnemyProjectile projectile = EnemyProjectile(playerLoc, position, currentDirection);
     //enemyProjectile = std::make_shared<EnemyProjectile>(projectile);
-    EnemyProjectile enemyProjectile = EnemyProjectile(playerLoc, position, currentDirection);
-
-    if (currentDirection == MoveDirection::LEFT) {
-        enemyProjectile.setStartingPosition(currentDirection);
-        enemyProjectile.setVelocity(-300, 0);
-    } else if (currentDirection == MoveDirection::RIGHT) {
-        enemyProjectile.setStartingPosition(currentDirection);
-        enemyProjectile.setVelocity(300, 0);
-    } else if (lastDirection == MoveDirection::LEFT) {
-        enemyProjectile.setStartingPosition(lastDirection);
-        enemyProjectile.setVelocity(-300, 0);
-    } else {
-        enemyProjectile.setStartingPosition(MoveDirection::RIGHT);
-        enemyProjectile.setVelocity(300, 0);
-    }
+    EnemyProjectile enemyProjectile = EnemyProjectile(std::make_shared<GameLogic>(gameLogic), playerLoc, position);
 
     // Add to the list of projectiles if there aren't already too many
-    if (enemyProjectiles.size() < MAX_PROJECTILES) {
+    if (enemyProjectiles.size() < MAX_ENEMY_PROJECTILES) {
         enemyProjectiles.push_back(enemyProjectile);
     }
 
     // Set up the projectile timer
     isEnemyProjectileTimerActive = true;
-    enemyProjectileTimerID = SDL_AddTimer(PROJECTILE_DELAY, onEnemyProjectileTimer, this);
+    enemyProjectileTimerID = SDL_AddTimer(ENEMY_PROJECTILE_DELAY, onEnemyProjectileTimer, this);
 
 }
 
