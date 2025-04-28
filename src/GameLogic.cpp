@@ -126,7 +126,7 @@ void GameLogic::stopLevelReachedEnd() {
 
 void GameLogic::endLevel() {
     std::cout << "End level" << std::endl;
-    state = GameState::INACTIVE;
+    state = GameState::INACTIVE;;
 
     // We also need to update levels completed
     if (levelIndex >= levelsCompleted) {

@@ -20,6 +20,7 @@ class SoundManager {
         MusicTrack currentMusic;
     
         bool musicPlaying = false;
+        bool soundEffectPlaying = false;
         
         SoundManager();
         
@@ -46,6 +47,7 @@ class SoundManager {
         void resumeMusic();
 
         bool isMusicPlaying() const { return musicPlaying; }
+        bool isSoundEffectPlaying() const { return soundEffectPlaying; }
         
         // Clean up resources
         void cleanup();

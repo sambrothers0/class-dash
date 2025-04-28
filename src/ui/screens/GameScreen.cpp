@@ -242,6 +242,7 @@ ScreenType GameScreen::handleExtraEvents() {
     // lose checking needs to happen outside handleEvent because
     // we need to lose the level even if the player is not pressing any keys
     if (gameLogic.getTimer()->isTimeUp()) {
+        SoundManager::getInstance()->playSound(SoundEffect::LEVEL_LOSE);
         return ScreenType::LEVEL_LOSE; // Switch to level lose screen
     }
 

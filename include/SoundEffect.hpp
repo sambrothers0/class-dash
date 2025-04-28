@@ -6,9 +6,9 @@ enum class SoundEffect {
     SHOOT,
     BUTTON_SWITCH,
     BUTTON_SELECT,
-    HIT,
-    LEVEL_WIN,
-    LEVEL_FAIL
+    LEVEL_COMPLETE,
+    LEVEL_LOSE,
+    CLOCK_TICK
 };
 
 #endif

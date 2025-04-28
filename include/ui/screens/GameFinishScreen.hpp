@@ -22,7 +22,7 @@ class GameFinishScreen : public Screen {
         subtitle2(_renderer, _font, Vector2(512, 300), 40, { 255, 255, 255, 255 }, "time and graduated!"),
         quit(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, ">Quit<")
     {
-        SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
+        SoundManager::getInstance()->playMusic(MusicTrack::FINALE);
     }
 
     virtual void draw();
