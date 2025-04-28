@@ -85,7 +85,16 @@ class GameScreen : public Screen {
             8
         )  {
             SoundManager::getInstance()->resumeMusic();
-            SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_MUSIC);
+            if (gameLogic.getLevelIndex() == 0)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_1);
+            else if (gameLogic.getLevelIndex() == 1)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_2);
+            else if (gameLogic.getLevelIndex() == 2)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_3);
+            else if (gameLogic.getLevelIndex() == 3)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_4);
+            else if (gameLogic.getLevelIndex() == 4)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_5);
         }
 
     virtual void draw();
