@@ -109,6 +109,17 @@ void GameScreen::draw() {
     for (auto enemy : enemies) {
         Vector2 enemyPosition = enemy->getPosition();
         enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);
+
+        //draw enemy projectiles
+        for (auto proj : enemy->getProjectiles()) {
+            Vector2 enemyProjectilePosition = proj.getPosition();;
+            if (proj.getVelocity().getX() < 0) {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
+            }
+            else {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), true, alpha);
+            }
+        }
     }
 
     // Draw the player hitbox + enemy hitboxes
@@ -136,6 +147,8 @@ void GameScreen::draw() {
         }
     }
 
+    //for (auto enemy : enemies)
+/*
     // Display Enemy Projectiles
     for (auto enemy : enemies) {
         auto enemyProj = enemy->getEnemyProjectile();
@@ -144,6 +157,7 @@ void GameScreen::draw() {
             playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
         }
     }
+*/
 
     // Display the Time on the screen
     timeText.setText(gameLogic.getTimer()->getTime());

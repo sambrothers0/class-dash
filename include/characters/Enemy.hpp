@@ -7,12 +7,26 @@
 #include "physics/BoundingBox.hpp"
 #include <memory>
 #include "EnemyProjectile.hpp"
+#include <deque>
+#include "SDL.h"
 //#include "characters/Player.hpp"
 
 class Player;
 
 const int ENEMY_WIDTH = 32;
 const int ENEMY_HEIGHT = 64;
+
+// Number of projectiles that can be active at once
+const int MAX_ENEMY_PROJECTILES = 2;
+
+// Delay for shooting projectiles in ms
+const int ENEMY_PROJECTILE_DELAY = 250;
+
+ // There is a delay between shooting projectiles
+ extern SDL_TimerID enemyProjectileTimerId;
+ extern bool isEnemyProjectileTimerActive; //= false;
+
+
 
 class Enemy : public Character {
 
@@ -43,6 +57,8 @@ class Enemy : public Character {
 
         std::shared_ptr<EnemyProjectile> enemyProjectile;
         
+         // List of available projectiles
+        std::deque<EnemyProjectile> enemyProjectiles;
         //std::shared_ptr<EnemyProjectile> projectile;
 
     public:
@@ -92,7 +108,16 @@ class Enemy : public Character {
             return health > 0;
         }
 
-        std::shared_ptr<EnemyProjectile> getEnemyProjectile();
+        //std::shared_ptr<EnemyProjectile> getEnemyProjectile();
+
+        const std::deque<EnemyProjectile>& getProjectiles() const {
+            return enemyProjectiles;
+        }
+
+        // Sets if the projectile timer is active
+        void setIfProjectileTimerActive(bool active) {
+            isEnemyProjectileTimerActive = active;
+        }
 };
 
 #endif

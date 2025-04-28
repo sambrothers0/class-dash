@@ -1,30 +1,58 @@
 #include "characters/Enemy.hpp"
 #include <iostream>
 #include "characters/Player.hpp"
+#include <vector>
 
+
+std::deque<EnemyProjectile> enemyProjectiles;
+SDL_TimerID enemyProjectileTimerID;
+bool isEnemyProjectileTimerActive = false;
 
 void Enemy::move(double ms) {
     Character::move(ms);
 }
 
+// Callback for the projectile timer
+Uint32 onEnemyProjectileTimer(Uint32 interval, void *param) {
+    auto* player = reinterpret_cast<Player*>(param);
+
+    player->setIfProjectileTimerActive(false);
+
+    return 0; // Don't repeat
+}
+
 void Enemy::shoot() {
+    if (isEnemyProjectileTimerActive) {
+        return;
+    }
+
     // shoots a projectile at the player
-    EnemyProjectile projectile = EnemyProjectile(playerLoc, position, currentDirection);
-    enemyProjectile = std::make_shared<EnemyProjectile>(projectile);
+    //EnemyProjectile projectile = EnemyProjectile(playerLoc, position, currentDirection);
+    //enemyProjectile = std::make_shared<EnemyProjectile>(projectile);
+    EnemyProjectile enemyProjectile = EnemyProjectile(playerLoc, position, currentDirection);
 
     if (currentDirection == MoveDirection::LEFT) {
-        enemyProjectile->setStartingPosition(currentDirection);
-        enemyProjectile->setVelocity(-300, 0);
+        enemyProjectile.setStartingPosition(currentDirection);
+        enemyProjectile.setVelocity(-300, 0);
     } else if (currentDirection == MoveDirection::RIGHT) {
-        enemyProjectile->setStartingPosition(currentDirection);
-        enemyProjectile->setVelocity(300, 0);
+        enemyProjectile.setStartingPosition(currentDirection);
+        enemyProjectile.setVelocity(300, 0);
     } else if (lastDirection == MoveDirection::LEFT) {
-        enemyProjectile->setStartingPosition(lastDirection);
-        enemyProjectile->setVelocity(-300, 0);
+        enemyProjectile.setStartingPosition(lastDirection);
+        enemyProjectile.setVelocity(-300, 0);
     } else {
-        enemyProjectile->setStartingPosition(MoveDirection::RIGHT);
-        enemyProjectile->setVelocity(300, 0);
+        enemyProjectile.setStartingPosition(MoveDirection::RIGHT);
+        enemyProjectile.setVelocity(300, 0);
     }
+
+    // Add to the list of projectiles if there aren't already too many
+    if (enemyProjectiles.size() < MAX_PROJECTILES) {
+        enemyProjectiles.push_back(enemyProjectile);
+    }
+
+    // Set up the projectile timer
+    isEnemyProjectileTimerActive = true;
+    enemyProjectileTimerID = SDL_AddTimer(PROJECTILE_DELAY, onEnemyProjectileTimer, this);
 
 }
 
@@ -52,10 +80,35 @@ void Enemy::moveOnTrack(double ms) {
     Character::move(ms);
     animationTicks++;
 
+    /*
     if (enemyProjectile && enemyProjectile->isActive()) {
         enemyProjectile->move(ms);
     }
+*/
+    
+    // Move the projectiles, while marking any which should be deleted
+    std::vector<size_t> toDelete;
 
+    for (size_t idx = 0; idx < enemyProjectiles.size(); idx++) {
+        auto& proj = enemyProjectiles[idx];
+
+        if (proj.isActive()) {
+            proj.move(ms);
+        } else {
+            toDelete.push_back(idx);
+        }
+    }
+
+    // Delete the corresponding indexes
+    if (toDelete.size() > 0) {
+        // This is needed to keep the indexes accurate
+        int deleted = 0;
+
+        for (auto idx : toDelete) {
+            enemyProjectiles.erase(enemyProjectiles.begin() + idx - deleted);
+            deleted++;
+        }
+    }
 }
 
 void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
@@ -93,7 +146,7 @@ bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
            // when in range move to player and shoot
            moveToPlayer(player);
            //if (!enemyProjectile->isActive()) {
-            //shoot();
+            shoot();
            //}
            return true;
        }
@@ -131,9 +184,11 @@ void Enemy::moveRight() {
     lastDirection = MoveDirection::RIGHT;
 }
 
+/*
 std::shared_ptr<EnemyProjectile> Enemy::getEnemyProjectile() {
     if (enemyProjectile && enemyProjectile->isActive()) {
         return enemyProjectile;
     }
     return enemyProjectile;
 }
+*/
