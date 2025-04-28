@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="133" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="14">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="133" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="16">
  <tileset firstgid="1" source="tilesheet.tsx"/>
  <tileset firstgid="25" source="largetilesheet.tsx"/>
  <tileset firstgid="40" source="objects.tsx"/>
@@ -173,6 +173,7 @@
     <property name="trackStart" type="float" value="3360"/>
    </properties>
   </object>
+  <object id="14" name="coffee-2" type="Powerup" x="2076.67" y="429.333" width="25.3333" height="24"/>
  </objectgroup>
  <objectgroup id="5" name="Startpoint">
   <object id="4" name="Player" type="Spawn" x="84.3333" y="574.333" width="32" height="32"/>

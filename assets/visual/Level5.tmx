@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="32">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="35">
  <tileset firstgid="1" source="tilesheet.tsx"/>
  <tileset firstgid="25" source="largetilesheet.tsx"/>
  <layer id="2" name="Sky" width="100" height="24">
@@ -289,6 +289,9 @@
     <property name="trackStart" type="float" value="2600"/>
    </properties>
   </object>
+  <object id="32" name="coffee-2" type="Powerup" x="501.333" y="484.667" width="25.3333" height="24"/>
+  <object id="33" name="coffee-2" type="Powerup" x="1858.67" y="408.667" width="25.3333" height="24"/>
+  <object id="34" name="coffee-2" type="Powerup" x="1550" y="600.667" width="25.3333" height="24"/>
  </objectgroup>
  <objectgroup id="3" name="Spawns">
   <object id="1" name="Player" type="Spawn" x="41.3753" y="531.827" width="32" height="32"/>
