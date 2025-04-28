@@ -62,7 +62,7 @@ bool Enemy::inRange(std::shared_ptr<Player> player) {
     playerLoc = player->getPosition();
     auto difference = abs(playerLoc.getX() - getPosition().getX());
     auto ydiff= abs(playerLoc.getY() - getPosition().getY());
-    if (difference <= detectRange && ydiff <= 75){
+    if (difference <= detectRange && ydiff <= ENEMY_HEIGHT){
         return true;
     }
     return false;
