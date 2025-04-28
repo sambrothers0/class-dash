@@ -7,7 +7,7 @@
 TimeKeeper::TimeKeeper() {
     SDL_Init(SDL_INIT_TIMER);
 
-    startTime = 120;
+    startTime = 60;
     timeElapsed = startTime;
     endTime = 0;
     minutes = startTime / 60;
@@ -18,6 +18,7 @@ TimeKeeper::TimeKeeper() {
 
 void TimeKeeper::beginTimer() {
     timeRunning = true;
+    warnTime = 60;
     while (timeRunning == true) {
         if (timeElapsed > 0) {
             iterations++;
@@ -27,6 +28,11 @@ void TimeKeeper::beginTimer() {
                 minutes = timeElapsed / 60;
                 seconds = timeElapsed % 60;
                 iterations = 0;
+
+                // Turn off warning after player is hit
+                if (abs(timeElapsed - warnTime) > 1) {
+                    isWarning = false;
+                }
             }
         }
         else {
@@ -55,6 +61,14 @@ void TimeKeeper::beginTimer() {
     minutes = (timeElapsed / 60);
     seconds = (timeElapsed % 60);
     */
+}
+
+void TimeKeeper::subtractTime(int _seconds) {
+    timeElapsed -= _seconds;
+    minutes = timeElapsed / 60;
+    seconds = timeElapsed % 60;
+    isWarning = true;
+    warnTime = timeElapsed;
 }
 
 void TimeKeeper::resetTimer() {

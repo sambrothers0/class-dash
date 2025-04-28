@@ -5,7 +5,6 @@
 #include <iostream>
 #include <cassert>
 
-// This causes the segfault but idk why, it shouldn't even be called
 void Spritesheet::loadTexture() {
     texture = IMG_LoadTexture(renderer, path.c_str());
 

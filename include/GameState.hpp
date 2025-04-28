@@ -5,7 +5,8 @@
 enum GameState {
     INACTIVE, // No level loaded
     ACTIVE, // In game
-    PAUSED // Pause menu
+    PAUSED, // Pause menu
+    FINISHED // Just finished level
 };
 
 #endif

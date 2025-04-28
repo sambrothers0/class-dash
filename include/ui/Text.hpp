@@ -36,6 +36,8 @@ class Text {
     void setText(const std::string& _text);
     const std::string& getText() const { return text; }
 
+    void setColor(SDL_Color _color);
+
     ~Text();
 };
 

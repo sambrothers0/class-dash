@@ -60,6 +60,10 @@ class PlayerView {
     // Switches to the level lose screen
     void switchToLevelLoseScreen();
 
+    void switchToLevelWinScreen();
+
+    void switchToGameFinishScreen();
+
     // Pass Renderer
     SDL_Renderer* getRenderer() {
         return renderer;

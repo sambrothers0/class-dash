@@ -24,6 +24,9 @@ const int PROJECTILE_DELAY = 250;
 // Length of invincibility after being hit
 const int INVINCIBILITY_FRAMES = 1000;
 
+// Length of reduced speed after obstacle collision
+const int SPEED_FRAMES= 1000;
+
 class GameLogic;
 
 class Player : public Character {
@@ -35,6 +38,9 @@ class Player : public Character {
 
     // Last direction moved in
     MoveDirection lastDirection = MoveDirection::RIGHT;
+
+    // Direction the player was moving when they jumped/fell
+    MoveDirection fallDirection = MoveDirection::NONE;
 
     // List of available projectiles
     std::deque<Projectile> projectiles;
@@ -61,6 +67,25 @@ class Player : public Character {
     bool invincibilityFramesActive = false;
     SDL_TimerID invincibilityTimerId;
 
+    //handles speed reduction from enemies and obstacles
+    bool isSlowed = false;
+    bool isFast = false;
+    SDL_TimerID slowTimerId;
+    SDL_TimerID fastTimerId; 
+    const float NORMAL_SPEED = 200.0f;
+    const float REDUCED_SPEED = 100.0f;
+    const float INCREASED_SPEED = 300.0f;
+
+    Vector2 respawnPos;
+    float offMapHeight = 1000.0f; 
+
+    // Should speed be restored when the player lands
+    bool restoreSpeedWhenLand = false;
+ 
+    // Handles falling off the map
+    void checkForFallRespawn();
+    void respawn();
+
     // Handles any floor collisions
     void handleFloorCollisions();
     void handleCeilingCollisions();
@@ -71,8 +96,12 @@ class Player : public Character {
     // Detects collisions with the enemy
     void handleEnemyCollisions();
 
+    void handlePowerupCollisions();
+
+    float getCurrentSpeed() const;
+
     public:
-    Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {}
+    Player(GameLogic& _gameLogic, Vector2 _position) : Character(_position), gameLogic(_gameLogic), fallHeight(_position.getY() + PLAYER_HEIGHT / 2.0) {respawnPos = _position;}
 
     MoveDirection getCurrentDirection() const {
         return currentDirection;
@@ -106,6 +135,12 @@ class Player : public Character {
     void jump();
     void handleCollisions();
 
+
+    // Handles obstacles that reduce player speed
+    void reduceSpeed();
+    void restoreSpeed();
+    void increaseSpeed();
+
     // Sets if the projectile timer is active
     void setIfProjectileTimerActive(bool active) {
         isProjectileTimerActive = active;
@@ -118,6 +153,9 @@ class Player : public Character {
     void setInvincible(bool invinc) {
         invincibilityFramesActive = invinc;
     }
+ 
+
 };
+
 
 #endif

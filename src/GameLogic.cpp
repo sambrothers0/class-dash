@@ -9,22 +9,13 @@
 #include <chrono>
 
 GameLogic::GameLogic() {
-    std::vector<EnemyData> level1Enemies {
-        EnemyData(Vector2(900, 580), 600, 1200)
-    };
+  
 
-    levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx", level1Enemies);
-    levelData[1] = LevelData("../assets/visual/Level1.tmx");
-    levelData[2] = LevelData("../assets/visual/Level2.tmx");
-
-    std::vector<EnemyData> level4Enemies {
-        EnemyData(Vector2(608, 480), 608, 736),
-        EnemyData(Vector2(1420, 400), 1410, 1756)
-    };
-
-    levelData[3] = LevelData("../assets/visual/Level3.tmx", level4Enemies);
-
-    levelData[4] = LevelData("../assets/visual/ColliderTest.tmx");
+    levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx");
+    levelData[1] = LevelData("../assets/visual/Level2.tmx");
+    levelData[2] = LevelData("../assets/visual/Level3.tmx");
+    levelData[3] = LevelData("../assets/visual/Level4.tmx");
+    levelData[4] = LevelData("../assets/visual/Level5.tmx");
 }
 
 void GameLogic::init() {
@@ -54,7 +45,21 @@ void GameLogic::runTick(double ms) {
 
         for (auto enemy : level->getEnemies()) {
             enemy->moveOnTrack(ms);
+            bool detected = enemy->detectPlayer(player, ms);
+            if (detected) {
+                enemy->shoot();
+            }
         }
+
+        for (auto corgi : level->getCorgis()) {
+            corgi->moveOnTrack(ms);
+        }
+        for (auto powerup : level->getPowerups()) {
+            powerup->animate();
+        }
+
+        level->removeDeadEnemies();
+        level->removeCollectedPowerups();
     }
 }
 
@@ -66,15 +71,17 @@ double GameLogic::getScrollOffset() const {
 }
 
 void GameLogic::activate(SDL_Renderer* renderer) {
-    level = std::make_shared<Level>(Vector2(2240, 768)); // In the future this maybe should not be hardcoded
+    level = std::make_shared<Level>();
+    // level = std::make_shared<Level>(Vector2(2240, 768)); // In the future this maybe should not be hardcoded
     timer = std::make_shared<TimeKeeper>();
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
 
-    if (!level->loadData(levelData.at(levelIndex), renderer)) {
+    if (!level->loadData(*this, levelData.at(levelIndex), renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
+
 
     auto spawn = level-> getPlayerSpawnPoint();
     std::cout<<spawn.getX()<<" "<<spawn.getY()<<std::endl;
@@ -113,4 +120,20 @@ void GameLogic::saveLevelsCompleted() const {
 
     file << std::to_string(levelsCompleted);
     file.close();
+}
+
+void GameLogic::stopLevelReachedEnd() {
+    player->stopMoving();
+    timer->pauseTimer();
+    state = GameState::FINISHED;
+}
+
+void GameLogic::endLevel() {
+    std::cout << "End level" << std::endl;
+    state = GameState::INACTIVE;
+
+    // We also need to update levels completed
+    if (levelIndex >= levelsCompleted) {
+        setLevelsCompleted(levelIndex + 1);
+    }
 }
