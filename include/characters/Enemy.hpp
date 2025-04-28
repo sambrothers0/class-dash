@@ -1,16 +1,44 @@
-#ifndef _ENEMY_HPP
-#define _ENEMY_HPP
+#ifndef _ENEMY_H
+#define _ENEMY_H
+
 #include "Character.hpp"
 #include "MoveDirection.hpp"
 #include "physics/Vector2.hpp"
 #include "physics/BoundingBox.hpp"
+#include <memory>
+#include "EnemyProjectile.hpp"
+#include <deque>
+#include "SDL.h"
+//#include "characters/Player.hpp"
+
+class Player;
 
 const int ENEMY_WIDTH = 32;
 const int ENEMY_HEIGHT = 64;
 
+// Number of projectiles that can be active at once
+const int MAX_ENEMY_PROJECTILES = 2;
+
+// Delay for shooting projectiles in ms
+const int ENEMY_PROJECTILE_DELAY = 1000;
+
+/*
+ // There is a delay between shooting projectiles
+ extern SDL_TimerID enemyProjectileTimerId;
+ extern bool isEnemyProjectileTimerActive; //= false;
+*/
+
+class GameLogic;
+
 class Enemy : public Character {
 
     private:
+        GameLogic& gameLogic;
+
+        // There is a delay between shooting projectiles
+        SDL_TimerID enemyProjectileTimerId;
+        bool isEnemyProjectileTimerActive = false; //= false;
+
         // Set initial direction
         MoveDirection currentDirection = MoveDirection::RIGHT;
 
@@ -31,11 +59,23 @@ class Enemy : public Character {
         // Amount of health
         int health = 2;
 
+        Vector2 playerLoc; 
+
+        double detectRange = 200;
+
+        std::shared_ptr<EnemyProjectile> enemyProjectile;
+        
+         // List of available projectiles
+        std::deque<EnemyProjectile> enemyProjectiles;
+        //std::shared_ptr<EnemyProjectile> projectile;
+
         // Texture offset for the enemy (can be either 0 or 2 for now)
         int textureOffset = 0;
 
+        bool canShoot = false; // Shoots and follows the player
+
     public:
-        explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
+        explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd, bool _canShoot) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {
             velocity.setX(120);
             textureOffset = rand() % 2 == 0 ? 0 : 2;
         }
@@ -61,9 +101,9 @@ class Enemy : public Character {
 
         virtual void move(double ms);
 
-        void moveToPlayer();
+        void moveToPlayer(std::shared_ptr<Player> player);
 
-        void detectPlayer();
+        bool detectPlayer(std::shared_ptr<Player> player, double ms);
 
         virtual void shoot();
 
@@ -80,6 +120,17 @@ class Enemy : public Character {
 
         bool isAlive() const {
             return health > 0;
+        }
+
+        //std::shared_ptr<EnemyProjectile> getEnemyProjectile();
+
+        const std::deque<EnemyProjectile>& getProjectiles() const {
+            return enemyProjectiles;
+        }
+
+        // Sets if the projectile timer is active
+        void setIfProjectileTimerActive(bool active) {
+            isEnemyProjectileTimerActive = active;
         }
 
         int getTextureOffset() const {

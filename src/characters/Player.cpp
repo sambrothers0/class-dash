@@ -232,6 +232,9 @@ void Player::reduceSpeed() {
 
         slowTimerId = SDL_AddTimer(SPEED_FRAMES, onSpeedSlowEnd, this);
 
+    } else {
+        SDL_RemoveTimer(slowTimerId);
+        slowTimerId = SDL_AddTimer(SPEED_FRAMES, onSpeedSlowEnd, this);
     }
 }
 void Player:: increaseSpeed() {
@@ -509,6 +512,20 @@ void Player::handleEnemyCollisions() {
             gameLogic.getTimer()->subtractTime(5); // right now all enemy collisions are 5 seconds
             invincibilityFramesActive = true;
             invincibilityTimerId = SDL_AddTimer(INVINCIBILITY_FRAMES, onInvincibilityEnd, this);
+            break;
+        }
+    }
+
+    // Projectile collisions
+    for (auto enemy : enemies) {
+        for (auto projectile : enemy->getProjectiles()) {
+            auto playerHitbox = getHitbox() + position;
+            auto projHitbox = projectile.getHitbox() + projectile.getPosition();
+
+            if (playerHitbox.overlaps(projHitbox)) {
+                reduceSpeed();
+                projectile.setActive(false);
+            }
         }
     }
 }

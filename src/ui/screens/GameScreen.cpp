@@ -112,6 +112,17 @@ void GameScreen::draw() {
     for (auto enemy : enemies) {
         Vector2 enemyPosition = enemy->getPosition();
         enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);
+
+        //draw enemy projectiles
+        for (auto proj : enemy->getProjectiles()) {
+            Vector2 enemyProjectilePosition = proj.getPosition();;
+            if (proj.isMovingLeft()) {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
+            }
+            else {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), true, alpha);
+            }
+        }
     }
     
     for (auto corgi : level->getCorgis()) {
@@ -155,6 +166,18 @@ void GameScreen::draw() {
             playerProjectileSprite.draw(3, projectilePosition - Vector2(scrollOffset, 0), true, alpha);
         }
     }
+
+    //for (auto enemy : enemies)
+/*
+    // Display Enemy Projectiles
+    for (auto enemy : enemies) {
+        auto enemyProj = enemy->getEnemyProjectile();
+        if (enemyProj && enemyProj->isActive()) {
+            Vector2 enemyProjectilePosition = enemyProj->getPosition();
+            playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
+        }
+    }
+*/
 
     // Display the Time on the screen
     drawButton(0, 0, 300, 100, SDL_Color {147, 115, 64, 255});

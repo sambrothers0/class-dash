@@ -159,6 +159,7 @@
   </object>
   <object id="10" name="Enemy3" type="EnemySpawn" x="1498.67" y="544" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="1530"/>
     <property name="trackStart" type="float" value="1450"/>
    </properties>
@@ -177,6 +178,7 @@
   </object>
   <object id="13" name="Enemy3" type="EnemySpawn" x="1952" y="596" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="2000"/>
     <property name="trackStart" type="float" value="1840"/>
    </properties>
@@ -207,12 +209,14 @@
   </object>
   <object id="18" name="Enemy3" type="EnemySpawn" x="2620.67" y="604" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="2940"/>
     <property name="trackStart" type="float" value="2600"/>
    </properties>
   </object>
   <object id="19" name="Enemy4" type="EnemySpawn" x="1238.67" y="412.667" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="1390"/>
     <property name="trackStart" type="float" value="1230"/>
    </properties>
@@ -249,6 +253,7 @@
   </object>
   <object id="25" name="Enemy4" type="EnemySpawn" x="2485.33" y="354" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="2520"/>
     <property name="trackStart" type="float" value="2440"/>
    </properties>
@@ -267,24 +272,28 @@
   </object>
   <object id="28" name="EnemyRoof" type="EnemySpawn" x="1204" y="93.3333" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="1240"/>
     <property name="trackStart" type="float" value="900"/>
    </properties>
   </object>
   <object id="29" name="EnemyRoof" type="EnemySpawn" x="1716.67" y="93.3333" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="1750"/>
     <property name="trackStart" type="float" value="1480"/>
    </properties>
   </object>
   <object id="30" name="EnemyRoof" type="EnemySpawn" x="2324" y="95.3333" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="2350"/>
     <property name="trackStart" type="float" value="1990"/>
    </properties>
   </object>
   <object id="31" name="EnemyRoof" type="EnemySpawn" x="2839.33" y="92" width="32" height="32">
    <properties>
+    <property name="shoots" type="bool" value="true"/>
     <property name="trackEnd" type="float" value="2870"/>
     <property name="trackStart" type="float" value="2600"/>
    </properties>

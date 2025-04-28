@@ -45,6 +45,10 @@ void GameLogic::runTick(double ms) {
 
         for (auto enemy : level->getEnemies()) {
             enemy->moveOnTrack(ms);
+            bool detected = enemy->detectPlayer(player, ms);
+            if (detected) {
+                enemy->shoot();
+            }
         }
 
         for (auto corgi : level->getCorgis()) {
@@ -73,7 +77,7 @@ void GameLogic::activate(SDL_Renderer* renderer) {
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
 
-    if (!level->loadData(levelData.at(levelIndex), renderer)) {
+    if (!level->loadData(*this, levelData.at(levelIndex), renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
