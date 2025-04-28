@@ -109,13 +109,39 @@ bool Level::loadFromTMX(const std::string& filename, SDL_Renderer* renderer) {
                         levelEnemyData.push_back(EnemyData(Vector2(object.getPosition().x,object.getPosition().y-1), trackStart, trackEnd));
                     }
 
+                    if (object.getType() == "CorgiSpawn") {
+                        float trackStart = 0;
+                        float trackEnd = 0;
+                        for (const auto& property : object.getProperties()) {
+                            if (property.getName()=="trackStart"){trackStart = property.getFloatValue();}
+                            else if (property.getName() == "trackEnd"){trackEnd =  property.getFloatValue();}
+                            std::cout<<"Property "<<property.getName()<<" Value "<<property.getFloatValue()<<" Object "<<object.getName()<<std::endl;
+                        }
+
+                        corgiData.push_back(EnemyData(
+                            Vector2(object.getPosition().x, object.getPosition().y - 1),
+                            trackStart,
+                            trackEnd
+                        ));
+                    }
+
                     if (object.getName() == "Endpoint") {
                         levelEndPos = object.getPosition().x;
                     }
 
+                    if (object.getType() == "Powerup") {
 
-                    std::cout<<"Object Name: "<<object.getName()<<" ObjectLayer Name: "<<object.getPosition().x<<std::endl;
-                }
+                        powerupData.push_back(EnemyData(
+                            Vector2(object.getPosition().x, object.getPosition().y - 1),
+                            object.getPosition().x,
+                            object.getPosition().x
+                        ));
+                    }
+                    
+
+                        std::cout<<"Object Name: "<<object.getName()<<" ObjectLayer Name: "<<object.getPosition().x<<std::endl;
+                                        }
+                                    
             }
         if (layer->getType() == tmx::Layer::Type::Tile) {
             const auto& tileLayer = layer->getLayerAs<tmx::TileLayer>();
@@ -178,6 +204,8 @@ bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
     for (auto enemyData : levelEnemyData) {
         auto startPos = enemyData.getStartPos();
 
+        std::cout << enemyData.getStartPos() << ", " << enemyData.getTrackStart() << ", " << enemyData.getTrackEnd() << std::endl;
+
         Enemy enemy(
             enemyData.getStartPos(),
             enemyData.getTrackStart(),
@@ -207,6 +235,76 @@ bool Level::loadData(LevelData& levelData, SDL_Renderer* renderer) {
         }
 
         enemies.push_back(std::make_shared<Enemy>(enemy));
+    }
+
+    for (auto corgiDataItem : corgiData) {
+        auto startPos = corgiDataItem.getStartPos();
+
+        Corgi corgi(
+            corgiDataItem.getStartPos(),
+            corgiDataItem.getTrackStart(),
+            corgiDataItem.getTrackEnd()
+        );
+
+        // Find a solid object along that line
+        auto hitbox = corgi.getHitbox() + startPos;
+
+        auto leftX = hitbox.getLeftX();
+        auto rightX = hitbox.getRightX();
+        auto centerX = (leftX + rightX) / 2.0;
+        auto bottomY = hitbox.getBottomY();
+
+        double targetY = 768;
+
+        // We only really care about the center x here
+        for (auto y = bottomY; y <= WINDOW_HEIGHT; y += TILE_SIZE / 2) {
+            auto worldTile = getWorldCollisionObject(Vector2(floor(centerX / TILE_SIZE), floor(y / TILE_SIZE)));
+
+            if (worldTile) {
+                auto bounds = worldTile->bounds;
+                targetY = bounds.y - 32 / 2;
+                corgi.setGroundLevel(targetY);
+                break;
+            }
+        }
+
+        corgis.push_back(std::make_shared<Corgi>(corgi));
+    }
+
+
+    for (auto powerupDataItem : powerupData) {
+        auto startPos = powerupDataItem.getStartPos();
+
+        Powerup powerup(
+            powerupDataItem.getStartPos(),
+            powerupDataItem.getTrackStart(),
+            powerupDataItem.getTrackEnd()
+        );
+
+        // Find a solid object along that line
+        auto hitbox = powerup.getHitbox() + startPos;
+
+        auto leftX = hitbox.getLeftX();
+        auto rightX = hitbox.getRightX();
+        auto centerX = (leftX + rightX) / 2.0;
+        auto bottomY = hitbox.getBottomY();
+
+        double targetY = 768;
+
+        // We only really care about the center x here
+        for (auto y = bottomY; y <= WINDOW_HEIGHT; y += TILE_SIZE / 2) {
+            auto worldTile = getWorldCollisionObject(Vector2(floor(centerX / TILE_SIZE), floor(y / TILE_SIZE)));
+
+            if (worldTile) {
+                auto bounds = worldTile->bounds;
+                targetY = bounds.y - 32 / 2;
+                powerup.setGroundLevel(targetY);
+                break;
+            }
+        }
+        std::cout<<"Adding powerup"<<std::endl;
+
+        powerups.push_back(std::make_shared<Powerup>(powerup));
     }
 
     return true;
@@ -310,4 +408,27 @@ void Level::removeDeadEnemies() {
             deleted++;
         }
     }
+}
+
+void Level::removeCollectedPowerups() {
+    std::vector<size_t> toDelete;
+
+    for (size_t idx = 0; idx < powerups.size(); idx++) {
+        auto powerup = powerups[idx];
+        if (!powerup->isActive()) {
+        toDelete.push_back(idx);
+        }
+    }
+
+    // Delete the corresponding indexes
+    if (toDelete.size() > 0) {
+        // This is needed to keep the indexes accurate
+        int deleted = 0;
+
+        for (auto idx : toDelete) {
+            powerups.erase(powerups.begin() + idx - deleted);
+            deleted++;
+        }
+    }
+    
 }

@@ -66,9 +66,13 @@ class Enemy : public Character {
         std::deque<EnemyProjectile> enemyProjectiles;
         //std::shared_ptr<EnemyProjectile> projectile;
 
+        // Texture offset for the enemy (can be either 0 or 2 for now)
+        int textureOffset = 0;
+
     public:
         explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
             velocity.setX(120);
+            textureOffset = rand() % 2 == 0 ? 0 : 2;
         }
 
         MoveDirection getCurrentDirection() const {
@@ -80,7 +84,7 @@ class Enemy : public Character {
         }
 
         int getCurrentAnimationOffset() const {
-            return (animationTicks % 20) / 10;
+            return (animationTicks % 20) / 10 + textureOffset;
         }
 
         void setGroundLevel(double _groundLevel) {
@@ -122,6 +126,10 @@ class Enemy : public Character {
         // Sets if the projectile timer is active
         void setIfProjectileTimerActive(bool active) {
             isEnemyProjectileTimerActive = active;
+        }
+
+        int getTextureOffset() const {
+            return textureOffset;
         }
 };
 
