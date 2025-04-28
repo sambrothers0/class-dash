@@ -1,9 +1,9 @@
 #ifndef _ENEMYPROJECTILE_H
 #define _ENEMYPROJECTILE_H
 
-#include "GameLogic.hpp"
+//#include "GameLogic.hpp"
 #include "Projectile.hpp"
-#include "characters/Player.hpp"
+//#include "characters/Player.hpp"
 #include <memory>
 
 
@@ -17,14 +17,7 @@ class EnemyProjectile : public Projectile {
         
     public:
 
-    EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 enemyPosition, MoveDirection enemyDirection) : Projectile(_gameLogic, enemyPosition, enemyDirection) {
-        //destination = gameLogic->getPlayer()->getPosition();
-        auto player = gameLogic->getPlayer();
-        if (player) {
-            destination = player->getPosition();
-        } 
-    }
-
+    EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 enemyPosition, MoveDirection enemyDirection);
     // move projectile towards player
     virtual void move(double ms);
 

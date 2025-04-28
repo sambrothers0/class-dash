@@ -1,8 +1,19 @@
 #include "EnemyProjectile.hpp"
 #include "gameDimensions.hpp"
+#include "characters/Player.hpp"
+#include "GameLogic.hpp"
+
 //EnemyProjectile::EnemyProjectile() {
 
 //}
+
+EnemyProjectile::EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 enemyPosition, MoveDirection enemyDirection) : Projectile(_gameLogic, enemyPosition, enemyDirection) {
+    //destination = gameLogic->getPlayer()->getPosition();
+    auto player = gameLogic->getPlayer();
+    if (player) {
+        destination = player->getPosition();
+    } 
+}
 
 void EnemyProjectile::move(double ms) {
     double seconds = ms/1000;
