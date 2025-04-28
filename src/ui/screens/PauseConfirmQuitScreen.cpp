@@ -57,7 +57,7 @@ ScreenType PauseConfirmQuitScreen::handleEvent(SDL_Event& event) {
                 return ScreenType::KEEP;
         }
     }
-    
+
 
     return ScreenType::KEEP;
 }

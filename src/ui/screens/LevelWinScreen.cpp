@@ -9,7 +9,7 @@ LevelWinScreen::LevelWinScreen(SDL_Renderer* _renderer, TTF_Font* _font, GameLog
         next(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Next Level"),
         quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit")
     {
-        SoundManager::getInstance()->playMusic(MusicTrack::TITLE_THEME);
+        SoundManager::getInstance()->playSound(SoundEffect::LEVEL_COMPLETE);
     }
 
 void LevelWinScreen::draw() {
@@ -29,7 +29,7 @@ void LevelWinScreen::draw() {
         buttonColor = defaultColor;
         next.setText("Next Level");
     }
-    drawButton(512 - 200, 260, 400, 75, buttonColor);
+    drawButton(512 - 250, 260, 500, 75, buttonColor);
     next.draw();
 
     if (cursorPosition == 1) {
