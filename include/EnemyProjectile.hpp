@@ -5,6 +5,7 @@
 //#include "Projectile.hpp"
 //#include "characters/Player.hpp"
 #include "physics/Vector2.hpp"
+#include "physics/BoundingBox.hpp"
 #include "MoveDirection.hpp"
 
 #include <memory>
@@ -15,12 +16,14 @@ class EnemyProjectile {
 
     private:
 
-        Vector2 currentPosition, destination, velocity, startingPosition;
+        Vector2 currentPosition, velocity, startingPosition;
+        Vector2 direction;
         bool active = false;
 
         MoveDirection currentDirection;
 
         double enemyProjTraveledDist = 0;
+        BoundingBox hitbox = BoundingBox(Vector2(-7, -9), Vector2(14, 18));
         
     public:
 
@@ -45,13 +48,16 @@ class EnemyProjectile {
         return velocity;
     }
 
+    const BoundingBox& getHitbox() const {
+        return hitbox;
+    }
 
 
     void setActive(bool activity) {;
         active = activity;
     }
 
-    bool isActive() {
+    bool isActive() const {
         return active;
     }
 

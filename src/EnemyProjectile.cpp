@@ -1,6 +1,7 @@
 #include "EnemyProjectile.hpp"
 #include "gameDimensions.hpp"
 #include <cmath>
+#include <iostream>
 //#include "characters/Player.hpp"
 //#include "GameLogic.hpp"
 
@@ -19,34 +20,27 @@ EnemyProjectile::EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 
 */
 
 EnemyProjectile::EnemyProjectile(Vector2 playerPosition, Vector2 enemyPosition, MoveDirection enemyDirection) : 
-    destination(playerPosition), 
     currentPosition(enemyPosition), 
     currentDirection(enemyDirection),
     startingPosition(enemyPosition),
+    direction((playerPosition - enemyPosition).normal() * 300),
     active(true) {}
 
 
 void EnemyProjectile::move(double ms) {
     double seconds = ms/1000;
 
-    double dirX = destination.getX() - currentPosition.getX();
-    double dirY = destination.getY() - currentPosition.getY();
-
-    double length = std::sqrt(dirX * dirX + dirY * dirY);
-    if (length == 0) return;
-    dirX /= length;
-    dirY /= length;
-
-    double speed = velocity.magnitude();
-    double moveOffsetX = dirX * speed * seconds;
-    double moveOffsetY = dirY * speed * seconds;
+    double moveOffsetX = direction.getX() * seconds;
+    double moveOffsetY = direction.getY() * seconds;
 
 
     //double moveOffset = velocity.getX() * seconds;
     currentPosition.setX(currentPosition.getX() + moveOffsetX);
     currentPosition.setY(currentPosition.getY() + moveOffsetY);
 
-    enemyProjTraveledDist += speed * seconds;
+    enemyProjTraveledDist += 300 * seconds;
+
+    std::cout << enemyProjTraveledDist << std::endl;
 
     if (enemyProjTraveledDist >= 500) {
         active = false;
