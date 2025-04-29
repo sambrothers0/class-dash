@@ -34,7 +34,7 @@ class SoundManager {
         bool loadSounds();
         
         // Play a sound effect
-        void playSound(SoundEffect effect);
+        void playSound(SoundEffect effect, bool loop = false);
         
         // Play music track
         void playMusic(MusicTrack track, bool loop = true);

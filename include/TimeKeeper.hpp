@@ -16,6 +16,7 @@ class TimeKeeper {
 
         bool isWarning = false;
         int warnTime = 60;
+        bool playedWarnSound = false;
 
     public:
         TimeKeeper(); // initialize the time 
