@@ -124,7 +124,7 @@ void GameScreen::draw() {
             }
         }
     }
-    
+
     for (auto corgi : level->getCorgis()) {
         Vector2 corgiPosition = corgi->getPosition();
         corgiSprite.draw(CorgiTexture::CORGI1WALK1 + corgi->getCurrentAnimationOffset(), corgiPosition - Vector2(scrollOffset, 0), corgi->getLastDirection() == MoveDirection::RIGHT, alpha);
@@ -273,6 +273,7 @@ ScreenType GameScreen::handleExtraEvents() {
 
     // We don't switch to the level win screen until the animation is finished
     if (finishedLevelComplete) {
+        SoundManager::getInstance()->stopMusic();
         if (gameLogic.getLevelIndex() == 4)
             return ScreenType::GAME_FINISH;
         else
