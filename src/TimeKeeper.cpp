@@ -51,7 +51,7 @@ void TimeKeeper::beginTimer() {
             minutes = 0;
             seconds = 0;
         }
-        
+
         // More accurate timekeeping
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }

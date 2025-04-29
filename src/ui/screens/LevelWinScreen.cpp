@@ -63,6 +63,7 @@ ScreenType LevelWinScreen::handleEvent(SDL_Event& event) {
 
                     return ScreenType::GAME; // Resume the game
                 } else if (cursorPosition == 1) {
+                    SoundManager::getInstance()->stopMusic();
                     return ScreenType::LEVEL_SELECT; // Quit to level select
                 }
             case SDLK_ESCAPE:

@@ -10,9 +10,9 @@ You are a senior at the College of William & Mary entering your last week of fin
 WASD or arrow keys control directional movement
 
  A/left arrow and D/right arrow to move
- 
+
  W/up to jump, space to use projectile ability
- 
+
 
 **Menu and Navigation**
 
@@ -22,15 +22,15 @@ Escape to pause the game.
 
 **GamePlay**
 
-Navigate through each level using the character movements described above in order to reach the end before the time runs out. 
+Navigate through each level using the character movements described above in order to reach the end before the time runs out.
 
-Avoid running into enemies (other students), as they will slow your movements. If you physicall run into an enemy, you will recieve a time deduction from your remaining game time. If you are in range of some enemies, they will try to talk to you using their sound wave projectile. If hit, you will slow down for a few seconds. 
+Avoid running into enemies (other students), as they will slow your movements. If you physicall run into an enemy, you will recieve a time deduction from your remaining game time. If you are in range of some enemies, they will try to talk to you using their sound wave projectile. If hit, you will slow down for a few seconds.
 
-Defend yourself from enemies by pressing SPACE to shoot a soundwave projectile at them. Two hit and the enemy will despawn. 
+Defend yourself from enemies by pressing SPACE to shoot a soundwave projectile at them. Two hit and the enemy will despawn.
 
-Occupational hazards will also slow you down. Stepping in puddles or tripping on loose bricks will similarly reduce your movement speed temporarily. 
+Occupational hazards will also slow you down. Stepping in puddles or tripping on loose bricks will similarly reduce your movement speed temporarily.
 
-Pick up coffee cups on your way to class, as the caffeine will give you a temporay speed boost!  
+Pick up coffee cups on your way to class, as the caffeine will give you a temporay speed boost!
 
-Some levels have potholes or ditches that you can fall in. Falling will result in an  time deduction from your remaining time. 
+Some levels have potholes or ditches that you can fall in. Falling will result in a time deduction from your remaining time.
 
