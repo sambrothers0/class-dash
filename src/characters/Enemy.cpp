@@ -6,12 +6,27 @@
 
 //Projectile enemyProj;
 
+#include <vector>
+
+
+std::deque<EnemyProjectile> enemyProjectiles;
+SDL_TimerID enemyProjectileTimerID;
+bool isEnemyProjectileTimerActive = false;
 
 void Enemy::move(double ms) {
     Character::move(ms);
     if (enemyProj && enemyProj->isActive()) {
         enemyProj->enemyProjMove(ms, projDest);
     }
+}
+
+// Callback for the projectile timer
+Uint32 onEnemyProjectileTimer(Uint32 interval, void *param) {
+    auto* enemy = reinterpret_cast<Enemy*>(param);
+
+    enemy->setIfProjectileTimerActive(false);
+
+    return 0; // Don't repeat
 }
 
 void Enemy::shoot() {
@@ -41,6 +56,27 @@ void Enemy::shoot() {
     }
    
     projDest = gameLogic->getPlayer()->getPosition();
+    if (!canShoot) {
+        return;
+    }
+
+    if (isEnemyProjectileTimerActive) {
+        return;
+    }
+
+    // shoots a projectile at the player
+    //EnemyProjectile projectile = EnemyProjectile(playerLoc, position, currentDirection);
+    //enemyProjectile = std::make_shared<EnemyProjectile>(projectile);
+    EnemyProjectile enemyProjectile = EnemyProjectile(std::make_shared<GameLogic>(gameLogic), playerLoc, position);
+
+    // Add to the list of projectiles if there aren't already too many
+    if (enemyProjectiles.size() < MAX_ENEMY_PROJECTILES) {
+        enemyProjectiles.push_back(enemyProjectile);
+    }
+
+    // Set up the projectile timer
+    isEnemyProjectileTimerActive = true;
+    enemyProjectileTimerID = SDL_AddTimer(ENEMY_PROJECTILE_DELAY, onEnemyProjectileTimer, this);
 
 }
 
@@ -67,7 +103,36 @@ void Enemy::moveOnTrack(double ms) {
 
     Character::move(ms);
     animationTicks++;
+
+    /*
+    if (enemyProjectile && enemyProjectile->isActive()) {
+        enemyProjectile->move(ms);
+    }
+*/
     
+    // Move the projectiles, while marking any which should be deleted
+    std::vector<size_t> toDelete;
+
+    for (size_t idx = 0; idx < enemyProjectiles.size(); idx++) {
+        auto& proj = enemyProjectiles[idx];
+
+        if (proj.isActive()) {
+            proj.move(ms);
+        } else {
+            toDelete.push_back(idx);
+        }
+    }
+
+    // Delete the corresponding indexes
+    if (toDelete.size() > 0) {
+        // This is needed to keep the indexes accurate
+        int deleted = 0;
+
+        for (auto idx : toDelete) {
+            enemyProjectiles.erase(enemyProjectiles.begin() + idx - deleted);
+            deleted++;
+        }
+    }
 }
 
 void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
@@ -90,9 +155,14 @@ void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
         else 
             moveRight();
     }
+   
 }
 
 bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
+    if (!canShoot) {
+        return false; // the enemy is blind
+    }
+
    // check if player is in range
    playerLoc = player->getPosition();
    Vector2 difference = playerLoc - getPosition();
@@ -103,11 +173,12 @@ bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
        if ((difference.getY() >= -detectRange) && (difference.getY() < detectRange)) {
            // when in range move to player and shoot
            moveToPlayer(player);
-           //projActive = true;
+           //if (!enemyProjectile->isActive()) {
+           shoot();
+           //}
            return true;
        }
    } 
-
    return false;
    // if not in range, continue its track  
    //else {
@@ -141,6 +212,16 @@ void Enemy::moveRight() {
     lastDirection = MoveDirection::RIGHT;
 }
 
+/*
 std::shared_ptr<Projectile> Enemy::getEnemyProj() {
     return enemyProj;
 }
+*/
+/*
+std::shared_ptr<EnemyProjectile> Enemy::getEnemyProjectile() {
+    if (enemyProjectile && enemyProjectile->isActive()) {
+        return enemyProjectile;
+    }
+    return enemyProjectile;
+}
+*/

@@ -9,9 +9,10 @@ class EnemyData {
     Vector2 startPos;
 
     double trackStart, trackEnd;
+    bool canShoot;
 
     public:
-    EnemyData(Vector2 _startPos, double _trackStart, double _trackEnd) : startPos(_startPos), trackStart(_trackStart), trackEnd(_trackEnd) {}
+    EnemyData(Vector2 _startPos, double _trackStart, double _trackEnd, bool _canShoot) : startPos(_startPos), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {}
 
     const Vector2& getStartPos() const {
         return startPos;
@@ -23,6 +24,10 @@ class EnemyData {
 
     double getTrackEnd() const {
         return trackEnd;
+    }
+
+    bool getCanShoot() const {
+        return canShoot;
     }
 };
 

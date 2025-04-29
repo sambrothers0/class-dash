@@ -50,6 +50,13 @@ void Text::setText(const std::string& _text) {
     }
 }
 
+void Text::setColor(SDL_Color _color) {
+    if (color.r != _color.r || color.g != _color.g || color.b != _color.b || color.a != _color.a) {
+        color = _color;
+        generateTexture();
+    }
+}
+
 Text::~Text() {
     if (generatedTexture != nullptr)
         SDL_DestroyTexture(generatedTexture);

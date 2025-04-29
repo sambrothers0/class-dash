@@ -3,7 +3,12 @@
 
 enum class MusicTrack {
     TITLE_THEME,
-    LEVEL_MUSIC
+    LEVEL_1,
+    LEVEL_2,
+    LEVEL_3,
+    LEVEL_4,
+    LEVEL_5,
+    FINALE
 };
 
 #endif

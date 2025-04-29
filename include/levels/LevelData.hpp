@@ -14,8 +14,6 @@ class LevelData {
     public:
     LevelData() : filePath("") {}
 
-    LevelData(std::string _filePath, const std::vector<EnemyData>& _enemies) : filePath(_filePath), enemies(_enemies) {}
-
     LevelData(std::string _filePath) : filePath(_filePath) {}
 
     const std::string& getFilePath() const {

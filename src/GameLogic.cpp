@@ -12,17 +12,10 @@ GameLogic::GameLogic() {
   
 
     levelData[0] = LevelData("../assets/visual/SunkenGardenLevel.tmx");
-    levelData[1] = LevelData("../assets/visual/Level1.tmx");
-    levelData[2] = LevelData("../assets/visual/Level2.tmx");
-
-    std::vector<EnemyData> level4Enemies {
-        EnemyData(Vector2(608, 480), 608, 736),
-        EnemyData(Vector2(1420, 400), 1410, 1756)
-    };
-
-    levelData[3] = LevelData("../assets/visual/Level3.tmx", level4Enemies);
-
-    levelData[4] = LevelData("../assets/visual/ColliderTest.tmx");
+    levelData[1] = LevelData("../assets/visual/Level2.tmx");
+    levelData[2] = LevelData("../assets/visual/Level3.tmx");
+    levelData[3] = LevelData("../assets/visual/Level4.tmx");
+    levelData[4] = LevelData("../assets/visual/Level5.tmx");
 }
 
 void GameLogic::init() {
@@ -52,13 +45,28 @@ void GameLogic::runTick(double ms) {
 
         for (auto enemy : level->getEnemies()) {
             enemy->moveOnTrack(ms);
+<<<<<<< HEAD
             if (enemy->detectPlayer(player, ms)) {
                 //enemy->shoot(std::shared_ptr<GameLogic>(this));
                 enemy->shoot(this);
             }
+=======
+            bool detected = enemy->detectPlayer(player, ms);
+            if (detected) {
+                enemy->shoot();
+            }
+        }
+
+        for (auto corgi : level->getCorgis()) {
+            corgi->moveOnTrack(ms);
+        }
+        for (auto powerup : level->getPowerups()) {
+            powerup->animate();
+>>>>>>> 26d44d743095517b3707dcda21d53a62d35d1c91
         }
 
         level->removeDeadEnemies();
+        level->removeCollectedPowerups();
     }
 }
 
@@ -76,7 +84,7 @@ void GameLogic::activate(SDL_Renderer* renderer) {
     std::thread time(&TimeKeeper::beginTimer, timer);
     time.detach();
 
-    if (!level->loadData(levelData.at(levelIndex), renderer)) {
+    if (!level->loadData(*this, levelData.at(levelIndex), renderer)) {
         std::cerr << "Failed to load level!" << std::endl;
         return;
     }
@@ -129,7 +137,7 @@ void GameLogic::stopLevelReachedEnd() {
 
 void GameLogic::endLevel() {
     std::cout << "End level" << std::endl;
-    state = GameState::INACTIVE;
+    state = GameState::INACTIVE;;
 
     // We also need to update levels completed
     if (levelIndex >= levelsCompleted) {

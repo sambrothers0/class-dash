@@ -9,7 +9,9 @@
 //#include "../GameLogic.hpp"
 #include "SDL.h"
 #include <memory>
+#include "EnemyProjectile.hpp"
 #include <deque>
+#include "SDL.h"
 //#include "characters/Player.hpp"
 
 class GameLogic;
@@ -20,11 +22,28 @@ const int ENEMY_WIDTH = 32;
 const int ENEMY_HEIGHT = 64;
 
 // Number of projectiles that can be active at once
-//const int MAX_PROJECTILES = 1;
+const int MAX_ENEMY_PROJECTILES = 2;
+
+// Delay for shooting projectiles in ms
+const int ENEMY_PROJECTILE_DELAY = 1000;
+
+/*
+ // There is a delay between shooting projectiles
+ extern SDL_TimerID enemyProjectileTimerId;
+ extern bool isEnemyProjectileTimerActive; //= false;
+*/
+
+class GameLogic;
 
 class Enemy : public Character {
 
     private:
+        GameLogic& gameLogic;
+
+        // There is a delay between shooting projectiles
+        SDL_TimerID enemyProjectileTimerId;
+        bool isEnemyProjectileTimerActive = false; //= false;
+
         // Set initial direction
         MoveDirection currentDirection = MoveDirection::RIGHT;
 
@@ -51,25 +70,21 @@ class Enemy : public Character {
         // range for enemy following and shooting
         double detectRange = 200;
 
-        bool projActive = false;
+        std::shared_ptr<EnemyProjectile> enemyProjectile;
+        
+         // List of available projectiles
+        std::deque<EnemyProjectile> enemyProjectiles;
+        //std::shared_ptr<EnemyProjectile> projectile;
 
-        Vector2 projDest;
-        // List of available projectiles
-        //std::deque<Projectile> projectiles;
+        // Texture offset for the enemy (can be either 0 or 2 for now)
+        int textureOffset = 0;
 
-        std::shared_ptr<Projectile> enemyProj;
-
-       
-
-    // There is a delay between shooting projectiles
-    SDL_TimerID projectileTimerId;
-    bool isProjectileTimerActive = false;
+        bool canShoot = false; // Shoots and follows the player
 
     public:
-        explicit Enemy(Vector2 _position, double _trackStart, double _trackEnd) : Character(_position), trackStart(_trackStart), trackEnd(_trackEnd) {
+        explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd, bool _canShoot) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {
             velocity.setX(120);
-             // List of available projectiles
-            //std::deque<Projectile> projectiles;
+            textureOffset = rand() % 2 == 0 ? 0 : 2;
         }
 
         MoveDirection getCurrentDirection() const {
@@ -81,7 +96,7 @@ class Enemy : public Character {
         }
 
         int getCurrentAnimationOffset() const {
-            return (animationTicks % 20) / 10;
+            return (animationTicks % 20) / 10 + textureOffset;
         }
 
         void setGroundLevel(double _groundLevel) {
@@ -116,6 +131,21 @@ class Enemy : public Character {
 
         bool isAlive() const {
             return health > 0;
+        }
+
+        //std::shared_ptr<EnemyProjectile> getEnemyProjectile();
+
+        const std::deque<EnemyProjectile>& getProjectiles() const {
+            return enemyProjectiles;
+        }
+
+        // Sets if the projectile timer is active
+        void setIfProjectileTimerActive(bool active) {
+            isEnemyProjectileTimerActive = active;
+        }
+
+        int getTextureOffset() const {
+            return textureOffset;
         }
 };
 

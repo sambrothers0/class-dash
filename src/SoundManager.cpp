@@ -34,11 +34,14 @@ bool SoundManager::loadSounds() {
         "../assets/audio/jump.wav",   
         "../assets/audio/shoot.wav",  
         "../assets/audio/button-switch.wav",     
-        "../assets/audio/button-select.wav"
+        "../assets/audio/button-select.wav",
+        "../assets/audio/level-complete.wav",
+        "../assets/audio/level-lose.wav",
+        "../assets/audio/clock-tick.wav"
     };
     
     // Load each sound effect
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 7; i++) {
         Mix_Chunk* sound = Mix_LoadWAV(soundFiles[i]);
         if (sound == nullptr) {
             std::cerr << "Failed to load sound effect: " << soundFiles[i] << " SDL_mixer Error: " << Mix_GetError() << std::endl;
@@ -50,12 +53,17 @@ bool SoundManager::loadSounds() {
     
     // Load music tracks
     const char* musicFiles[] = {
-        "../assets/audio/title-theme.mp3",
-        "../assets/audio/level-music.wav"
+        "../assets/audio/alma-mater.mp3",
+        "../assets/audio/Level-1.mp3",
+        "../assets/audio/Level-2.mp3",
+        "../assets/audio/Level-3.mp3",
+        "../assets/audio/Level-4.mp3",
+        "../assets/audio/Level-5.mp3",
+        "../assets/audio/Finale.mp3"
     };
-    
+
     // Load each music track
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 7; i++) {
         Mix_Music* music = Mix_LoadMUS(musicFiles[i]);
         if (music == nullptr) {
             std::cerr << "Failed to load music: " << musicFiles[i] << " SDL_mixer Error: " << Mix_GetError() << std::endl;
@@ -68,10 +76,10 @@ bool SoundManager::loadSounds() {
     return true;
 }
 
-void SoundManager::playSound(SoundEffect effect) {
+void SoundManager::playSound(SoundEffect effect, bool loop) {
     auto it = soundEffects.find(effect);
     if (it != soundEffects.end()) {
-        Mix_PlayChannel(-1, it->second, 0);
+        Mix_PlayChannel(-1, it->second, loop ? -1 : 0);
     }
 }
 
@@ -93,6 +101,7 @@ void SoundManager::playMusic(MusicTrack track, bool loop) {
 
 void SoundManager::stopMusic() {
     Mix_HaltMusic();
+    Mix_HaltChannel(-1);
     musicPlaying = false;
 }
 
@@ -100,11 +109,19 @@ void SoundManager::pauseMusic() {
     if (Mix_PlayingMusic()) {
         Mix_PauseMusic();
     }
+
+    if (Mix_Playing(-1)) {
+        Mix_Pause(-1);
+    }
 }
 
 void SoundManager::resumeMusic() {
     if (Mix_PausedMusic()) {
         Mix_ResumeMusic();
+    }
+
+    if (Mix_Paused(-1)) {
+        Mix_Resume(-1);
     }
 }
 

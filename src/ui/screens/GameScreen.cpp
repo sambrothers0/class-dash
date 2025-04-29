@@ -4,6 +4,8 @@
 #include "levels/Level.hpp"
 #include "sprites/PlayerTexture.hpp"
 #include "sprites/EnemyTexture.hpp"
+#include "sprites/CorgiTexture.hpp"
+#include "sprites/PowerupTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -72,7 +74,7 @@ Uint32 onTransparencyTimerCallback(Uint32 interval, void* param) {
     auto screen = reinterpret_cast<GameScreen*>(param);
 
     auto alpha = screen->getAlpha();
-    auto returnValue = alpha <= 0.05f ? 0 : 50;
+    auto returnValue = alpha <= 0.1f ? 0 : 50;
 
     screen->updateAlpha();
 
@@ -84,7 +86,8 @@ void GameScreen::draw() {
         return;
 
     // Start updating alpha if the level is done
-    if (gameLogic.isLevelFinished() && alpha == 1.0f) {
+    if (gameLogic.isLevelFinished() && !alphaTimerActive) {
+        alphaTimerActive = true;
         alphaTimerID = SDL_AddTimer(50, onTransparencyTimerCallback, this);
     }
 
@@ -109,6 +112,26 @@ void GameScreen::draw() {
     for (auto enemy : enemies) {
         Vector2 enemyPosition = enemy->getPosition();
         enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);
+
+        //draw enemy projectiles
+        for (auto proj : enemy->getProjectiles()) {
+            Vector2 enemyProjectilePosition = proj.getPosition();;
+            if (proj.isMovingLeft()) {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
+            }
+            else {
+                playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), true, alpha);
+            }
+        }
+    }
+    
+    for (auto corgi : level->getCorgis()) {
+        Vector2 corgiPosition = corgi->getPosition();
+        corgiSprite.draw(CorgiTexture::CORGI1WALK1 + corgi->getCurrentAnimationOffset(), corgiPosition - Vector2(scrollOffset, 0), corgi->getLastDirection() == MoveDirection::RIGHT, alpha);
+    }
+    for (auto powerup : level->getPowerups()) {
+        Vector2 powerupPosition = powerup->getPosition();
+        powerupSprite.draw(PowerupTexture::COFFEE5 + powerup->getCurrentAnimationOffset(), powerupPosition - Vector2(scrollOffset, 0), powerup->getLastDirection() == MoveDirection::RIGHT, alpha);
     }
 
     // Draw the player hitbox + enemy hitboxes
@@ -117,6 +140,14 @@ void GameScreen::draw() {
 
         for (auto enemy : enemies) {
             drawCollisionHitbox(enemy->getPosition(), enemy->getHitbox());
+        }
+
+        for (auto corgi : level->getCorgis()) {
+            drawCollisionHitbox(corgi->getPosition(), corgi->getHitbox());
+        }
+
+        for (auto powerup : level->getPowerups()) {
+            drawCollisionHitbox(powerup->getPosition(), powerup->getHitbox());
         }
 
         for (auto projectile : player->getProjectiles()) {
@@ -136,6 +167,7 @@ void GameScreen::draw() {
         }
     }
 
+<<<<<<< HEAD
     // Display enemy projectiles that have been shot
     for (auto enemy : enemies) {
         std::shared_ptr<Projectile> enemyProj = enemy->getEnemyProj();
@@ -149,9 +181,30 @@ void GameScreen::draw() {
             }
         } 
     }
+=======
+    //for (auto enemy : enemies)
+/*
+    // Display Enemy Projectiles
+    for (auto enemy : enemies) {
+        auto enemyProj = enemy->getEnemyProjectile();
+        if (enemyProj && enemyProj->isActive()) {
+            Vector2 enemyProjectilePosition = enemyProj->getPosition();
+            playerProjectileSprite.draw(2, enemyProjectilePosition - Vector2(scrollOffset, 0), false, alpha);
+        }
+    }
+*/
+>>>>>>> 26d44d743095517b3707dcda21d53a62d35d1c91
 
     // Display the Time on the screen
+    drawButton(0, 0, 300, 100, SDL_Color {147, 115, 64, 255});
     timeText.setText(gameLogic.getTimer()->getTime());
+
+    if (gameLogic.getTimer()->getIsWarning()) {
+        timeText.setColor(SDL_Color { 255, 0, 0, 255 });
+    } else {
+        timeText.setColor(SDL_Color { 0, 0, 0, 255 });
+    }
+
     timeText.draw();
 }
 
@@ -228,6 +281,9 @@ ScreenType GameScreen::handleExtraEvents() {
     // lose checking needs to happen outside handleEvent because
     // we need to lose the level even if the player is not pressing any keys
     if (gameLogic.getTimer()->isTimeUp()) {
+        gameLogic.getTimer()->pauseTimer();
+        SoundManager::getInstance()->stopMusic();
+        SoundManager::getInstance()->playSound(SoundEffect::LEVEL_LOSE);
         return ScreenType::LEVEL_LOSE; // Switch to level lose screen
     }
 
@@ -264,7 +320,7 @@ ScreenType GameScreen::handleExtraEvents() {
 
 void GameScreen::updateAlpha() {
     if (alpha > 0) {
-        alpha -= 0.05f;
+        alpha -= 0.1f;
 
         if (alpha <= 0) {
             alpha = 0;

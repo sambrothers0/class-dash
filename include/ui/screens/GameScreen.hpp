@@ -19,6 +19,8 @@ class GameScreen : public Screen {
     Spritesheet playerSprite;
     Spritesheet playerProjectileSprite;
     Spritesheet enemySprite;
+    Spritesheet corgiSprite;
+    Spritesheet powerupSprite;
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
@@ -30,6 +32,7 @@ class GameScreen : public Screen {
 
     // Alpha level
     double alpha = 1.0f;
+    bool alphaTimerActive = false;
 
     Uint32 alphaTimerID;
 
@@ -45,9 +48,9 @@ class GameScreen : public Screen {
         Screen(_renderer), gameLogic(_gameLogic), font(_font), timeText(
             _renderer,
             _font,
-            Vector2(150, 100),
+            Vector2(150, 50),
             50,
-            SDL_Color { 255, 255, 255 },
+            SDL_Color { 0, 0, 0 },
             //"Test"
             gameLogic.getTimer()->getTime()
         ), playerSprite(
@@ -68,9 +71,30 @@ class GameScreen : public Screen {
             Vector2(ENEMY_WIDTH, ENEMY_HEIGHT),
             4,
             1
-        ) {
+        ), corgiSprite(
+            _renderer,
+            "../assets/visual/corgi.png",
+            Vector2(32, 32),
+            1,
+            4
+        ), powerupSprite(
+            _renderer,
+            "../assets/visual/coffeePowerup.png",
+            Vector2(32, 32),
+            1,
+            8
+        )  {
             SoundManager::getInstance()->resumeMusic();
-            SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_MUSIC);
+            if (gameLogic.getLevelIndex() == 0)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_1);
+            else if (gameLogic.getLevelIndex() == 1)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_2);
+            else if (gameLogic.getLevelIndex() == 2)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_3);
+            else if (gameLogic.getLevelIndex() == 3)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_4);
+            else if (gameLogic.getLevelIndex() == 4)
+                SoundManager::getInstance()->playMusic(MusicTrack::LEVEL_5);
         }
 
     virtual void draw();

@@ -9,7 +9,7 @@ class HowToPlayScreen : public Screen {
     TTF_Font* font;
 
     Text howToPlay, playerControlsTitle, playerControlsText1, playerControlsText2, playerControlsText3,
-        playerControlsText4, objectiveTitle, objectiveText1, objectiveText2, objectiveText3,
+        playerControlsText4, playerControlsText5, objectiveTitle, objectiveText1, objectiveText2, objectiveText3,
         objectiveText4, objectiveText5, objectiveText6, objectiveText7, objectiveText8, 
         objectiveText9, objectiveText10, back;
 
@@ -25,6 +25,7 @@ class HowToPlayScreen : public Screen {
         playerControlsText2(renderer, _font, Vector2(750, 150), 20, {0, 0, 0, 255}, "Move Right: Right Arrow/D"),
         playerControlsText3(renderer, _font, Vector2(750, 180), 20, {0, 0, 0, 255}, "Jump: Up Arrow/W"),
         playerControlsText4(renderer, _font, Vector2(750, 210), 20, {0, 0, 0, 255}, "Attack: SPACE"),
+        playerControlsText5(renderer, _font, Vector2(750, 240), 20, {0, 0, 0, 255}, "Pause: ESC"),
         objectiveTitle(_renderer, _font, Vector2(150, 400), 25, {1, 105, 15, 255}, "Objective:"),
         objectiveText1(_renderer, _font, Vector2(675, 300), 20, {0, 0, 0, 255}, "Move your character around"),
         objectiveText2(_renderer, _font, Vector2(675, 330), 20, {0, 0, 0, 255}, "the screen by going left, right,"),
@@ -32,10 +33,10 @@ class HowToPlayScreen : public Screen {
         objectiveText4(_renderer, _font, Vector2(675, 390), 20, {0, 0, 0, 255}, "and attack enemies by pressing"),
         objectiveText5(_renderer, _font, Vector2(675, 420), 20, {0, 0, 0, 255}, "SPACE to launch a projectile."),
         objectiveText6(_renderer, _font, Vector2(675, 450), 20, {0, 0, 0, 255}, "Reach the end of the level"),
-        objectiveText7(_renderer, _font, Vector2(675, 480), 20, {0, 0, 0, 255}, "before time runs out! The"),
-        objectiveText8(_renderer, _font, Vector2(675, 510), 20, {0, 0, 0, 255}, "faster you get to the end, the"),
-        objectiveText9(_renderer, _font, Vector2(675, 540), 20, {0, 0, 0, 255}, "better your exam grade will be."),
-        objectiveText10(_renderer, _font, Vector2(675, 570), 20, {0, 0, 0, 255}, "Press Q at any time to quit!"),
+        objectiveText7(_renderer, _font, Vector2(675, 480), 20, {0, 0, 0, 255}, "before time runs out!"),
+        objectiveText8(_renderer, _font, Vector2(675, 510), 20, {0, 0, 0, 255}, "Collect powerups for a speed boost!"),
+        objectiveText9(_renderer, _font, Vector2(675, 570), 20, {0, 0, 0, 255}, "Press Q at any time to quit!"),
+        objectiveText10(_renderer, _font, Vector2(675, 540), 20, {0, 0, 0, 255}, "Avoid puddles and loose bricks!"),
         back(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, ">Back<") 
 
     {}

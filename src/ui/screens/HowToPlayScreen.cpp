@@ -11,6 +11,7 @@ void HowToPlayScreen::draw() {
     playerControlsText2.draw();
     playerControlsText3.draw();
     playerControlsText4.draw();
+    playerControlsText5.draw();
     objectiveTitle.draw();
     objectiveText1.draw();
     objectiveText2.draw();
