@@ -1,4 +1,5 @@
 #include "TimeKeeper.hpp"
+#include "SoundManager.hpp"
 
 #include <thread>
 #include <chrono>
@@ -32,6 +33,17 @@ void TimeKeeper::beginTimer() {
                 // Turn off warning after player is hit
                 if (abs(timeElapsed - warnTime) > 1) {
                     isWarning = false;
+                }
+
+                if (timeElapsed <= 10) { // length
+                    isWarning = true;
+
+                    // std::cout << "play sound" << std::endl;
+
+                    if (!playedWarnSound) {
+                        SoundManager::getInstance()->playSound(SoundEffect::CLOCK_TICK, true);
+                        playedWarnSound = true;
+                    }
                 }
             }
         }
