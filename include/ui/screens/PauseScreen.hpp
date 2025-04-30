@@ -12,6 +12,8 @@ class PauseScreen : public Screen {
 
     Text pause, resume, quit;
 
+    std::string backgroundPath = "../assets/visual/crim-dell.png";
+
     public:
     PauseScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
     Screen(_renderer), font(_font), 

@@ -12,7 +12,7 @@ class GameFinishScreen : public Screen {
 
     Text title, subtitle1, subtitle2, quit;
 
-    SDL_Texture* background = nullptr;
+    std::string backgroundPath = "../assets/visual/EndGameGraduation.png";
 
     public:
     GameFinishScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
@@ -26,8 +26,6 @@ class GameFinishScreen : public Screen {
     }
 
     virtual void draw();
-
-    void drawBackground();
 
     virtual ScreenType handleEvent(SDL_Event& event);
 

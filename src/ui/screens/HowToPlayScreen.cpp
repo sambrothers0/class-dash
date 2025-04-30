@@ -3,7 +3,7 @@
 #include "SDL2_gfxPrimitives.h"
 
 void HowToPlayScreen::draw() {
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
+    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255);
 
     howToPlay.draw();
     playerControlsTitle.draw();

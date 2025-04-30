@@ -5,7 +5,7 @@
 
 void TitleScreen::draw() {
     // Draw the background
-    drawBackground(renderer, background);
+    drawBackground(backgroundPath);
 
     // Draw the title text
     title.draw();
@@ -37,26 +37,6 @@ void TitleScreen::draw() {
     }
     drawButton(512 - 220, 384 + 275, 450, 75, buttonColor);
     howToPlay.draw();
-
-}
-
-void TitleScreen::drawBackground(SDL_Renderer* renderer, SDL_Texture* texture) {
-    // only load the image if it hasn't been loaded yet
-    if (!background) {
-        SDL_Surface* surface = IMG_Load("../assets/visual/title-screen-bg.png");
-        if (!surface) {
-            std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-        }
-    
-        background = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_FreeSurface(surface);
-    
-        if (!background) {
-            std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
-        }
-    }
-    // Render to the screen
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
 
 }
 

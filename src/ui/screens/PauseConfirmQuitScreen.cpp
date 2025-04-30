@@ -4,7 +4,7 @@
 
 void PauseConfirmQuitScreen::draw() {
     // Draw the title screen
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
+    drawBackground(backgroundPath);
 
     confirm.draw();
 

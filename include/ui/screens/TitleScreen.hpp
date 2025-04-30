@@ -15,6 +15,8 @@ class TitleScreen : public Screen {
 
     SDL_Texture* background = nullptr;
 
+    std::string backgroundPath = "../assets/visual/title-screen-bg.png";
+
     public:
     TitleScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
         Screen(_renderer), font(_font), 
@@ -26,8 +28,6 @@ class TitleScreen : public Screen {
     }
 
     virtual void draw();
-
-    void drawBackground(SDL_Renderer* renderer, SDL_Texture* texture);
 
     virtual ScreenType handleEvent(SDL_Event& event);
 
