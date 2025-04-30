@@ -15,6 +15,8 @@ class Player;
 
 const int ENEMY_WIDTH = 32;
 const int ENEMY_HEIGHT = 64;
+const int BIKER_WIDTH = 64;
+const int BIKER_HEIGHT = 64;
 
 // Number of projectiles that can be active at once
 const int MAX_ENEMY_PROJECTILES = 2;
@@ -73,9 +75,10 @@ class Enemy : public Character {
         int textureOffset = 0;
 
         bool canShoot = false; // Shoots and follows the player
+        bool isBiker = false;
 
     public:
-        explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd, bool _canShoot) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {
+        explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd, bool _canShoot, bool _isBiker) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot), isBiker(_isBiker) {
             velocity.setX(120);
             textureOffset = rand() % 2 == 0 ? 0 : 2;
         }
@@ -92,6 +95,9 @@ class Enemy : public Character {
             return (animationTicks % 20) / 10 + textureOffset;
         }
 
+        int getBikerAnimationOffset() const {
+            return (animationTicks % 30) / 10;
+        }
         void setGroundLevel(double _groundLevel) {
             groundLevel = _groundLevel;
             position.setY(_groundLevel);
@@ -135,6 +141,10 @@ class Enemy : public Character {
 
         int getTextureOffset() const {
             return textureOffset;
+        }
+
+        bool isEnemyBiker() const {
+            return isBiker;
         }
 };
 

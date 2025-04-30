@@ -6,6 +6,7 @@
 #include "sprites/EnemyTexture.hpp"
 #include "sprites/CorgiTexture.hpp"
 #include "sprites/PowerupTexture.hpp"
+#include "sprites/BikerEnemyTexture.hpp"
 
 #include "SDL2_gfxPrimitives.h"
 
@@ -111,8 +112,9 @@ void GameScreen::draw() {
 
     for (auto enemy : enemies) {
         Vector2 enemyPosition = enemy->getPosition();
-        enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);
-
+        if (enemy->isEnemyBiker()){enemybikeSprite.draw(BikerEnemyTexture::BIKER1 + enemy->getBikerAnimationOffset(), enemyPosition-Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);}
+        else {enemySprite.draw(EnemyTexture::ENEMY1WALK1 + enemy->getCurrentAnimationOffset(), enemyPosition - Vector2(scrollOffset, 0), enemy->getLastDirection() == MoveDirection::RIGHT, alpha);}
+        
         //draw enemy projectiles
         for (auto proj : enemy->getProjectiles()) {
             Vector2 enemyProjectilePosition = proj.getPosition();;
