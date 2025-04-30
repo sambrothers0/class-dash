@@ -2,6 +2,7 @@
 #include <iostream>
 #include "characters/Player.hpp"
 #include <vector>
+#include <cmath>
 
 
 std::deque<EnemyProjectile> enemyProjectiles;
@@ -76,7 +77,7 @@ void Enemy::moveOnTrack(double ms) {
         enemyProjectile->move(ms);
     }
 */
-    
+/*
     // Move the projectiles, while marking any which should be deleted
     std::vector<size_t> toDelete;
 
@@ -100,13 +101,17 @@ void Enemy::moveOnTrack(double ms) {
             deleted++;
         }
     }
+*/
 }
 
 void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
     // move to player within track range
     //playerLoc = player->getPosition();
     
-    if (playerLoc.getX() <= getPosition().getX()) {
+    if (abs(playerLoc.getX() - getPosition().getX()) <= 50) {
+        currentDirection = MoveDirection::NONE;
+    }
+    else if (playerLoc.getX() <= getPosition().getX()) {
         if (position.getX() == (trackStart + 5)) {
             //position.setX(trackStart + 5);
             currentDirection = MoveDirection::NONE;
@@ -187,3 +192,29 @@ std::shared_ptr<EnemyProjectile> Enemy::getEnemyProjectile() {
     return enemyProjectile;
 }
 */
+
+void Enemy::updateProjectiles(double ms) {
+    // Move the projectiles, while marking any which should be deleted
+    std::vector<size_t> toDelete;
+
+    for (size_t idx = 0; idx < enemyProjectiles.size(); idx++) {
+        auto& proj = enemyProjectiles[idx];
+
+        if (proj.isActive()) {
+            proj.move(ms);
+        } else {
+            toDelete.push_back(idx);
+        }
+    }
+
+    // Delete the corresponding indexes
+    if (toDelete.size() > 0) {
+        // This is needed to keep the indexes accurate
+        int deleted = 0;
+
+        for (auto idx : toDelete) {
+            enemyProjectiles.erase(enemyProjectiles.begin() + idx - deleted);
+            deleted++;
+        }
+    }
+}

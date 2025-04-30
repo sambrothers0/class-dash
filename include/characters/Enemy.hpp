@@ -136,6 +136,8 @@ class Enemy : public Character {
         int getTextureOffset() const {
             return textureOffset;
         }
+
+        void updateProjectiles(double ms);
 };
 
 #endif
