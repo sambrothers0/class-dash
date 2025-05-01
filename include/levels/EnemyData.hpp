@@ -10,9 +10,10 @@ class EnemyData {
 
     double trackStart, trackEnd;
     bool canShoot;
+    bool isBiker;
 
     public:
-    EnemyData(Vector2 _startPos, double _trackStart, double _trackEnd, bool _canShoot) : startPos(_startPos), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {}
+    EnemyData(Vector2 _startPos, double _trackStart, double _trackEnd, bool _canShoot, bool _isBiker) : startPos(_startPos), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot), isBiker(_isBiker) {}
 
     const Vector2& getStartPos() const {
         return startPos;
@@ -28,6 +29,9 @@ class EnemyData {
 
     bool getCanShoot() const {
         return canShoot;
+    }
+    bool getIsBiker() const {
+        return isBiker;
     }
 };
 
