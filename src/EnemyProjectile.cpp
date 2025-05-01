@@ -2,22 +2,8 @@
 #include "gameDimensions.hpp"
 #include <cmath>
 #include <iostream>
-//#include "characters/Player.hpp"
 #include "GameLogic.hpp"
 
-//EnemyProjectile::EnemyProjectile() {
-
-//}
-
-/*
-EnemyProjectile::EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 enemyPosition, MoveDirection enemyDirection) : Projectile(_gameLogic, enemyPosition, enemyDirection) {
-    //destination = gameLogic->getPlayer()->getPosition();
-    auto player = gameLogic->getPlayer();
-    if (player) {
-        destination = player->getPosition();
-    } 
-}
-*/
 
 EnemyProjectile::EnemyProjectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 playerPosition, Vector2 enemyPosition) : 
     gameLogic(_gameLogic),

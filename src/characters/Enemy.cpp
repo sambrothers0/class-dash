@@ -33,8 +33,6 @@ void Enemy::shoot() {
     }
 
     // shoots a projectile at the player
-    //EnemyProjectile projectile = EnemyProjectile(playerLoc, position, currentDirection);
-    //enemyProjectile = std::make_shared<EnemyProjectile>(projectile);
     EnemyProjectile enemyProjectile = EnemyProjectile(std::make_shared<GameLogic>(gameLogic), playerLoc, position);
 
     // Add to the list of projectiles if there aren't already too many
@@ -77,43 +75,9 @@ void Enemy::moveOnTrack(double ms) {
     if (moving) {
         animationTicks++;
     }
-    /*
-    if (enemyProjectile && enemyProjectile->isActive()) {
-        enemyProjectile->move(ms);
-    }
-*/
-/*
-    // Move the projectiles, while marking any which should be deleted
-    std::vector<size_t> toDelete;
-
-    for (size_t idx = 0; idx < enemyProjectiles.size(); idx++) {
-        auto& proj = enemyProjectiles[idx];
-
-        if (proj.isActive()) {
-            proj.move(ms);
-        } else {
-            toDelete.push_back(idx);
-        }
-    }
-
-    // Delete the corresponding indexes
-    if (toDelete.size() > 0) {
-        // This is needed to keep the indexes accurate
-        int deleted = 0;
-
-        for (auto idx : toDelete) {
-            enemyProjectiles.erase(enemyProjectiles.begin() + idx - deleted);
-            deleted++;
-        }
-    }
-*/
 }
 
 void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
-    // move to player within track range
-    //playerLoc = player->getPosition();
-    //moving = true;
-    
     // if really close to player, stop walking
     if (abs(playerLoc.getX() - getPosition().getX()) <= 50) {
         currentDirection = MoveDirection::NONE;
@@ -149,24 +113,6 @@ void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
         }
     }
     moving = true;
-/*
-    else if (playerLoc.getX() <= getPosition().getX()) {
-        if (position.getX() == (trackStart + 5)) {
-            //position.setX(trackStart + 5);
-            currentDirection = MoveDirection::NONE;
-        }
-        else
-            moveLeft();
-    }
-    else {
-        if (position.getX() == (trackEnd - 5)) {
-            //position.setX(trackEnd - 5);
-            currentDirection = MoveDirection::NONE;
-        }
-        else 
-            moveRight();
-    }
-   */
 }
 
 bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
@@ -184,18 +130,12 @@ bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
        if ((difference.getY() >= -detectRange) && (difference.getY() < detectRange)) {
            // when in range move to player and shoot
            moveToPlayer(player);
-           //if (!enemyProjectile->isActive()) {
            shoot();
-           //}
            return true;
        }
    } 
    moveOnTrack(ms);
    return false;
-   // if not in range, continue its track  
-   //else {
-    //moveOnTrack(ms);
-   //}
 }
 
 BoundingBox Enemy::getHitbox() const {
@@ -211,7 +151,7 @@ BoundingBox Enemy::getHitbox() const {
         );
     }
 }
-
+// Switch Directions on path
 void Enemy::moveLeft() {
     velocity.setX(-120);
     currentDirection = MoveDirection::LEFT;
@@ -224,14 +164,6 @@ void Enemy::moveRight() {
     lastDirection = MoveDirection::RIGHT;
 }
 
-/*
-std::shared_ptr<EnemyProjectile> Enemy::getEnemyProjectile() {
-    if (enemyProjectile && enemyProjectile->isActive()) {
-        return enemyProjectile;
-    }
-    return enemyProjectile;
-}
-*/
 
 void Enemy::updateProjectiles(double ms) {
     // Move the projectiles, while marking any which should be deleted
