@@ -1,5 +1,6 @@
 #include "Projectile.hpp"
 #include "gameDimensions.hpp"
+#include <cmath>
 
 Projectile::Projectile(std::shared_ptr<GameLogic> _gameLogic, Vector2 playerPosition, MoveDirection playerDirection)
     : gameLogic(_gameLogic), currentDirection(playerDirection) {
