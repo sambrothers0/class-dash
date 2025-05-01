@@ -44,7 +44,10 @@ void GameLogic::runTick(double ms) {
         player->move(ms);
 
         for (auto enemy : level->getEnemies()) {
-            enemy->moveOnTrack(ms);
+            if (!enemy->getCanShoot()){
+                enemy->moveOnTrack(ms);
+            }
+            
             enemy->updateProjectiles(ms);
             bool detected = enemy->detectPlayer(player, ms);
             if (detected) {

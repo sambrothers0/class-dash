@@ -49,11 +49,15 @@ void Enemy::shoot() {
 }
 
 void Enemy::moveOnTrack(double ms) {
-    // Made it to the left end of the track
+    //moving = true;
+    
     if (currentDirection == MoveDirection::NONE) {
         velocity.setX(0);
+        moving = false;
         return;
     }
+    
+    // Made it to the left end of the track
     if (position.getX() <= trackStart) {
         moveRight();
     }
@@ -70,8 +74,9 @@ void Enemy::moveOnTrack(double ms) {
     //------------
 
     Character::move(ms);
-    animationTicks++;
-
+    if (moving) {
+        animationTicks++;
+    }
     /*
     if (enemyProjectile && enemyProjectile->isActive()) {
         enemyProjectile->move(ms);
@@ -107,10 +112,44 @@ void Enemy::moveOnTrack(double ms) {
 void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
     // move to player within track range
     //playerLoc = player->getPosition();
+    //moving = true;
     
+    // if really close to player, stop walking
     if (abs(playerLoc.getX() - getPosition().getX()) <= 50) {
         currentDirection = MoveDirection::NONE;
+        velocity.setX(0);
+        moving = false;
+        return;
     }
+    // if at the ends of the track while following, stop
+    else if (playerLoc.getX() <= getPosition().getX()) {
+        if (abs(position.getX() - trackStart) <= 5) {
+            currentDirection = MoveDirection::NONE;
+            velocity.setX(0);
+            moving = false;
+            return;
+        }
+        else {
+            moveLeft();
+            moving = true;
+            return;
+        }
+    }
+    else { 
+        if (abs(position.getX() - trackEnd) <= 5) {
+            currentDirection = MoveDirection::NONE;
+            velocity.setX(0);
+            moving = false;
+            return;
+        }
+        else {
+            moveRight();
+            moving = true;
+            return;
+        }
+    }
+    moving = true;
+/*
     else if (playerLoc.getX() <= getPosition().getX()) {
         if (position.getX() == (trackStart + 5)) {
             //position.setX(trackStart + 5);
@@ -127,7 +166,7 @@ void Enemy::moveToPlayer(std::shared_ptr<Player> player) {
         else 
             moveRight();
     }
-   
+   */
 }
 
 bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
@@ -146,11 +185,12 @@ bool Enemy::detectPlayer(std::shared_ptr<Player> player, double ms) {
            // when in range move to player and shoot
            moveToPlayer(player);
            //if (!enemyProjectile->isActive()) {
-            shoot();
+           shoot();
            //}
            return true;
        }
    } 
+   moveOnTrack(ms);
    return false;
    // if not in range, continue its track  
    //else {

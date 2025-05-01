@@ -74,6 +74,8 @@ class Enemy : public Character {
 
         bool canShoot = false; // Shoots and follows the player
 
+        bool moving = true;
+
     public:
         explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd, bool _canShoot) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {
             velocity.setX(120);
@@ -138,6 +140,10 @@ class Enemy : public Character {
         }
 
         void updateProjectiles(double ms);
+
+        bool getCanShoot(){
+            return canShoot;
+        }
 };
 
 #endif
