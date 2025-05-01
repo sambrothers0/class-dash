@@ -1,4 +1,5 @@
 #include "TimeKeeper.hpp"
+#include "SoundManager.hpp"
 
 #include <thread>
 #include <chrono>
@@ -33,13 +34,24 @@ void TimeKeeper::beginTimer() {
                 if (abs(timeElapsed - warnTime) > 1) {
                     isWarning = false;
                 }
+
+                if (timeElapsed <= 10) { // length
+                    isWarning = true;
+
+                    // std::cout << "play sound" << std::endl;
+
+                    if (!playedWarnSound) {
+                        SoundManager::getInstance()->playSound(SoundEffect::CLOCK_TICK, true);
+                        playedWarnSound = true;
+                    }
+                }
             }
         }
         else {
             minutes = 0;
             seconds = 0;
         }
-        
+
         // More accurate timekeeping
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }

@@ -13,6 +13,8 @@ class LevelWinScreen : public Screen {
 
     Text complete, next, quit;
 
+    std::string backgroundPath = "../assets/visual/wren-bg.png";
+
     public:
     LevelWinScreen(SDL_Renderer* _renderer, TTF_Font* _font, GameLogic& _gameLogic);
 

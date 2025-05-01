@@ -13,6 +13,8 @@ class PauseConfirmQuitScreen : public Screen {
 
     Text confirm, yes, no;
 
+    std::string backgroundPath = "../assets/visual/crim-dell.png";
+
     public:
     PauseConfirmQuitScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
         Screen(_renderer), font(_font), 

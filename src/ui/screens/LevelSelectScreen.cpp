@@ -6,7 +6,7 @@
 LevelSelectScreen::LevelSelectScreen(GameLogic& _gameLogic, SDL_Renderer* _renderer, TTF_Font* _font, int levelsCompleted) :
     gameLogic(_gameLogic),
     Screen(_renderer), font(_font),
-    levelSelect(_renderer, _font, Vector2(512, 70), 50, {0, 0, 0, 255}, "Level Select"),
+    levelSelect(_renderer, _font, Vector2(512, 70), 50, {255, 255, 255, 255}, "Level Select"),
     back(_renderer, _font, Vector2(512, 700), 30, {0, 0, 0, 255}, "Back"),
     levelsUnlocked(mathutils::clamp(levelsCompleted + 1, 1, 5)) {
     levelTexts.push_back(Text(_renderer, _font, Vector2(512, 200), 40, {0, 0, 0, 255}, "Monday"));
@@ -23,7 +23,7 @@ void LevelSelectScreen::onLevelSelected(int level) {
 
 void LevelSelectScreen::draw() {
     // Draw the level select screen
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
+    drawBackground(backgroundPath);
 
     levelSelect.draw();
 

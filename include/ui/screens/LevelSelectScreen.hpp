@@ -13,6 +13,8 @@ class LevelSelectScreen : public Screen {
 
     Text levelSelect, back;
 
+    std::string backgroundPath = "../assets/visual/sunken-gardens.png";
+
     unsigned int levelsUnlocked = 0;
 
     // List of level texts (this exists to make drawing them easier)

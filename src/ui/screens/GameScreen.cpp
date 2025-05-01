@@ -124,7 +124,7 @@ void GameScreen::draw() {
             }
         }
     }
-    
+
     for (auto corgi : level->getCorgis()) {
         Vector2 corgiPosition = corgi->getPosition();
         corgiSprite.draw(CorgiTexture::CORGI1WALK1 + corgi->getCurrentAnimationOffset(), corgiPosition - Vector2(scrollOffset, 0), corgi->getLastDirection() == MoveDirection::RIGHT, alpha);
@@ -265,12 +265,15 @@ ScreenType GameScreen::handleExtraEvents() {
     // lose checking needs to happen outside handleEvent because
     // we need to lose the level even if the player is not pressing any keys
     if (gameLogic.getTimer()->isTimeUp()) {
+        gameLogic.getTimer()->pauseTimer();
+        SoundManager::getInstance()->stopMusic();
         SoundManager::getInstance()->playSound(SoundEffect::LEVEL_LOSE);
         return ScreenType::LEVEL_LOSE; // Switch to level lose screen
     }
 
     // We don't switch to the level win screen until the animation is finished
     if (finishedLevelComplete) {
+        SoundManager::getInstance()->stopMusic();
         if (gameLogic.getLevelIndex() == 4)
             return ScreenType::GAME_FINISH;
         else

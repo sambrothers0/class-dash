@@ -2,6 +2,7 @@
 #define _SCREEN_H
 
 #include "SDL.h"
+// #include <string>
 
 #include "GameLogic.hpp"
 #include "ui/Text.hpp"
@@ -14,12 +15,16 @@ class Screen {
     // Reference to the renderer
     SDL_Renderer* renderer;
 
+    SDL_Texture* background = nullptr;
+
     public:
     Screen(SDL_Renderer* _renderer) : renderer(_renderer) {}
 
     void drawButton(int x, int y, int width, int height, SDL_Color color);
 
     void drawCircle(int cx, int cy, int radius);
+
+    void drawBackground(std::string imagePath);
 
     // Draws the screen using the renderer
     virtual void draw() = 0;

@@ -12,6 +12,8 @@ class LevelLoseScreen : public Screen {
 
     Text title, restart, quit;
 
+    std::string backgroundPath = "../assets/visual/statue.png";
+
     public:
     LevelLoseScreen(SDL_Renderer* _renderer, TTF_Font* _font) :
     Screen(_renderer), font(_font), 

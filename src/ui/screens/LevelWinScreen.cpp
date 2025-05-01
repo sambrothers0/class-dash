@@ -4,7 +4,7 @@
 // #include <iostream>
 
 LevelWinScreen::LevelWinScreen(SDL_Renderer* _renderer, TTF_Font* _font, GameLogic& _gameLogic) :
-    Screen(_renderer), font(_font), gameLogic(_gameLogic), 
+    Screen(_renderer), font(_font), gameLogic(_gameLogic),
         complete(_renderer, _font, Vector2(512, 100), 50, { 0, 0, 0, 255 }, "Level Complete!"),
         next(_renderer, _font, Vector2(512, 300), 40, { 0, 0, 0, 255 }, "Next Level"),
         quit(_renderer, _font, Vector2(512, 400), 40, { 0, 0, 0, 255 }, "Quit")
@@ -14,7 +14,7 @@ LevelWinScreen::LevelWinScreen(SDL_Renderer* _renderer, TTF_Font* _font, GameLog
 
 void LevelWinScreen::draw() {
     // Draw the title screen
-    boxRGBA(renderer, 0, 0, 1024, 768, 255, 255, 255, 255); //placeholder
+    drawBackground(backgroundPath);
 
     complete.draw();
 
@@ -58,10 +58,12 @@ ScreenType LevelWinScreen::handleEvent(SDL_Event& event) {
                 SoundManager::getInstance()->playSound(SoundEffect::BUTTON_SELECT);
                 if (cursorPosition == 0) {
                     // We need to set the level index too
+                    SoundManager::getInstance()->stopMusic();
                     gameLogic.setLevelIndex(gameLogic.getLevelIndex() + 1);
 
                     return ScreenType::GAME; // Resume the game
                 } else if (cursorPosition == 1) {
+                    SoundManager::getInstance()->stopMusic();
                     return ScreenType::LEVEL_SELECT; // Quit to level select
                 }
             case SDLK_ESCAPE:

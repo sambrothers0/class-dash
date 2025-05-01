@@ -28,4 +28,24 @@ void Screen::drawCircle(int cx, int cy, int radius) {
     }
 }
 
+void Screen::drawBackground(std::string imagePath) {
+    // only load the image if it hasn't been loaded yet
+    if (!background) {
+        SDL_Surface* surface = IMG_Load(imagePath.c_str());
+        if (!surface) {
+            std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+        }
+    
+        background = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
+    
+        if (!background) {
+            std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        }
+    }
+    // Render to the screen
+    SDL_RenderCopy(renderer, background, NULL, NULL);
+
+}
+
 Screen::~Screen() {}
