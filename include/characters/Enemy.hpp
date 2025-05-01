@@ -22,12 +22,6 @@ const int MAX_ENEMY_PROJECTILES = 2;
 // Delay for shooting projectiles in ms
 const int ENEMY_PROJECTILE_DELAY = 1000;
 
-/*
- // There is a delay between shooting projectiles
- extern SDL_TimerID enemyProjectileTimerId;
- extern bool isEnemyProjectileTimerActive; //= false;
-*/
-
 class GameLogic;
 
 class Enemy : public Character {
@@ -67,12 +61,13 @@ class Enemy : public Character {
         
          // List of available projectiles
         std::deque<EnemyProjectile> enemyProjectiles;
-        //std::shared_ptr<EnemyProjectile> projectile;
 
         // Texture offset for the enemy (can be either 0 or 2 for now)
         int textureOffset = 0;
 
         bool canShoot = false; // Shoots and follows the player
+
+        bool moving = true; // checks if the enemy is moving, if so update animation ticks
 
     public:
         explicit Enemy(GameLogic& _gameLogic, Vector2 _position, double _trackStart, double _trackEnd, bool _canShoot) : Character(_position), gameLogic(_gameLogic), trackStart(_trackStart), trackEnd(_trackEnd), canShoot(_canShoot) {
@@ -135,6 +130,12 @@ class Enemy : public Character {
 
         int getTextureOffset() const {
             return textureOffset;
+        }
+
+        void updateProjectiles(double ms);
+
+        bool getCanShoot(){
+            return canShoot;
         }
 };
 
