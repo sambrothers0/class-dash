@@ -33,7 +33,7 @@ set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
 include_directories(${classdash_SOURCE_DIR}/include)
 
 # Get CPP files
-file(GLOB_RECURSE SRC src/*cpp)
+file(GLOB_RECURSE SRC src/*cpp src/*c)
 list(APPEND SRC src/sdlLogging.cpp)
 
 # Get executable files
@@ -50,8 +50,8 @@ file(GLOB_RECURSE EXECLIST bin/*cpp)
 #  link_libraries(${Boost_LIBRARIES})           #
 #################################################
 #CUSTOM LIBRARY
-find_package(tmxlite REQUIRED)
-include_directories(${tmxlite_INCLUDE_DIRS})
+# find_package(tmxlite REQUIRED)
+# include_directories(${tmxlite_INCLUDE_DIRS})
 
 
 #############
@@ -110,7 +110,7 @@ if(NOT SRC STREQUAL "")
   get_filename_component(LIBNAME ${classdash_SOURCE_DIR} NAME)
   set(LIBNAME "${LIBNAME}_core")
   add_library(${LIBNAME} ${SRC})
-  target_link_libraries(${LIBNAME} PRIVATE tmxlite) #linking tmxlite
+  target_link_libraries(${LIBNAME} PRIVATE) #linking tmxlite
 endif()
 
 # executables (any CPP file in 'bin' dir)
@@ -119,9 +119,9 @@ foreach(EXEC ${EXECLIST})
   add_executable(${EXECNAME} ${EXEC})
 
   if(NOT SRC STREQUAL "")
-    target_link_libraries(${EXECNAME} LINK_PUBLIC ${LIBNAME} tmxlite)
+    target_link_libraries(${EXECNAME} LINK_PUBLIC ${LIBNAME})
   else()
-    target_link_libraries(${EXECNAME} tmxlite)
+    target_link_libraries(${EXECNAME})
   endif()
 
   message("-- Adding executable: ${EXECNAME}")

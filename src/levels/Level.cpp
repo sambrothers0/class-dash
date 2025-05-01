@@ -1,5 +1,6 @@
 #include "levels/Level.hpp"
 #include "gameDimensions.hpp"
+#include <cmath>
 
 
 // gets global ID for a given block
