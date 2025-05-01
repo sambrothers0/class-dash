@@ -37,11 +37,13 @@ bool SoundManager::loadSounds() {
         "../assets/audio/button-select.wav",
         "../assets/audio/level-complete.wav",
         "../assets/audio/level-lose.wav",
-        "../assets/audio/clock-tick.wav"
+        "../assets/audio/clock-tick.wav",
+        "../assets/audio/powerup.mp3",
+        "../assets/audio/attack_damage.mp3"
     };
 
     // Load each sound effect
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 9; i++) {
         Mix_Chunk* sound = Mix_LoadWAV(soundFiles[i]);
         if (sound == nullptr) {
             std::cerr << "Failed to load sound effect: " << soundFiles[i] << " SDL_mixer Error: " << Mix_GetError() << std::endl;

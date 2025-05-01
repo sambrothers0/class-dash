@@ -524,6 +524,7 @@ void Player::handleEnemyCollisions() {
 
             if (playerHitbox.overlaps(projHitbox)) {
                 reduceSpeed();
+                SoundManager::getInstance()->playSound(SoundEffect::DAMAGE); 
                 projectile.setActive(false);
             }
         }
@@ -577,6 +578,7 @@ void Player::handlePowerupCollisions() {
         if (playerHitbox.overlaps(powerupHitbox)) {
             std::cout << "powewrup collision" << std::endl;
             increaseSpeed();
+            SoundManager::getInstance()->playSound(SoundEffect::POWERUP); 
             powerup->deactivate();
 
 

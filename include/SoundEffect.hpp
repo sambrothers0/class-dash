@@ -8,7 +8,9 @@ enum class SoundEffect {
     BUTTON_SELECT,
     LEVEL_COMPLETE,
     LEVEL_LOSE,
-    CLOCK_TICK
+    CLOCK_TICK,
+    POWERUP,
+    DAMAGE
 };
 
 #endif
