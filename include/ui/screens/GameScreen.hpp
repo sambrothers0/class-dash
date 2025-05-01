@@ -21,6 +21,7 @@ class GameScreen : public Screen {
     Spritesheet enemySprite;
     Spritesheet corgiSprite;
     Spritesheet powerupSprite;
+    Spritesheet enemybikeSprite;
     // std::unordered_map<uint32_t, SDL_Texture*> tilesetTextures;
 
     // Offset for drawing
@@ -71,6 +72,12 @@ class GameScreen : public Screen {
             Vector2(ENEMY_WIDTH, ENEMY_HEIGHT),
             4,
             1
+        ), enemybikeSprite(
+            _renderer, 
+            "../assets/visual/bikerEnemySpritesheet.png",
+            Vector2(BIKER_WIDTH, BIKER_HEIGHT),
+            1,
+            3
         ), corgiSprite(
             _renderer,
             "../assets/visual/corgi.png",
