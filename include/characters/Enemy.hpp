@@ -125,7 +125,7 @@ class Enemy : public Character {
 
         //std::shared_ptr<EnemyProjectile> getEnemyProjectile();
 
-        const std::deque<EnemyProjectile>& getProjectiles() const {
+        std::deque<EnemyProjectile>& getProjectiles() {
             return enemyProjectiles;
         }
 

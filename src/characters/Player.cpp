@@ -518,11 +518,12 @@ void Player::handleEnemyCollisions() {
 
     // Projectile collisions
     for (auto enemy : enemies) {
-        for (auto projectile : enemy->getProjectiles()) {
+        for (auto& projectile : enemy->getProjectiles()) {
             auto playerHitbox = getHitbox() + position;
             auto projHitbox = projectile.getHitbox() + projectile.getPosition();
 
             if (playerHitbox.overlaps(projHitbox)) {
+                std::cout<<enemy->getPosition().getX()<<"WHY"<<std::endl;
                 reduceSpeed();
                 projectile.setActive(false);
             }
