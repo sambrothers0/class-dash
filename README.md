@@ -64,9 +64,9 @@ Escape to pause the game.
 
 Navigate through each level using the character movements described above in order to reach the end before the time runs out.
 
-Avoid running into enemies (other students), as they will slow your movements. If you physicall run into an enemy, you will recieve a time deduction from your remaining game time. If you are in range of some enemies, they will try to talk to you using their sound wave projectile. If hit, you will slow down for a few seconds.
+Avoid running into enemies (other students), as they will slow your movements. If you physically run into an enemy, you will recieve a time deduction from your remaining game time. If you are in range of some enemies, they will try to talk to you using their sound wave projectile. If hit, you will slow down for a few seconds.
 
-Defend yourself from enemies by pressing SPACE to shoot a soundwave projectile at them. Two hit and the enemy will despawn.
+Defend yourself from enemies by pressing SPACE to shoot a soundwave projectile at them. Two hits and the enemy will despawn.
 
 Occupational hazards will also slow you down. Stepping in puddles or tripping on loose bricks will similarly reduce your movement speed temporarily.
 
