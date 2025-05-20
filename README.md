@@ -4,6 +4,46 @@ Class Dash is a side-scrolling platformer where the goal is for the student to m
 ## Plot Overview
 You are a senior at the College of William & Mary entering your last week of finals. In order to graduate, you must make it to all of your finals on time! At the start of each day, you will see your exam start time and a clock will display your current time as you dash to class. While traversing various campus locations such as Swem, The Sunken Gardens, and Crim Dell, you must avoid distractions and obstacles that can slow you down. Occupational hazards like puddles, construction, and loose bricks can slow your movements and people can shoot sound waves at you that will slow you down and "engage in conversation". You must work to avoid these obstacles by moving left and right, jumping, and “shooting down” people with your projectiles that tell them you can’t talk right now. If you make it to your class before the given exam start time, you pass that level and can move on to the next day. After completing your Monday-Friday exams, you will finally graduate.
 
+## How to Run
+
+The code package relies on CMake, a cross platform makefile generator. There exist versions of
+CMake for windows, linux, and OSX. While generally each version behaves similarly, depending on
+which C++ compiler you have you might need to add additional parameters. 
+
+**For a linux system with a standard gnu c/c++ compiler:**
+
+First, clone the repository to your local machine. 
+1. make a subdirectory (under CSCI437-Spring25-Group1) named 'Release': mkdir Release
+2. enter the subdir: cd Release
+3. and generate the makefiles: cmake .. (mind the ‘..’)
+
+**If on Windows:**
+
+It is highly recommended to us linux (or OSX) if available on your machine. However, in case you
+only have a Windows install, we recommend MSYS2 and mingw64. It is recommended if you have an
+older MSYS2 install to remove it first and start with a clean version.
+1) Install MSYS2: https://www.msys2.org/
+2) Open the MSYS2 MINGW64 terminal (not the MSYS2 UCRT64 terminal)
+2) Install mingw64: pacman -S mingw-w64-x86_64-toolchain (install all; 800Mb)
+3) Install cmake: pacman -S mingw-w64-x86_64-cmake
+4) Install git: pacman -S git
+5) Optional: add <msys2 install path>/mingw64/bin to your path if you also want to be able to run
+your code by double clicking. To add to your path, open "Edit environment variables" -> select
+Path -> Edit -> New -> Browse
+We will use the MSYS2 MINGW64 terminal for **all** steps.
+1) To access your C-drive use: cd /c/
+2) Next, git clone the code to your location of choice and use cd /c/<path> to
+enter the location in MSYS2. If you get an error that git does not support 'https', then you probably
+copy-pasted an invisible character before https; just delete all spaces between 'clone' and 'https',
+and re-add a new space; this will delete the invisible character.
+3) Make a directory 'Release' mkdir Release
+2) Next, generate make files (capitalization of “MinGW Makefiles” matters!):
+cd Debug
+cmake.exe -G "MinGW Makefiles" ..
+3) The above step should complete without an error and find a C++ compiler. Next we can compile
+the code: mingw32-make.exe
+4) We can now run the game: ./classdash.exe
+
 ## How to Play
 **Character Movements:**
 
