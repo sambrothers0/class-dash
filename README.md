@@ -13,7 +13,7 @@ which C++ compiler you have you might need to add additional parameters.
 **For a linux system with a standard gnu c/c++ compiler:**
 
 First, clone the repository to your local machine. 
-1. make a subdirectory (under CSCI437-Spring25-Group1) named 'Release': mkdir Release
+1. make a subdirectory (under classdash) named 'Release': mkdir Release
 2. enter the subdir: cd Release
 3. and generate the makefiles: cmake .. (mind the ‘..’)
 
