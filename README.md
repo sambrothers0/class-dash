@@ -1,4 +1,4 @@
-# CSCI437 Group 1 Project
+# Class Dash
 Class Dash is a side-scrolling platformer where the goal is for the student to make it to their final exams on time. It has many obstacles and distractions that the player must avoid, as well as collectibles that can help them out. The game takes you through many of the locations at the College of William & Mary, making it especially interesting for current or former students.
 
 ## Plot Overview
@@ -38,8 +38,7 @@ copy-pasted an invisible character before https; just delete all spaces between 
 and re-add a new space; this will delete the invisible character.
 3) Make a directory 'Release' mkdir Release
 2) Next, generate make files (capitalization of “MinGW Makefiles” matters!):
-cd Debug
-cmake.exe -G "MinGW Makefiles" ..
+cd Release && cmake.exe -G "MinGW Makefiles" ..
 3) The above step should complete without an error and find a C++ compiler. Next we can compile
 the code: mingw32-make.exe
 4) We can now run the game: ./classdash.exe
